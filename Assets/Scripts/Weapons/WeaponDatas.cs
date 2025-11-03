@@ -1,7 +1,10 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "WeaponDatas", menuName = "Scriptable Objects/WeaponDatas")]
-public class WeaponDatas : ScriptableObject
+namespace dutpekmezi
 {
-    
+    [CreateAssetMenu(fileName = "WeaponDatas", menuName = "Game/Scriptable Objects/Weapon/WeaponDatas")]
+    public class WeaponDatas : ScriptableObject
+    {
+
+    }
 }
