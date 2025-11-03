@@ -5,7 +5,7 @@ namespace dutpekmezi
     public class Sword : WeaponBase
     {
         [Header("Sword Settings")]
-        public float moveSpeed = 5f; // Smooth transition speed to the opposite orbit side
+        public float moveSpeed = 5f; // transition speed to the opposite orbit side
 
         private bool isMoving = false;
         private float targetAngle;
@@ -54,7 +54,6 @@ namespace dutpekmezi
             {
                 transform.position = targetPosition;
                 currentAngle = targetAngle;
-                clockwise = !clockwise;
                 isMoving = false;
 
                 SetRotate(true);

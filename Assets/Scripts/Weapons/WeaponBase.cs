@@ -4,6 +4,9 @@ namespace dutpekmezi
 {
     public abstract class WeaponBase : MonoBehaviour
     {
+        [Header("Assigned Data")]
+        [SerializeField] private WeaponData weaponData;
+
         [Header("Orbit Settings")]
         public Transform player;            // The player this weapon orbits around
         public float orbitRadius = 2f;      // Distance from the player
@@ -28,14 +31,12 @@ namespace dutpekmezi
         {
             if (player == null)
             {
-                Debug.LogError($"{gameObject.name}: Missing player reference.");
                 enabled = false;
                 return;
             }
 
             if (selfOrbitCenter == null)
             {
-                Debug.LogWarning($"{gameObject.name}: No selfOrbitCenter assigned, defaulting to self pivot.");
                 selfOrbitCenter = transform;
             }
 
@@ -51,7 +52,7 @@ namespace dutpekmezi
             Ability();
         }
 
-        private void Orbit()
+        private void Orbit() 
         {
             if (!canRotate) return;
 
