@@ -26,8 +26,19 @@ namespace Dutpekmezi.Services.PoolService
 
         public static PoolType PoolingType;
 
+        private static ObjectPoolManager instance;
+
+        public static ObjectPoolManager Instance => instance;
+
         private void Awake()
         {
+            if (instance != null && instance != this)
+            {
+                Destroy(instance);
+            }
+
+            instance = this;
+
             SetupEmpties();
         }
 
@@ -253,7 +264,7 @@ namespace Dutpekmezi.Services.PoolService
             return SpawnObject<T>(typePrefab.gameObject, parent, Quaternion.identity, poolType);
         }
 
-        public static void ReturnObjectToPool(GameObject obj, PoolType poolType = PoolType.GameObjects)
+        public static void DeSpawn(GameObject obj, PoolType poolType = PoolType.GameObjects)
         {
             if (_cloneToPrefabMap.TryGetValue(obj, out GameObject prefab))
             {
