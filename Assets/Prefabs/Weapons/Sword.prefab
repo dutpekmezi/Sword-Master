@@ -227,7 +227,12 @@ MonoBehaviour:
   front: {fileID: 0}
   back: {fileID: 0}
   selfOrbitCenter: {fileID: 0}
-  moveSpeed: 10
+  moveSpeed: 20
+  slash: {fileID: 5278200963858967047, guid: dd2d50c78897f114d9d9dcf9ca22a70b, type: 3}
+  slashObjScaleX: 0.2
+  slashObjScaleY: 20
+  slashObjScaleDuration: 0.5
+  slashObjDeScaleDuration: 0.6
 --- !u!61 &117619324107858207
 BoxCollider2D:
   m_ObjectHideFlags: 0

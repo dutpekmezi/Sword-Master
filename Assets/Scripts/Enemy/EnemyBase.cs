@@ -15,6 +15,8 @@ namespace dutpekmezi
 
         private int currentHealth;
 
+        private bool isDead = false;
+
         public delegate void OnDeathEvent(EnemyBase enemy);
         public event OnDeathEvent OnDeath;
 
@@ -32,6 +34,7 @@ namespace dutpekmezi
 
         public void Init()
         {
+            isDead = false;
             currentHealth = enemyData.MaxHealth;
         }
 
@@ -70,8 +73,12 @@ namespace dutpekmezi
 
         private void Die()
         {
+            if (isDead) return;
+
             if (OnDeath != null)
                 OnDeath.Invoke(this);
+
+            isDead = true;
 
             Dutpekmezi.Services.PoolService.ObjectPoolManager.DeSpawn(this.gameObject);
         }
