@@ -9,6 +9,8 @@ namespace dutpekmezi
         public string Name; // The Name of the weapon
         public string Description; // Detail sentence about the weapon
 
+        public Sprite Icon;
+
         public float OrbitSpeed; // Spin speed around the character
         public float SelfOrbitSpeed; // Self spin speed
 

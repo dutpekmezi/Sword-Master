@@ -29,8 +29,6 @@ namespace dutpekmezi
         {
             CharacterBase character = CharacterSystem.Instance.GetCurrentCharacter();
 
-            character.OnKillEnemy += DieWithoutEvent;
-
             agent.enabled = false;
 
             spawnPos = transform.position;
