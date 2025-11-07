@@ -51,7 +51,7 @@ namespace dutpekmezi
             if (currentAngle > 360f) currentAngle -= 360f;
             if (currentAngle < 0f) currentAngle += 360f;
 
-            Transform characterTransform = CharacterSystem.Instance.GetCharacterTransform();
+            Transform characterTransform = CharacterSystem.Instance.GetCurrentCharacterTransform();
             orbitCenter = characterTransform.position;
             Vector2 offset = new Vector2(
                 Mathf.Cos(currentAngle * Mathf.Deg2Rad),

@@ -8,7 +8,11 @@ namespace dutpekmezi
         public string Id;
         public string Name;
 
+        public Sprite Icon;
+
         public int MaxHealth;
+
+        public float MoveSpeed;
 
         public WeaponType WeaponType;
 

@@ -11,29 +11,90 @@ namespace dutpekmezi
         [SerializeField] private Rigidbody2D rb;
         [SerializeField] private BoxCollider2D col;
 
-        [SerializeField] private int currentHealth; 
+        [Header("Movement Settings")]
+        [SerializeField] private float smoothMove = 10f; // For smoother acceleration
+
+        private Vector2 moveInput;
+        private Vector2 moveVelocity;
+
+        private bool isDead = false;
+
+        [SerializeField] private int currentHealth;
         public int CurrentHealth => currentHealth;
 
         public Transform Transform => transform;
+
+        public CharacterData CharacterData => characterData;
+
+        public delegate void OnStatsChangeEvent(CharacterBase character);
+        public event OnStatsChangeEvent OnStatsChange;
+
+        public delegate void OnTakeDamageEvent(CharacterBase character);
+        public event OnTakeDamageEvent OnTakeDamage;
 
         private void Start()
         {
             Init();
         }
 
+        private void Update()
+        {
+            HandleInput();
+        }
+
+        private void FixedUpdate()
+        {
+            MoveCharacter();
+        }
+
         private void Init()
         {
+            isDead = false;
             currentHealth = characterData.MaxHealth;
+            OnStatsChange?.Invoke(this);
+        }
+
+        private void HandleInput()
+        {
+            float moveX = Input.GetAxisRaw("Horizontal");
+            float moveY = Input.GetAxisRaw("Vertical");
+
+            moveInput = new Vector2(moveX, moveY).normalized;
+        }
+
+        private void MoveCharacter()
+        {
+            // Target velocity based on input
+            Vector2 targetVelocity = moveInput * characterData.MoveSpeed;
+
+            // Smooth acceleration for natural movement
+            moveVelocity = Vector2.Lerp(moveVelocity, targetVelocity, smoothMove * Time.fixedDeltaTime);
+
+            // Apply to Rigidbody
+            rb.MovePosition(rb.position + moveVelocity * Time.fixedDeltaTime);
         }
 
         public void TakeDamage(int damageAmount)
         {
+            if (isDead) return;
+
             SetHealth(-damageAmount);
+
+            OnTakeDamage?.Invoke(this);
         }
 
         private void SetHealth(int amount)
         {
+            if (isDead) return;
+
+            if (currentHealth <= 0)
+            {
+                currentHealth = 0;
+                isDead = true;
+            }
+
             currentHealth += amount;
+            OnStatsChange?.Invoke(this);
         }
     }
 }

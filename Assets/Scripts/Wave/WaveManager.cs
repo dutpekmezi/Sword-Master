@@ -36,14 +36,14 @@ namespace dutpekmezi
             {
                 var randomPos = GenerateRandomPos();
 
-                var instance = EnemySystem.Instance.CreateRandomEnemy();
+                var instance = EnemySystem.Instance.CreateRandomEnemy(randomPos);
                 instance.transform.position = randomPos;
             }
         }
 
         private Vector2 GenerateRandomPos()
         {
-            Vector2 center = CharacterSystem.Instance.GetCharacterTransform().position;
+            Vector2 center = CharacterSystem.Instance.GetCurrentCharacterTransform().position;
 
             float angle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
 

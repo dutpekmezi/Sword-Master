@@ -27,7 +27,7 @@ namespace dutpekmezi
                 if (targetAngle > 360f)
                     targetAngle -= 360f;
 
-                targetPosition = CharacterSystem.Instance.GetCharacterTransform().position + new Vector3(
+                targetPosition = CharacterSystem.Instance.GetCurrentCharacterTransform().position + new Vector3(
                     Mathf.Cos(targetAngle * Mathf.Deg2Rad),
                     Mathf.Sin(targetAngle * Mathf.Deg2Rad),
                     0f
@@ -71,7 +71,7 @@ namespace dutpekmezi
         private void Slash()
         {
             var slashObj = Dutpekmezi.Services.PoolService.ObjectPoolManager.SpawnObject(
-                slash, CharacterSystem.Instance.GetCharacterTransform().position);
+                slash, CharacterSystem.Instance.GetCurrentCharacterTransform().position);
 
             slashObj.transform.localScale = Vector2.zero;
 

@@ -9,9 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8366517304412016735}
-  - component: {fileID: 1662301267738328567}
   - component: {fileID: 3977034603468201143}
   - component: {fileID: 2915847934724925710}
+  - component: {fileID: -5647597921439955080}
+  - component: {fileID: 1662301267738328567}
   m_Layer: 0
   m_Name: BoneWorm
   m_TagString: Untagged
@@ -28,28 +29,13 @@ Transform:
   m_GameObject: {fileID: 5764342845284307924}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3894519353891994834}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1662301267738328567
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5764342845284307924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91ae51c6dcac24d4a825e9e36c785b4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyData: {fileID: 11400000, guid: 4348d3bfc82d0734ebe34f5a5a83558b, type: 2}
-  rb: {fileID: 3977034603468201143}
-  col: {fileID: 0}
 --- !u!50 &3977034603468201143
 Rigidbody2D:
   serializedVersion: 5
@@ -58,14 +44,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5764342845284307924}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -114,21 +100,61 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: -0.24206513, y: 0.088155076}
-  - {x: -0.3047331, y: -0.21035388}
-  - {x: -0.0052605066, y: -0.32976484}
-  - {x: 0.20058998, y: -0.31635612}
-  - {x: 0.31303197, y: -0.20081502}
-  - {x: 0.28450948, y: -0.07383613}
-  - {x: 0.25844342, y: 0.02487327}
-  - {x: 0.14681196, y: 0.27570653}
-  - {x: -0.023843229, y: 0.31862006}
-  - {x: -0.16337368, y: 0.2726444}
-  - {x: -0.24441983, y: 0.07183001}
+  - {x: -0.29038966, y: 0.145109}
+  - {x: -0.32785943, y: 0.02623999}
+  - {x: -0.28920022, y: -0.30700308}
+  - {x: -0.015615715, y: -0.30560255}
+  - {x: 0.18850885, y: -0.30600092}
+  - {x: 0.3233871, y: -0.10416584}
+  - {x: 0.2620731, y: 0.02799058}
+  - {x: 0.10138863, y: -0.1287298}
+  - {x: 0.050162815, y: -0.055661857}
+  - {x: 0.033110805, y: 0.108063094}
+  - {x: -0.05619694, y: 0.23714441}
+  - {x: -0.17200306, y: 0.23985276}
+  - {x: -0.2910185, y: 0.14259094}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
   m_UseAdjacentEndPoint: 0
+--- !u!195 &-5647597921439955080
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5764342845284307924}
+  m_Enabled: 0
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &1662301267738328567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5764342845284307924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91ae51c6dcac24d4a825e9e36c785b4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyData: {fileID: 11400000, guid: 4348d3bfc82d0734ebe34f5a5a83558b, type: 2}
+  rb: {fileID: 3977034603468201143}
+  col: {fileID: 2915847934724925710}
+  agent: {fileID: -5647597921439955080}
 --- !u!1 &9133730199069225330
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,6 +207,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -202,6 +230,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0

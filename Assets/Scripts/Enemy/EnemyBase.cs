@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace dutpekmezi
 {
@@ -9,7 +10,8 @@ namespace dutpekmezi
 
         [Header("References")]
         [SerializeField] private Rigidbody2D rb;
-        [SerializeField] private BoxCollider2D col;
+        [SerializeField] private Collider2D col;
+        [SerializeField] private NavMeshAgent agent;
 
         public Transform Transform => rb.transform;
 
@@ -17,14 +19,21 @@ namespace dutpekmezi
 
         private bool isDead = false;
 
+        private Vector2 spawnPos;
+
         public delegate void OnDeathEvent(EnemyBase enemy);
         public event OnDeathEvent OnDeath;
 
+
         private void Start()
         {
+            agent.enabled = false;
+
+            spawnPos = transform.position;
+
             if (enemyData == null)
             {
-                Debug.LogError($"{gameObject.name}: Missing EnemyData reference!");
+                Debug.LogError($"{gameObject.name}: Missing EnemyData");
                 enabled = false;
                 return;
             }
@@ -36,6 +45,13 @@ namespace dutpekmezi
         {
             isDead = false;
             currentHealth = enemyData.MaxHealth;
+
+            agent.updateRotation = false;
+            agent.updateUpAxis = false;
+
+            agent.Warp(transform.position);
+
+            agent.enabled = true;
         }
 
         private void Update()
@@ -47,17 +63,13 @@ namespace dutpekmezi
         {
             if (enemyData == null || CharacterSystem.Instance == null) return;
 
-            Transform targetTransform = CharacterSystem.Instance.GetCharacterTransform();
+            Transform targetTransform = CharacterSystem.Instance.GetCurrentCharacterTransform();
             if (targetTransform == null) return;
 
-            Vector2 currentPos = rb.position;
             Vector2 targetPos = targetTransform.position;
-            Vector2 dir = (targetPos - currentPos).normalized;
 
-            float moveSpeed = enemyData.MoveSpeed;
-            Vector2 newPos = currentPos + dir * moveSpeed * Time.deltaTime;
-
-            rb.MovePosition(newPos);
+            agent.speed = enemyData.MoveSpeed;
+            agent.SetDestination(targetPos);
         }
 
         public void TakeDamage(int damage)

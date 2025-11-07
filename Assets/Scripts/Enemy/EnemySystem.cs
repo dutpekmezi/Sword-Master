@@ -37,5 +37,23 @@ namespace dutpekmezi
 
             return null;
         }
+
+        public EnemyBase CreateRandomEnemy(Vector2 pos)
+        {
+            if (enemyDatas != null)
+            {
+                var randomIndex = Random.Range(0, enemyDatas.Enemies.Count);
+
+                var enemyData = enemyDatas.Enemies[randomIndex];
+
+                EnemyBase instance = Dutpekmezi.Services.PoolService.ObjectPoolManager.SpawnObject(enemyData.Prefab, pos);
+                instance.transform.SetParent(enemyHolder);
+                instance.Init();
+
+                return instance;
+            }
+
+            return null;
+        }
     }
 }

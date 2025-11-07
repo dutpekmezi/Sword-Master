@@ -35,7 +35,12 @@ namespace dutpekmezi
             CreateCharacter();
         }
 
-        public CharacterBase GetCharacter()
+        public CharacterData GetCurrentCharacterData()
+        {
+            return GetCurrentCharacter().CharacterData;
+        }
+
+        public CharacterBase GetCurrentCharacter()
         {
             if (selectedCharacter != null || characterDatas != null || currentCharacter != null)
             {
@@ -61,7 +66,7 @@ namespace dutpekmezi
             return null;
         }
 
-        public Transform GetCharacterTransform()
+        public Transform GetCurrentCharacterTransform()
         {
             if (selectedCharacter != null || characterDatas != null || currentCharacter != null)
             {
