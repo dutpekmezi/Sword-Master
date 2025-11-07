@@ -20,7 +20,11 @@ namespace dutpekmezi
         private bool isDead = false;
 
         [SerializeField] private int currentHealth;
+        [SerializeField] private int currentEnergy;
         public int CurrentHealth => currentHealth;
+        public int CurrentEnergy => currentEnergy;
+
+        public bool isEnergyFull => currentEnergy >= characterData.MaxEnergy; 
 
         public Transform Transform => transform;
 
@@ -31,6 +35,9 @@ namespace dutpekmezi
 
         public delegate void OnTakeDamageEvent(CharacterBase character);
         public event OnTakeDamageEvent OnTakeDamage;
+
+        public delegate void OnKillEnemyEvent(CharacterBase character);
+        public event OnKillEnemyEvent OnKillEnemy;
 
         private void Start()
         {
@@ -91,14 +98,32 @@ namespace dutpekmezi
         {
             if (isDead) return;
 
+            currentHealth += amount;
+
             if (currentHealth <= 0)
             {
                 currentHealth = 0;
                 isDead = true;
             }
 
-            currentHealth += amount;
             OnStatsChange?.Invoke(this);
+        }
+
+        private void SetEnergy(int amount)
+        {
+            if (isDead ||isEnergyFull) return;
+
+            currentEnergy += amount;
+
+            if (currentEnergy > characterData.MaxEnergy)
+            {
+                currentEnergy = characterData.MaxEnergy;
+            }
+
+            if (currentEnergy < 0)
+            {
+                currentEnergy = 0;
+            }
         }
     }
 }

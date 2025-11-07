@@ -27,6 +27,10 @@ namespace dutpekmezi
 
         private void Start()
         {
+            CharacterBase character = CharacterSystem.Instance.GetCurrentCharacter();
+
+            character.OnKillEnemy += DieWithoutEvent;
+
             agent.enabled = false;
 
             spawnPos = transform.position;
@@ -56,6 +60,8 @@ namespace dutpekmezi
 
         private void Update()
         {
+            if (isDead) return;
+
             MoveToPlayer();
         }
 
@@ -72,18 +78,40 @@ namespace dutpekmezi
             agent.SetDestination(targetPos);
         }
 
-        public void TakeDamage(int damage)
+        public void TakeDamage(int damage, bool eventlessDamage = false)
         {
-            currentHealth -= damage;
+            SetHealth(-damage, eventlessDamage);
+        }
 
-            if (currentHealth <= 0)
+        private void SetHealth(int amount, bool eventlessDamage = false)
+        {
+            currentHealth += amount;
+
+            if (currentHealth <= 0 && !eventlessDamage)
             {
                 currentHealth = 0;
                 Die();
             }
+            else if (eventlessDamage)
+            {
+                currentHealth = 0;
+                DieWithoutEvent();
+            }
         }
 
         private void Die()
+        {
+            if (isDead) return;
+
+            if (OnDeath != null)
+                OnDeath.Invoke(this);
+
+            isDead = true;
+
+            Dutpekmezi.Services.PoolService.ObjectPoolManager.DeSpawn(this.gameObject);
+        }
+
+        private void DieWithoutEvent(CharacterBase character = null)
         {
             if (isDead) return;
 
@@ -102,7 +130,7 @@ namespace dutpekmezi
             if (character != null)
             {
                 character.TakeDamage(enemyData.AttackDamage);
-                Die();
+                TakeDamage(1);
             }
         }
     }

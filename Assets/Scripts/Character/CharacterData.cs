@@ -11,6 +11,7 @@ namespace dutpekmezi
         public Sprite Icon;
 
         public int MaxHealth;
+        public int MaxEnergy;
 
         public float MoveSpeed;
 
