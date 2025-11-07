@@ -39,11 +39,15 @@ namespace dutpekmezi
 
         private void Update()
         {
+            if (isDead) return;
+
             HandleInput();
         }
 
         private void FixedUpdate()
         {
+            if (isDead) return;
+
             MoveCharacter();
         }
 
