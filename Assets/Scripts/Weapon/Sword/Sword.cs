@@ -17,7 +17,6 @@ namespace dutpekmezi
         private bool isMoving = false;
         private float targetAngle;
         private Vector3 targetPosition;
-        private Tween moveTween;
 
         protected override void Ability()
         {
@@ -31,7 +30,7 @@ namespace dutpekmezi
                     Mathf.Cos(targetAngle * Mathf.Deg2Rad),
                     Mathf.Sin(targetAngle * Mathf.Deg2Rad),
                     0f
-                ) * orbitRadius;
+                ) * weaponData.OrbitRadius;
 
                 isMoving = true;
                 SetRotate(false);

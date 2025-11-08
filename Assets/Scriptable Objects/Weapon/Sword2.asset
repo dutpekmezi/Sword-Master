@@ -16,8 +16,9 @@ MonoBehaviour:
   Name: Sword 2
   Description: Sword 2 details
   Icon: {fileID: 21300000, guid: eef159f119fa9fe44a3070ca59e1ab23, type: 3}
-  OrbitSpeed: 90
-  SelfOrbitSpeed: 180
+  OrbitRadius: 2
+  OrbitSpeed: 180
+  SelfOrbitSpeed: 360
   AttackDamage: 1
   AbilityDamage: 2
   Prefab: {fileID: 116068156932863756, guid: a7b62e456ff077648a85bd250f7eb413, type: 3}

@@ -16,9 +16,10 @@ MonoBehaviour:
   Name: Sword 6
   Description: Sword 6 details
   Icon: {fileID: 21300000, guid: 7e2284a00f8f28b46977cd59a999784b, type: 3}
-  OrbitSpeed: 90
-  SelfOrbitSpeed: 180
+  OrbitRadius: 2
+  OrbitSpeed: 180
+  SelfOrbitSpeed: 360
   AttackDamage: 1
   AbilityDamage: 2
-  Prefab: {fileID: 116068156932863756, guid: a7b62e456ff077648a85bd250f7eb413, type: 3}
+  Prefab: {fileID: 116068156932863756, guid: c8c2b1d7a32f1c743b08fc8c22975592, type: 3}
   WeaponType: 0

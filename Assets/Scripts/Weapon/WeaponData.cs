@@ -11,6 +11,7 @@ namespace dutpekmezi
 
         public Sprite Icon;
 
+        public float OrbitRadius; // Distance between weapon and character
         public float OrbitSpeed; // Spin speed around the character
         public float SelfOrbitSpeed; // Self spin speed
 

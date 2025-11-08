@@ -50,22 +50,19 @@ namespace dutpekmezi
 
         public List<WeaponData> GetRandomWeaponsData(int count = 1)
         {
-            List<WeaponData> weaponsClone = new List<WeaponData>();
+            List<WeaponData> weaponsClone = new List<WeaponData>(weaponDatas.weapons);
             List<WeaponData> randomWeapons = new List<WeaponData>();
-
-            weaponsClone = weaponDatas.weapons;
 
             for (int i = 0; i < count; i++)
             {
                 if (weaponsClone.Count <= 0) break;
 
-                int randomIndex = Random.Range(0, count);
+                int randomIndex = Random.Range(0, weaponsClone.Count);
 
                 WeaponData randomWeapon = weaponsClone[randomIndex];
 
                 randomWeapons.Add(randomWeapon);
-
-                if (weaponsClone.Count > 0) weaponsClone.Remove(randomWeapon);
+                weaponsClone.RemoveAt(randomIndex);
             }
 
             return randomWeapons;
@@ -80,7 +77,7 @@ namespace dutpekmezi
                 Destroy(currentWeapon.gameObject);
             }
 
-            WeaponBase instance = Instantiate(selectedWeapon.Prefab, CharacterSystem.Instance.GetCurrentCharacterTransform());
+            WeaponBase instance = Instantiate(weaponDataToEquip.Prefab, CharacterSystem.Instance.GetCurrentCharacterTransform());
 
             currentWeapon = instance;
 
