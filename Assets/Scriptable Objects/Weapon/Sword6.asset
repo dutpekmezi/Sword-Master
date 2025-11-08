@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56622c65b850ac342b26343a6a02b7b9, type: 3}
-  m_Name: Sword
+  m_Name: Sword6
   m_EditorClassIdentifier: 
-  Id: sword
-  Name: Sword
-  Description: Sword details
-  Icon: {fileID: 21300000, guid: 2801c607c5d71e64b926a6ec21cb8d6c, type: 3}
+  Id: sword6
+  Name: Sword 6
+  Description: Sword 6 details
+  Icon: {fileID: 21300000, guid: 7e2284a00f8f28b46977cd59a999784b, type: 3}
   OrbitSpeed: 90
   SelfOrbitSpeed: 180
   AttackDamage: 1

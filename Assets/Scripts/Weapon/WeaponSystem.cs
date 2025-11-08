@@ -9,8 +9,9 @@ namespace dutpekmezi
 
         [SerializeField] private WeaponSelectionUI weaponSelectionUI;
 
+        [SerializeField] private WeaponData selectedWeapon;
+
         private WeaponBase currentWeapon;
-        private WeaponData selectedWeapon;
 
         private static WeaponSystem instance;
         public static WeaponSystem Instance => instance;
@@ -76,7 +77,7 @@ namespace dutpekmezi
 
             if (currentWeapon != null)
             {
-                Destroy(currentWeapon);
+                Destroy(currentWeapon.gameObject);
             }
 
             WeaponBase instance = Instantiate(selectedWeapon.Prefab, CharacterSystem.Instance.GetCurrentCharacterTransform());
