@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace dutpekmezi
 {
-    
+    [CreateAssetMenu(fileName = "WeaponData", menuName = "Game/Scriptable Objects/Weapon/WeaponData")]
     public class WeaponData : ScriptableObject
     {
         public string Id; // Id

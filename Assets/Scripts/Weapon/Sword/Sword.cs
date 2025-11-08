@@ -43,9 +43,7 @@ namespace dutpekmezi
         {
             float z = transform.position.z;
 
-            moveTween?.Kill();
-
-            moveTween = transform.DOMove(new Vector3(targetPosition.x, targetPosition.y, z),
+            transform.DOMove(new Vector3(targetPosition.x, targetPosition.y, z),
                                          Vector2.Distance(transform.position, targetPosition) / moveSpeed)
                 .SetEase(Ease.InOutSine)
                 .OnUpdate(() =>
@@ -64,6 +62,8 @@ namespace dutpekmezi
                     currentAngle = targetAngle;
                     isMoving = false;
                     SetRotate(true);
+
+                    DOTween.Kill(transform);
                 });
         }
 
@@ -86,7 +86,7 @@ namespace dutpekmezi
                         .OnComplete(() =>
                         {
                             slashObj.transform.rotation = Quaternion.identity;
-                            DOTween.Kill(slashObj);
+                            DOTween.Kill(slashObj.transform);
                             Dutpekmezi.Services.PoolService.ObjectPoolManager.DeSpawn(slashObj.gameObject);
                         });
                 });

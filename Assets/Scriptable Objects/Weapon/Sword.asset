@@ -15,6 +15,7 @@ MonoBehaviour:
   Id: sword
   Name: Sword
   Description: Sword
+  Icon: {fileID: 21300000, guid: 2801c607c5d71e64b926a6ec21cb8d6c, type: 3}
   OrbitSpeed: 90
   SelfOrbitSpeed: 180
   AttackDamage: 1

@@ -32,11 +32,30 @@ namespace dutpekmezi
             LightAnim();
         }
 
+        public void OnClick()
+        {
+            WeaponSystem.Instance.EquipWeapon(weaponData);
+
+            WeaponSystem.Instance.WeaponSelectionUI.HideWeapons();
+        }
+
         private void LightAnim()
         {
             frame.DOFade(fadeValue, fadeDuration)
                 .SetEase(Ease.InOutSine)
                 .SetLoops(-1, LoopType.Yoyo);
+        }
+
+        private WeaponData GetWeapon()
+        {
+            DOTween.Kill(frame);
+
+            return weaponData;
+        }
+
+        private void OnDestroy()
+        {
+            DOTween.Kill(frame);
         }
     }
 }
