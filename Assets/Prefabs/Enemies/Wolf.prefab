@@ -165,6 +165,7 @@ MonoBehaviour:
   rb: {fileID: 3977034603468201143}
   col: {fileID: 2915847934724925710}
   agent: {fileID: -4713972304872739332}
+  isLeader: 0
 --- !u!1 &9133730199069225330
 GameObject:
   m_ObjectHideFlags: 0

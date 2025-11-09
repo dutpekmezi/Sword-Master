@@ -16,22 +16,20 @@ namespace dutpekmezi
         public Transform Transform => rb.transform;
 
         private int currentHealth;
-
         private bool isDead = false;
-
-        private Vector2 spawnPos;
+        [SerializeField] private bool isLeader = false;
 
         public delegate void OnDeathEvent(EnemyBase enemy);
         public event OnDeathEvent OnDeath;
 
+        public bool IsDead => isDead;
+        public bool IsLeader => isLeader;
+        public EnemyData EnemyData => enemyData;
+        public NavMeshAgent Agent => agent;
 
         private void Start()
         {
-            CharacterBase character = CharacterSystem.Instance.GetCurrentCharacter();
-
             agent.enabled = false;
-
-            spawnPos = transform.position;
 
             if (enemyData == null)
             {
@@ -48,83 +46,46 @@ namespace dutpekmezi
             isDead = false;
             currentHealth = enemyData.MaxHealth;
 
-            agent.updateRotation = false;
-            agent.updateUpAxis = false;
+            EnemyNavHelper.EnsureAgentOnNavMesh(this);
 
-            agent.Warp(transform.position);
-
-            agent.enabled = true;
+            EnemySystem.Instance.RegisterEnemy(this);
         }
 
-        private void Update()
+        public void Tick(Vector2 playerPos)
         {
             if (isDead) return;
 
-            MoveToPlayer();
-        }
-
-        private void MoveToPlayer()
-        {
-            if (enemyData == null || CharacterSystem.Instance == null) return;
-
-            Transform targetTransform = CharacterSystem.Instance.GetCurrentCharacterTransform();
-            if (targetTransform == null) return;
-
-            Vector2 targetPos = targetTransform.position;
-
             agent.speed = enemyData.MoveSpeed;
-            agent.SetDestination(targetPos);
+            agent.SetDestination(playerPos);
         }
 
-        public void TakeDamage(int damage, bool eventlessDamage = false)
+        public void TakeDamage(int damage)
         {
-            SetHealth(-damage, eventlessDamage);
-        }
-
-        private void SetHealth(int amount, bool eventlessDamage = false)
-        {
-            currentHealth += amount;
-
-            if (currentHealth <= 0 && !eventlessDamage)
-            {
-                currentHealth = 0;
+            currentHealth -= damage;
+            if (currentHealth <= 0)
                 Die();
-            }
-            else if (eventlessDamage)
-            {
-                currentHealth = 0;
-                DieWithoutEvent();
-            }
         }
 
         private void Die()
         {
             if (isDead) return;
 
-            if (OnDeath != null)
-                OnDeath.Invoke(this);
-
             isDead = true;
+            agent.isStopped = true;
 
-            Dutpekmezi.Services.PoolService.ObjectPoolManager.DeSpawn(this.gameObject);
+            OnDeath?.Invoke(this);
+
+            Dutpekmezi.Services.PoolService.ObjectPoolManager.DeSpawn(gameObject);
         }
 
-        private void DieWithoutEvent(CharacterBase character = null)
+        public void SetAsLeader()
         {
-            if (isDead) return;
-
-            if (OnDeath != null)
-                OnDeath.Invoke(this);
-
-            isDead = true;
-
-            Dutpekmezi.Services.PoolService.ObjectPoolManager.DeSpawn(this.gameObject);
+            isLeader = true;
         }
 
         private void OnTriggerEnter2D(Collider2D col)
         {
             var character = col.GetComponent<CharacterBase>();
-
             if (character != null)
             {
                 character.TakeDamage(enemyData.AttackDamage);

@@ -327,9 +327,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c6a6711647d84641807641f8ce1e8b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyCount: 30
-  radius: 20
-  deflection: 5
+  enemiesPerGroup: 10
+  spawnRadius: 20
+  enemyGroupRadius: 5
+  deflection: 0
+  stopDistance: 1.5
+  orbitRadius: 3
 --- !u!1 &364881956
 GameObject:
   m_ObjectHideFlags: 0

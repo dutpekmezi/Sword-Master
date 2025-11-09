@@ -248,7 +248,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 221.92505, y: 0}
+  m_SizeDelta: {x: 300, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4986608087703153637
 CanvasRenderer:
@@ -581,7 +581,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: 50
+  m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -606,7 +606,7 @@ MonoBehaviour:
   nameText: {fileID: 1691344233566191164}
   detailText: {fileID: 5026123117054416211}
   fadeDuration: 1
-  fadeValue: 0.2
+  fadeValue: 0
 --- !u!114 &1748386901240840309
 MonoBehaviour:
   m_ObjectHideFlags: 0

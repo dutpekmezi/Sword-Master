@@ -1,4 +1,5 @@
 using UnityEngine;
+using DG.Tweening;
 
 namespace dutpekmezi
 {
@@ -13,6 +14,16 @@ namespace dutpekmezi
             {
                 enemy.TakeDamage(weapon.AbilityDamage);
             }
+        }
+
+        private void OnDisable()
+        {
+            DOTween.Kill(this.transform);
+        }
+
+        private void OnDestroy()
+        {
+            DOTween.Kill(this.transform);
         }
     }
 }
