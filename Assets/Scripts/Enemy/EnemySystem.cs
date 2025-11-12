@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -37,16 +38,11 @@ namespace dutpekmezi
             if (playerTransform == null) return;
             Vector3 playerPos = playerTransform.position;
 
-            if (enemyGroups.Count > 0)
+            if (activeEnemies.Count > 0)
             {
-                foreach (var group in enemyGroups)
+                foreach (var enemy in activeEnemies)
                 {
-                    if (group != null)
-                    {
-                        group.UpdateGroup();
-
-                        if (group.leader != null) group.leader.Tick(playerPos);
-                    }
+                    enemy.Tick(playerPos);
                 }
             }
         }
@@ -93,12 +89,16 @@ namespace dutpekmezi
             for (int i = 0; i < totalEnemies; i++)
             {
                 var randomEnemy = enemyDatas.Enemies[Random.Range(0, enemyDatas.Enemies.Count)];
-                EnemyBase instance = CreateRandomEnemy(
-                    i == 0
-                        ? WaveManager.Instance.GenerateRandomPos(WaveManager.Instance.SpawRadius, CharacterSystem.Instance.GetCurrentCharacterTransform().position)
-                        : WaveManager.Instance.GenerateRandomPos(WaveManager.Instance.EnemyGroupRadius, createdEnemies[0].transform.position)
-                );
+
+                var randomcenter = WaveManager.Instance.GenerateRandomPos(WaveManager.Instance.GroupSpawRadius,
+                    WaveManager.Instance.GroupSpawnDeflection,
+                    CharacterSystem.Instance.GetCurrentCharacterTransform().position);
+
+                EnemyBase instance = CreateRandomEnemy(WaveManager.Instance.GenerateRandomPos(WaveManager.Instance.EnemyGroupRadius,
+                    WaveManager.Instance.EnemyGroupDeflection,
+                    randomcenter));
                 instance.Init();
+
                 createdEnemies.Add(instance);
             }
 
@@ -111,29 +111,21 @@ namespace dutpekmezi
 
                 for (int j = i + 1; j < end; j++)
                 {
-                    newGroup.followers.Add(createdEnemies[j]);
-                    newGroup.allMembers.Add(createdEnemies[j]);
+                    newGroup.members.Add(createdEnemies[j]);
                 }
                     
             }
 
-            newGroup.leader = FindFastestEnemy(newGroup);
-            if (newGroup.leader != null)
-                newGroup.leader.SetAsLeader();
-
-            newGroup.allMembers.Add(newGroup.leader);
-
             enemyGroups.Add(newGroup);
 
-            activeLeaderEnemies.Add(newGroup.leader);
-            newGroup.SetSubscribes(newGroup.allMembers);
+            newGroup.SetSubscribes(newGroup.members);
         }
 
         public EnemyBase FindFastestEnemy(EnemyGroup enemyGroup)
         {
             EnemyBase fastestEnemy = null;
 
-            foreach (EnemyBase enemy in enemyGroup.allMembers)
+            foreach (EnemyBase enemy in enemyGroup.members)
             {
                 fastestEnemy = enemy;
 

@@ -10,9 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8366517304412016735}
   - component: {fileID: 3977034603468201143}
-  - component: {fileID: 2915847934724925710}
-  - component: {fileID: 2480686978587358795}
   - component: {fileID: 1662301267738328567}
+  - component: {fileID: -781421450506827880}
   m_Layer: 0
   m_Name: Slime
   m_TagString: Untagged
@@ -63,8 +62,23 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!68 &2915847934724925710
-EdgeCollider2D:
+--- !u!114 &1662301267738328567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5764342845284307924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91ae51c6dcac24d4a825e9e36c785b4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyData: {fileID: 11400000, guid: 4348d3bfc82d0734ebe34f5a5a83558b, type: 2}
+  col: {fileID: -781421450506827880}
+  isLeader: 0
+--- !u!61 &-781421450506827880
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -93,66 +107,22 @@ EdgeCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.012752578, y: -0.0028339028}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.48706403, y: 0.5239047}
   m_EdgeRadius: 0
-  m_Points:
-  - {x: -0.24206513, y: 0.088155076}
-  - {x: -0.3047331, y: -0.21035388}
-  - {x: -0.0052605066, y: -0.32976484}
-  - {x: 0.20058998, y: -0.31635612}
-  - {x: 0.31303197, y: -0.20081502}
-  - {x: 0.28450948, y: -0.07383613}
-  - {x: 0.25844342, y: 0.02487327}
-  - {x: 0.14681196, y: 0.27570653}
-  - {x: -0.023843229, y: 0.31862006}
-  - {x: -0.16337368, y: 0.2726444}
-  - {x: -0.24441983, y: 0.07183001}
-  m_AdjacentStartPoint: {x: 0, y: 0}
-  m_AdjacentEndPoint: {x: 0, y: 0}
-  m_UseAdjacentStartPoint: 0
-  m_UseAdjacentEndPoint: 0
---- !u!195 &2480686978587358795
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5764342845284307924}
-  m_Enabled: 0
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
---- !u!114 &1662301267738328567
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5764342845284307924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91ae51c6dcac24d4a825e9e36c785b4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyData: {fileID: 11400000, guid: 4348d3bfc82d0734ebe34f5a5a83558b, type: 2}
-  rb: {fileID: 3977034603468201143}
-  col: {fileID: 2915847934724925710}
-  agent: {fileID: 2480686978587358795}
 --- !u!1 &9133730199069225330
 GameObject:
   m_ObjectHideFlags: 0

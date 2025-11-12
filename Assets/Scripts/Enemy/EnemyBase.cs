@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace dutpekmezi
 {
@@ -9,11 +8,9 @@ namespace dutpekmezi
         [SerializeField] private EnemyData enemyData;
 
         [Header("References")]
-        [SerializeField] private Rigidbody2D rb;
         [SerializeField] private Collider2D col;
-        [SerializeField] private NavMeshAgent agent;
 
-        public Transform Transform => rb.transform;
+        public Transform Transform => transform;
 
         private int currentHealth;
         private bool isDead = false;
@@ -25,12 +22,9 @@ namespace dutpekmezi
         public bool IsDead => isDead;
         public bool IsLeader => isLeader;
         public EnemyData EnemyData => enemyData;
-        public NavMeshAgent Agent => agent;
 
         private void Start()
         {
-            agent.enabled = false;
-
             if (enemyData == null)
             {
                 Debug.LogError($"{gameObject.name}: Missing EnemyData");
@@ -46,8 +40,6 @@ namespace dutpekmezi
             isDead = false;
             currentHealth = enemyData.MaxHealth;
 
-            EnemyNavHelper.EnsureAgentOnNavMesh(this);
-
             EnemySystem.Instance.RegisterEnemy(this);
         }
 
@@ -55,8 +47,19 @@ namespace dutpekmezi
         {
             if (isDead) return;
 
-            agent.speed = enemyData.MoveSpeed;
-            agent.SetDestination(playerPos);
+            Vector2 currentPos = Transform.position;
+            Vector2 direction = (playerPos - currentPos).normalized;
+
+            Transform.position = Vector2.MoveTowards(
+                currentPos,
+                playerPos,
+                enemyData.MoveSpeed * Time.deltaTime
+            );
+
+            if (direction.sqrMagnitude > 0.001f)
+            {
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            }
         }
 
         public void TakeDamage(int damage)
@@ -71,7 +74,6 @@ namespace dutpekmezi
             if (isDead) return;
 
             isDead = true;
-            agent.isStopped = true;
 
             OnDeath?.Invoke(this);
 

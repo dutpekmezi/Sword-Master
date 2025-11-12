@@ -43,7 +43,7 @@ namespace dutpekmezi
                         .SetEase(Ease.InBack)
                         .OnComplete(() =>
                         {
-                            DOTween.Kill(slashObj.transform);
+                            DOTween.Kill(slashObj);
                             Dutpekmezi.Services.PoolService.ObjectPoolManager.DeSpawn(slashObj.gameObject);
                             isSlashing = false;
                         });
