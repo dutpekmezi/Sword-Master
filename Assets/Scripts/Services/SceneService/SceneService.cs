@@ -4,9 +4,9 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Dutpekmezi.Services.SceneServices
+namespace Dutpekmezi.Services
 {
-    public static class SceneService
+    public class SceneService
     {
         private static SceneServiceSettings _settings;
         private static readonly HashSet<string> _loadedSceneNames = new();
@@ -15,8 +15,13 @@ namespace Dutpekmezi.Services.SceneServices
         public static event Action<string> OnSceneLoaded;
         public static event Action<string> OnSceneUnloaded;
 
-        // Called once to initialize the system with the settings asset
-        public static void Initialize(SceneServiceSettings settings)
+
+        public SceneService(SceneServiceSettings settings)
+        {
+            Initialize(settings);
+        }
+
+        private static void Initialize(SceneServiceSettings settings)
         {
             if (_isInitialized)
                 return;
@@ -30,13 +35,13 @@ namespace Dutpekmezi.Services.SceneServices
             _settings = settings;
             _isInitialized = true;
 
-            if (_settings.BaseSceneAsset == null)
+            if (_settings.BaseSceneData.SceneAsset == null)
             {
                 Debug.LogError("[SceneService] Base scene reference is empty.");
                 return;
             }
 
-            string baseSceneName = _settings.BaseSceneAsset.name;
+            string baseSceneName = _settings.BaseSceneData.SceneName;
 
             // Always load the base scene as the main scene
             SceneManager.LoadScene(baseSceneName, LoadSceneMode.Single);
@@ -45,35 +50,35 @@ namespace Dutpekmezi.Services.SceneServices
 
 #if UNITY_EDITOR
             // If test mode is enabled, go directly to the test scene.
-            if (_settings.TestMode && _settings.TestSceneAsset != null)
+            if (_settings.TestMode && _settings.TestSceneData.SceneAsset != null)
             {
-                Load(_settings.TestSceneAsset);
+                Load(_settings.TestSceneData.SceneAsset);
                 return;
             }
 #endif
 
             // Otherwise, load the first listed scene
-            if (_settings.SceneAssets != null && _settings.SceneAssets.Count > 0 && _settings.SceneAssets[0] != null)
+            if (_settings.SceneDatas != null && _settings.SceneDatas.Count > 0 && _settings.SceneDatas[0].SceneAsset != null)
             {
-                Load(_settings.SceneAssets[0]);
+                Load(_settings.SceneDatas[0].SceneAsset);
             }
 
             Debug.Log($"[SceneService] Initialized with base scene: {baseSceneName}");
         }
 
         // Loads a scene additively on top of the base scene
-        public static void Load(SceneAsset sceneAsset, Action onLoaded = null)
+        public static SceneData Load(SceneAsset sceneAsset, Action onLoaded = null)
         {
             if (!_isInitialized)
             {
                 Debug.LogError("[SceneService] Cannot load scene before Initialize() is called.");
-                return;
+                return null;
             }
 
             if (sceneAsset == null)
             {
                 Debug.LogWarning("[SceneService] Load() called with a null scene reference.");
-                return;
+                return null;
             }
 
             string sceneName = sceneAsset.name;
@@ -82,7 +87,7 @@ namespace Dutpekmezi.Services.SceneServices
             {
                 Debug.LogWarning($"[SceneService] '{sceneName}' is already loaded.");
                 onLoaded?.Invoke();
-                return;
+                return null;
             }
 
             var op = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
@@ -97,6 +102,8 @@ namespace Dutpekmezi.Services.SceneServices
 
                 Debug.Log($"[SceneService] Loaded scene: {sceneName}");
             };
+
+            return _settings.GetSceneDataByName(sceneName);
         }
 
         // Unloads a scene if its currently loaded
@@ -134,7 +141,7 @@ namespace Dutpekmezi.Services.SceneServices
         {
             foreach (string sceneName in new List<string>(_loadedSceneNames))
             {
-                if (_settings.BaseSceneAsset != null && sceneName == _settings.BaseSceneAsset.name)
+                if (_settings.BaseSceneData.SceneAsset != null && sceneName == _settings.BaseSceneData.SceneName)
                     continue;
 
                 var op = SceneManager.UnloadSceneAsync(sceneName);

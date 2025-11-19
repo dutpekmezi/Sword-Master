@@ -1,4 +1,5 @@
 using UnityEngine;
+using Utils.LogicTimer;
 
 namespace dutpekmezi
 {
@@ -19,7 +20,7 @@ namespace dutpekmezi
         private bool canRotate = true;
 
 
-        protected virtual void Update()
+        public void Tick()
         {
             Orbit();
             RotateSelf();
@@ -28,27 +29,23 @@ namespace dutpekmezi
 
         private void Orbit()
         {
-            if (!canRotate) return;
+            float direction = 1f;
+            currentAngle += weaponData.OrbitSpeed * direction * LogicTimer.FixedDelta;
 
-            float direction = clockwise ? 1f : -1f;
-
-            currentAngle += weaponData.OrbitSpeed * direction * Time.deltaTime;
-            if (currentAngle > 360f) currentAngle -= 360f;
-            if (currentAngle < 0f) currentAngle += 360f;
-
-            Transform characterTransform = CharacterSystem.Instance.GetCurrentCharacterTransform();
-            orbitCenter = characterTransform.position;
+            Vector3 charPos = CharacterSystem.Instance.GetCurrentCharacter().transform.position;
             Vector2 offset = new Vector2(
                 Mathf.Cos(currentAngle * Mathf.Deg2Rad),
                 Mathf.Sin(currentAngle * Mathf.Deg2Rad)
             ) * weaponData.OrbitRadius;
 
-            transform.position = new Vector3(orbitCenter.x + offset.x, orbitCenter.y + offset.y, transform.position.z);
+            transform.position = charPos + (Vector3)offset;
         }
 
         private void RotateSelf()
         {
-            transform.Rotate(Vector3.forward * weaponData.SelfOrbitSpeed * (selfRotationClockwise ? -1f : 1f) * Time.deltaTime);
+            transform.Rotate(Vector3.forward *
+                weaponData.SelfOrbitSpeed *
+                LogicTimer.FixedDelta);
         }
 
         protected void SetRotate(bool canRotate)

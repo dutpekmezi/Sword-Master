@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Utils.Signal;
 
 namespace dutpekmezi
 {
@@ -13,7 +14,7 @@ namespace dutpekmezi
         {
             foreach (EnemyBase enemy in enemies)
             {
-                enemy.OnDeath += RemoveEnemy;
+                SignalBus.Get<EnemyBase.OnDeath>().Subscribe(RemoveEnemy);
             }
         }
 

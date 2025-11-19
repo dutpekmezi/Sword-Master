@@ -1,4 +1,7 @@
+using Dutpekmezi.Services.PoolService;
 using UnityEngine;
+using Utils.LogicTimer;
+using Utils.Signal;
 
 namespace dutpekmezi
 {
@@ -16,68 +19,50 @@ namespace dutpekmezi
         private bool isDead = false;
         [SerializeField] private bool isLeader = false;
 
-        public delegate void OnDeathEvent(EnemyBase enemy);
-        public event OnDeathEvent OnDeath;
-
         public bool IsDead => isDead;
         public bool IsLeader => isLeader;
         public EnemyData EnemyData => enemyData;
 
-        private void Start()
-        {
-            if (enemyData == null)
-            {
-                Debug.LogError($"{gameObject.name}: Missing EnemyData");
-                enabled = false;
-                return;
-            }
-
-            Init();
-        }
-
-        public void Init()
+        public void Initialize()
         {
             isDead = false;
             currentHealth = enemyData.MaxHealth;
 
-            EnemySystem.Instance.RegisterEnemy(this);
+            SignalBus.Get<OnTakeDamage>().Subscribe(OnTakeDamagehandler);
         }
 
         public void Tick(Vector2 playerPos)
         {
             if (isDead) return;
 
-            Vector2 currentPos = Transform.position;
-            Vector2 direction = (playerPos - currentPos).normalized;
+            Vector2 currentPos = transform.position;
+            Vector2 dir = (playerPos - currentPos).normalized;
 
-            Transform.position = Vector2.MoveTowards(
+            transform.position = Vector2.MoveTowards(
                 currentPos,
                 playerPos,
-                enemyData.MoveSpeed * Time.deltaTime
+                enemyData.MoveSpeed * LogicTimer.FixedDelta
             );
-
-            if (direction.sqrMagnitude > 0.001f)
-            {
-                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            }
         }
 
-        public void TakeDamage(int damage)
+        private void OnTakeDamagehandler(EnemyBase enemy, int dmg)
         {
-            currentHealth -= damage;
+            TakeDamage(dmg);
+        }
+
+        private void TakeDamage(int dmg)
+        {
+            currentHealth -= dmg;
             if (currentHealth <= 0)
                 Die();
         }
 
         private void Die()
         {
-            if (isDead) return;
-
             isDead = true;
+            ObjectPoolManager.DeSpawn(gameObject);
 
-            OnDeath?.Invoke(this);
-
-            Dutpekmezi.Services.PoolService.ObjectPoolManager.DeSpawn(gameObject);
+            SignalBus.Get<OnDeath>().Invoke(this);
         }
 
         public void SetAsLeader()
@@ -90,9 +75,11 @@ namespace dutpekmezi
             var character = col.GetComponent<CharacterBase>();
             if (character != null)
             {
-                character.TakeDamage(enemyData.AttackDamage);
-                TakeDamage(1);
+                SignalBus.Get<CharacterBase.OnTakeDamage>().Invoke(character, enemyData.AttackDamage);
             }
         }
+
+        public class OnDeath : Signal<EnemyBase> {}
+        public class OnTakeDamage : Signal<EnemyBase, int> {}
     }
 }

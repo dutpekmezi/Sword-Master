@@ -1,141 +1,120 @@
+using Dutpekmezi.Services.PoolService;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using Utils.Signal;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace dutpekmezi
 {
-    public class EnemySystem : MonoBehaviour
+    public class EnemySystem : BaseSystem
     {
-        [Header("Enemy Data")]
-        [SerializeField] private EnemyDatas enemyDatas;
-        [SerializeField] private Transform enemyHolder;
+        private readonly EnemyDatas enemyDatas;
 
-        private List<EnemyBase> activeEnemies = new List<EnemyBase>();
-        private List<EnemyBase> activeLeaderEnemies = new List<EnemyBase>();
-        private List<EnemyGroup> enemyGroups = new List<EnemyGroup>();
+        private readonly List<EnemyBase> activeEnemies = new();
+        private readonly List<EnemyGroup> enemyGroups = new();
 
-        private Transform playerTransform;
+        public EnemyDatas EnemyDatas => enemyDatas;
+        public List<EnemyBase> ActiveEnemies => activeEnemies;
+        public List<EnemyGroup> EnemyGroups => enemyGroups;
 
-        private static EnemySystem instance;
-        public static EnemySystem Instance => instance;
+        public static EnemySystem Instance { get; private set; }
 
-        private void Awake()
+        public class OnEnemyDiedSignal : Signal<EnemyBase> { }
+        public class OnEnemySpawnedSignal : Signal<EnemyBase> { }
+
+        public EnemySystem(EnemyDatas enemyDatas)
         {
-            if (instance != null && instance != this)
-                Destroy(instance);
-
-            instance = this;
+            Instance = this;
+            this.enemyDatas = enemyDatas;
+            OnInitialize();
         }
 
-        private void Start()
+        protected override void OnInitialize()
         {
-            playerTransform = CharacterSystem.Instance.GetCurrentCharacterTransform();
+            SignalBus.Get<CharacterSystem.OnCharacterSpawnedSignal>()
+                     .Subscribe(OnCharacterSpawned);
         }
 
-        private void Update()
+        private void OnCharacterSpawned(CharacterBase character)
         {
-            if (playerTransform == null) return;
-            Vector3 playerPos = playerTransform.position;
-
-            if (activeEnemies.Count > 0)
-            {
-                foreach (var enemy in activeEnemies)
-                {
-                    enemy.Tick(playerPos);
-                }
-            }
-        }
-
-        public void RegisterEnemy(EnemyBase enemy)
-        {
-            if (!activeEnemies.Contains(enemy))
-            {
-                activeEnemies.Add(enemy);
-            }
         }
 
         public EnemyBase CreateRandomEnemy()
         {
-            if (enemyDatas == null) return null;
+            if (enemyDatas == null || enemyDatas.Enemies.Count == 0)
+                return null;
 
-            var randomIndex = Random.Range(0, enemyDatas.Enemies.Count);
-            var enemyData = enemyDatas.Enemies[randomIndex];
+            int idx = Random.Range(0, enemyDatas.Enemies.Count);
+            EnemyData data = enemyDatas.Enemies[idx];
 
-            EnemyBase instance = Dutpekmezi.Services.PoolService.ObjectPoolManager.SpawnObject(enemyData.Prefab, enemyHolder);
-            instance.Init();
+            var go = ObjectPoolManager.SpawnObject(data.Prefab, Vector2.zero);
+            var enemy = go.GetComponent<EnemyBase>();
 
-            return instance;
+            enemy.Initialize();
+            RegisterEnemy(enemy);
+
+            SignalBus.Get<OnEnemySpawnedSignal>().Invoke(enemy);
+
+            return enemy;
         }
 
         public EnemyBase CreateRandomEnemy(Vector2 pos)
         {
-            if (enemyDatas == null) return null;
+            if (enemyDatas == null || enemyDatas.Enemies.Count == 0)
+                return null;
 
+            int idx = Random.Range(0, enemyDatas.Enemies.Count);
+            EnemyData data = enemyDatas.Enemies[idx];
+
+            var go = ObjectPoolManager.SpawnObject(data.Prefab, pos);
+            var enemy = go.GetComponent<EnemyBase>();
+
+            enemy.Initialize();
+            RegisterEnemy(enemy);
+
+            SignalBus.Get<OnEnemySpawnedSignal>().Invoke(enemy);
+
+            return enemy;
+        }
+
+        public EnemyData GetRandomEnemyData()
+        {
             var randomIndex = Random.Range(0, enemyDatas.Enemies.Count);
-            var enemyData = enemyDatas.Enemies[randomIndex];
 
-            EnemyBase instance = Dutpekmezi.Services.PoolService.ObjectPoolManager.SpawnObject(enemyData.Prefab, pos);
-            instance.transform.SetParent(enemyHolder);
-            instance.Init();
+            var randomEnemy = enemyDatas.Enemies[randomIndex];
 
-            return instance;
+            if (randomEnemy != null) return randomEnemy;
+
+            return null;
         }
 
-        public void CreateEnemyGroup(int totalEnemies)
+
+        public override void Tick()
         {
-            List<EnemyBase> createdEnemies = new List<EnemyBase>();
+            var player = CharacterSystem.Instance.GetCurrentCharacter();
+            if (player == null)
+                return;
 
-            for (int i = 0; i < totalEnemies; i++)
-            {
-                var randomEnemy = enemyDatas.Enemies[Random.Range(0, enemyDatas.Enemies.Count)];
+            var playerPos = player.transform.position;
 
-                var randomcenter = WaveManager.Instance.GenerateRandomPos(WaveManager.Instance.GroupSpawRadius,
-                    WaveManager.Instance.GroupSpawnDeflection,
-                    CharacterSystem.Instance.GetCurrentCharacterTransform().position);
-
-                EnemyBase instance = CreateRandomEnemy(WaveManager.Instance.GenerateRandomPos(WaveManager.Instance.EnemyGroupRadius,
-                    WaveManager.Instance.EnemyGroupDeflection,
-                    randomcenter));
-                instance.Init();
-
-                createdEnemies.Add(instance);
-            }
-
-            EnemyGroup newGroup = new EnemyGroup();
-
-            for (int i = 0; i < createdEnemies.Count; i += WaveManager.Instance.EnemiesPerGroup)
-            {
-                int end = Mathf.Min(i + WaveManager.Instance.EnemiesPerGroup, createdEnemies.Count);
-                
-
-                for (int j = i + 1; j < end; j++)
-                {
-                    newGroup.members.Add(createdEnemies[j]);
-                }
-                    
-            }
-
-            enemyGroups.Add(newGroup);
-
-            newGroup.SetSubscribes(newGroup.members);
+            foreach (var enemy in activeEnemies)
+                enemy.Tick(playerPos);
         }
 
-        public EnemyBase FindFastestEnemy(EnemyGroup enemyGroup)
+        public EnemyBase RegisterEnemy(EnemyBase enemy)
         {
-            EnemyBase fastestEnemy = null;
+            if (!activeEnemies.Contains(enemy))
+                activeEnemies.Add(enemy);
 
-            foreach (EnemyBase enemy in enemyGroup.members)
-            {
-                fastestEnemy = enemy;
+            return enemy;
+        }
 
-                if (fastestEnemy.EnemyData.MoveSpeed < enemy.EnemyData.MoveSpeed)
-                {
-                    fastestEnemy = enemy;
-                }
-            }
+        protected override void OnDispose()
+        {
+            foreach (var e in activeEnemies)
+                ObjectPoolManager.DeSpawn(e.gameObject);
 
-            return fastestEnemy;
+            activeEnemies.Clear();
+            enemyGroups.Clear();
         }
     }
 }

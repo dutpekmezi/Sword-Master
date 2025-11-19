@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using Utils.Signal;
 
 namespace dutpekmezi
 {
@@ -34,9 +35,7 @@ namespace dutpekmezi
 
         public void OnClick()
         {
-            WeaponSystem.Instance.EquipWeapon(weaponData);
-
-            WeaponSystem.Instance.WeaponSelectionUI.HideWeapons();
+            SignalBus.Get<WeaponSelectionUI.OnWeaponSelected>().Invoke(weaponData);
         }
 
         private void LightAnim()

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7398b25679d42254889e0293ad82aa04, type: 3}
   m_Name: SceneServiceSettings
   m_EditorClassIdentifier: 
-  BaseSceneAsset: {fileID: 102900000, guid: 8c9cfa26abfee488c85f1582747f6a02, type: 3}
-  SceneAssets:
-  - {fileID: 102900000, guid: c817f6114b1599f428c50a924767eb99, type: 3}
-  - {fileID: 102900000, guid: 25cfb8da0bdd6474ebec16e6f6563d59, type: 3}
+  BaseSceneData: {fileID: 11400000, guid: f69c0f130774a2c45b96f08dee21cb0a, type: 2}
+  SceneDatas:
+  - {fileID: 11400000, guid: 9f3b3f54799234543a859411ce6018f2, type: 2}
+  - {fileID: 11400000, guid: c59e2957ff34de0439f51264596dc47d, type: 2}
   TestMode: 1
-  TestSceneAsset: {fileID: 102900000, guid: 25cfb8da0bdd6474ebec16e6f6563d59, type: 3}
+  TestSceneData: {fileID: 11400000, guid: c59e2957ff34de0439f51264596dc47d, type: 2}

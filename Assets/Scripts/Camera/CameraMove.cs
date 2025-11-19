@@ -30,7 +30,7 @@ namespace dutpekmezi
 
         private void FollowCharacter()
         {
-            target = CharacterSystem.Instance.GetCurrentCharacterTransform();
+            target = CharacterSystem.Instance.GetCurrentCharacter().transform;
             if (target == null) return;
 
             // Kill any previous tween to prevent stacking

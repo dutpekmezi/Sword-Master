@@ -1,87 +1,92 @@
-using System.Collections.Generic;
+using System;
+using Utils.Signal;
+using Utils.Logger;
+using Dutpekmezi.Services.PoolService;
 using UnityEngine;
+using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace dutpekmezi
 {
-    public class WeaponSystem : MonoBehaviour
+    public class WeaponSystem : BaseSystem
     {
-        [SerializeField] private WeaponDatas weaponDatas;
+        private WeaponDatas weaponDatas;
 
-        [SerializeField] private WeaponSelectionUI weaponSelectionUI;
+        private WeaponBase _currentWeapon;
+        private Transform _characterTransform;
 
-        [SerializeField] private WeaponData selectedWeapon;
+        public static WeaponSystem Instance { get; private set; }
 
-        private WeaponBase currentWeapon;
-
-        private static WeaponSystem instance;
-        public static WeaponSystem Instance => instance;
-
-        public WeaponSelectionUI WeaponSelectionUI => weaponSelectionUI;
-
-        private void Awake()
+        public WeaponSystem(WeaponDatas datas)
         {
-            if (instance != null && instance != this)
+            Instance = this;
+
+            weaponDatas = datas;
+
+            OnInitialize();
+        }
+
+        protected override void OnInitialize()
+        {
+            SignalBus.Get<CharacterSystem.OnCharacterSpawnedSignal>()
+                     .Subscribe(OnCharacterSpawned);
+        }
+
+        private void OnCharacterSpawned(CharacterBase character)
+        {
+            _characterTransform = character.Transform;
+        }
+
+        public override void Tick()
+        {
+            if (_currentWeapon != null)
+                _currentWeapon.Tick();
+        }
+
+        public WeaponData EquipWeapon(WeaponData weaponData)
+        {
+            if (_characterTransform == null)
+                return null;
+
+            if (_currentWeapon != null)
+                ObjectPoolManager.DeSpawn(_currentWeapon.gameObject);
+
+            var go = ObjectPoolManager.SpawnObject(weaponData.Prefab, _characterTransform);
+            go.transform.localPosition = Vector3.zero;
+
+            _currentWeapon = go.GetComponent<WeaponBase>();
+
+            SignalBus.Get<OnWeaponEquippedSignal>().Invoke(weaponData);
+
+            return weaponData;
+        }
+
+        public List<WeaponData> GetRandomWeaponsData(int amount = 1)
+        {
+            var clone = new List<WeaponData>(weaponDatas.weapons);
+
+            List<WeaponData> result = new List<WeaponData>();
+
+            for (int i = 0; i < amount; i++)
             {
-                Destroy(instance);
+                if (clone.Count == 0) break;
+
+                int idx = UnityEngine.Random.Range(0, clone.Count);
+                result.Add(clone[idx]);
+                clone.RemoveAt(idx);
             }
 
-            instance = this;
+            return result;
         }
 
-        private void Start()
+        protected override void OnDispose()
         {
-           if (selectedWeapon != null) EquipWeapon(selectedWeapon);
+            if (_currentWeapon != null)
+                ObjectPoolManager.DeSpawn(_currentWeapon.gameObject);
+
+            _currentWeapon = null;
         }
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.K))
-            {
-                if (weaponSelectionUI == null) return;
-
-                weaponSelectionUI.DisplayWeapons();
-            }
-        }
-
-        public List<WeaponData> GetAllWeaponsData()
-        {
-            return weaponDatas.weapons;
-        }
-
-        public List<WeaponData> GetRandomWeaponsData(int count = 1)
-        {
-            List<WeaponData> weaponsClone = new List<WeaponData>(weaponDatas.weapons);
-            List<WeaponData> randomWeapons = new List<WeaponData>();
-
-            for (int i = 0; i < count; i++)
-            {
-                if (weaponsClone.Count <= 0) break;
-
-                int randomIndex = Random.Range(0, weaponsClone.Count);
-
-                WeaponData randomWeapon = weaponsClone[randomIndex];
-
-                randomWeapons.Add(randomWeapon);
-                weaponsClone.RemoveAt(randomIndex);
-            }
-
-            return randomWeapons;
-        }
-
-        public WeaponData EquipWeapon(WeaponData weaponDataToEquip)
-        {
-            selectedWeapon = weaponDataToEquip;
-
-            if (currentWeapon != null)
-            {
-                Destroy(currentWeapon.gameObject);
-            }
-
-            WeaponBase instance = Instantiate(weaponDataToEquip.Prefab, CharacterSystem.Instance.GetCurrentCharacterTransform());
-
-            currentWeapon = instance;
-
-            return weaponDataToEquip;
-        }
+        public class OnWeaponEquippedSignal : Signal<WeaponData> { }
     }
 }

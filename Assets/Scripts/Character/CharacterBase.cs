@@ -1,4 +1,5 @@
 using UnityEngine;
+using Utils.Signal;
 
 namespace dutpekmezi
 {
@@ -30,20 +31,6 @@ namespace dutpekmezi
 
         public CharacterData CharacterData => characterData;
 
-        public delegate void OnStatsChangeEvent(CharacterBase character);
-        public event OnStatsChangeEvent OnStatsChange;
-
-        public delegate void OnTakeDamageEvent(CharacterBase character);
-        public event OnTakeDamageEvent OnTakeDamage;
-
-        public delegate void OnKillEnemyEvent(CharacterBase character);
-        public event OnKillEnemyEvent OnKillEnemy;
-
-        private void Start()
-        {
-            Init();
-        }
-
         private void Update()
         {
             if (isDead) return;
@@ -58,40 +45,56 @@ namespace dutpekmezi
             MoveCharacter();
         }
 
-        private void Init()
+        public void Initialize()
         {
             isDead = false;
             currentHealth = characterData.MaxHealth;
-            OnStatsChange?.Invoke(this);
+            currentEnergy = 0;
+
+            SignalBus.Get<OnTakeDamage>().Subscribe(OnTakeDamageHandler);
+        }
+
+        public void Tick()
+        {
+            if (isDead) return;
+
+            HandleInput();
+            MoveCharacter();
         }
 
         private void HandleInput()
         {
-            float moveX = Input.GetAxisRaw("Horizontal");
-            float moveY = Input.GetAxisRaw("Vertical");
-
-            moveInput = new Vector2(moveX, moveY).normalized;
+            moveInput = new Vector2(
+                Input.GetAxisRaw("Horizontal"),
+                Input.GetAxisRaw("Vertical")
+            ).normalized;
         }
 
         private void MoveCharacter()
         {
-            // Target velocity based on input
             Vector2 targetVelocity = moveInput * characterData.MoveSpeed;
 
-            // Smooth acceleration for natural movement
-            moveVelocity = Vector2.Lerp(moveVelocity, targetVelocity, smoothMove * Time.fixedDeltaTime);
+            moveVelocity = Vector2.Lerp(
+                moveVelocity,
+                targetVelocity,
+                0.15f
+            );
 
-            // Apply to Rigidbody
-            rb.MovePosition(rb.position + moveVelocity * Time.fixedDeltaTime);
+            rb.MovePosition(rb.position + moveVelocity * Utils.LogicTimer.LogicTimer.FixedDelta);
         }
 
-        public void TakeDamage(int damageAmount)
+        private void OnTakeDamageHandler(CharacterBase character, int dmg)
+        {
+            TakeDamage(dmg);
+        }
+
+        private void TakeDamage(int damageAmount)
         {
             if (isDead) return;
 
             SetHealth(-damageAmount);
 
-            OnTakeDamage?.Invoke(this);
+            
         }
 
         private void SetHealth(int amount)
@@ -106,7 +109,7 @@ namespace dutpekmezi
                 isDead = true;
             }
 
-            OnStatsChange?.Invoke(this);
+            SignalBus.Get<OnStatsChange>().Invoke(this);
         }
 
         private void SetEnergy(int amount)
@@ -124,6 +127,11 @@ namespace dutpekmezi
             {
                 currentEnergy = 0;
             }
+
+            SignalBus.Get<OnStatsChange>().Invoke(this);
         }
+
+        public class OnTakeDamage : Signal<CharacterBase, int> {}
+        public class OnStatsChange : Signal<CharacterBase> {}
     }
 }

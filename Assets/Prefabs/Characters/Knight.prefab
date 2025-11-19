@@ -50,9 +50,9 @@ MonoBehaviour:
   characterData: {fileID: 11400000, guid: 75b40bbcf2ed50b45978601990d2574d, type: 2}
   rb: {fileID: 3460207415227507878}
   col: {fileID: 2840507195096158369}
-  moveSpeed: 1.25
   smoothMove: 20
   currentHealth: 0
+  currentEnergy: 0
 --- !u!50 &3460207415227507878
 Rigidbody2D:
   serializedVersion: 5

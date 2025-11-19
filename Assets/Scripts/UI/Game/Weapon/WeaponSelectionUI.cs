@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils.Signal;
 
 namespace dutpekmezi
 {
@@ -14,6 +15,8 @@ namespace dutpekmezi
         private List<WeaponCardUI> displayingWeaponCards = new List<WeaponCardUI>();
         public void DisplayWeapons()
         {
+            SignalBus.Get<OnWeaponSelected>().Subscribe(WeaponSelected);
+
             scnreenDim.SetActive(true);
 
             var selectedWeapons = new List<WeaponData>();
@@ -43,5 +46,14 @@ namespace dutpekmezi
                 displayingWeaponCards.Clear();
             } 
         }
+
+        private void WeaponSelected(WeaponData weaponData)
+        {
+            HideWeapons();
+
+            WeaponSystem.Instance.EquipWeapon(weaponData);
+        }
+
+        public class OnWeaponSelected : Signal<WeaponData> { }
     }
 }

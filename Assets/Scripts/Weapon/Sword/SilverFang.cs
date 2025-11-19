@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+using Utils.Signal;
 
 namespace dutpekmezi
 {
@@ -56,7 +57,7 @@ namespace dutpekmezi
 
             if (enemy != null)
             {
-                enemy.TakeDamage(weaponData.AttackDamage);
+                SignalBus.Get<EnemyBase.OnTakeDamage>().Invoke(enemy, weaponData.AttackDamage);
             }
         }
     }

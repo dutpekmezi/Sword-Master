@@ -1,79 +1,79 @@
+using System;
+using Utils.Signal;
+using Dutpekmezi.Services.PoolService;
 using UnityEngine;
 
 namespace dutpekmezi
 {
-    public class CharacterSystem : MonoBehaviour
+    public class CharacterSystem : BaseSystem
     {
-        [SerializeField] private CharacterDatas characterDatas;
+        private readonly CharacterDatas _characterDatas;
 
-        private CharacterData selectedCharacter;
+        private CharacterData _selectedCharacter;
+        private CharacterBase _currentCharacter;
 
-        private CharacterBase currentCharacter;
+        public CharacterBase CurrentCharacter => _currentCharacter;
 
-        public CharacterBase CurrentCharacter => currentCharacter;
+        public static CharacterSystem Instance { get; private set; }
 
-        private static CharacterSystem instance;
-        public static CharacterSystem Instance => instance;
-
-        private void Awake()
+        public CharacterSystem(CharacterDatas characterDatas)
         {
-            if (instance != null && instance != this)
-            {
-                Destroy(instance);
-            }
+            Instance = this;
 
-            instance = this;
+            _characterDatas = characterDatas;
 
-            if (characterDatas.Characters.Count == 1)
-            {
-                selectedCharacter = characterDatas.Characters[0];
-            }
+            if (_characterDatas.Characters.Count == 1)
+                _selectedCharacter = _characterDatas.Characters[0];
+
+            OnInitialize();
         }
 
-        private void Start()
+        protected override void OnInitialize()
         {
             CreateCharacter();
         }
 
+        public override void Tick()
+        {
+            if (_currentCharacter != null)
+            {
+                _currentCharacter.Tick();
+            }
+        }
+
         public CharacterData GetCurrentCharacterData()
         {
-            return GetCurrentCharacter().CharacterData;
+            return _currentCharacter != null ? _currentCharacter.CharacterData : null;
         }
 
         public CharacterBase GetCurrentCharacter()
         {
-            if (selectedCharacter != null || characterDatas != null || currentCharacter != null)
-            {
-                return currentCharacter;
-            }
-
-            return null;
+            return _currentCharacter;
         }
 
         public CharacterBase CreateCharacter()
         {
-            if (selectedCharacter != null || characterDatas != null)
-            {
-                var characterPrefab = selectedCharacter.Prefab;
+            if (_selectedCharacter == null)
+                return null;
 
-                CharacterBase instance = Instantiate(characterPrefab);
+            var prefab = _selectedCharacter.Prefab;
 
-                currentCharacter = instance;
+            _currentCharacter = Dutpekmezi.Services.PoolService.ObjectPoolManager.SpawnObject(prefab, Vector2.zero);
 
-                return instance;
-            }
+            SignalBus.Get<OnCharacterSpawnedSignal>().Invoke(_currentCharacter);
 
-            return null;
+            return _currentCharacter;
         }
 
-        public Transform GetCurrentCharacterTransform()
+        protected override void OnDispose()
         {
-            if (selectedCharacter != null || characterDatas != null || currentCharacter != null)
+            if (_currentCharacter != null)
             {
-                return currentCharacter.Transform;
+                ObjectPoolManager.DeSpawn(_currentCharacter.gameObject);
+                _currentCharacter = null;
             }
-
-            return null;
         }
+
+        public class OnCharacterSpawnedSignal : Signal<CharacterBase> { }
     }
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 using DG.Tweening.Core.Easing;
+using Utils.Signal;
 
 namespace dutpekmezi
 {
@@ -16,7 +17,7 @@ namespace dutpekmezi
 
         private bool isMoving = false;
         private float targetAngle;
-        private Vector3 targetPosition;
+        private Vector2 targetPosition;
 
         protected override void Ability()
         {
@@ -26,7 +27,7 @@ namespace dutpekmezi
                 if (targetAngle > 360f)
                     targetAngle -= 360f;
 
-                targetPosition = CharacterSystem.Instance.GetCurrentCharacterTransform().position + new Vector3(
+                targetPosition = CharacterSystem.Instance.GetCurrentCharacter().transform.position + new Vector3(
                     Mathf.Cos(targetAngle * Mathf.Deg2Rad),
                     Mathf.Sin(targetAngle * Mathf.Deg2Rad),
                     0f
@@ -47,7 +48,7 @@ namespace dutpekmezi
                 .SetEase(Ease.InOutSine)
                 .OnUpdate(() =>
                 {
-                    Vector2 dir = (targetPosition - transform.position).normalized;
+                    Vector2 dir = (targetPosition - (Vector2)transform.position).normalized;
                     if (dir != Vector2.zero)
                         transform.up = dir;
                 })
@@ -70,7 +71,7 @@ namespace dutpekmezi
         private void Slash()
         {
             var slashObj = Dutpekmezi.Services.PoolService.ObjectPoolManager.SpawnObject(
-                slash, CharacterSystem.Instance.GetCurrentCharacterTransform().position);
+                slash, CharacterSystem.Instance.GetCurrentCharacter().transform.position);
 
             slashObj.transform.localScale = Vector2.zero;
 
@@ -98,7 +99,7 @@ namespace dutpekmezi
 
             if (enemy != null)
             {
-                enemy.TakeDamage(weaponData.AttackDamage);
+                SignalBus.Get<EnemyBase.OnTakeDamage>().Invoke(enemy, weaponData.AttackDamage);
             }
         }
     }

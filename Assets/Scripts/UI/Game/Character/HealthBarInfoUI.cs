@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Utils.Signal;
 
 namespace dutpekmezi
 {
@@ -29,7 +30,7 @@ namespace dutpekmezi
 
             if (characterData == null || character == null) return;
 
-            character.OnStatsChange += UpdateSliders;
+            SignalBus.Get<CharacterBase.OnStatsChange>().Subscribe(UpdateSliders);
 
             characterImage.sprite = characterData.Icon;
 
