@@ -51,6 +51,8 @@ namespace dutpekmezi
             currentEnergy = 0;
 
             SignalBus.Get<OnTakeDamage>().Subscribe(OnTakeDamageHandler);
+
+            SignalBus.Get<StatSystem.OnStatSelected>().Subscribe(ApplySelectedModifier);
         }
 
         public void Tick()
@@ -81,6 +83,29 @@ namespace dutpekmezi
             );
 
             rb.MovePosition(rb.position + moveVelocity * Utils.LogicTimer.LogicTimer.FixedDelta);
+        }
+
+        public void ApplyModifier(StatModifier modifier)
+        {
+            if (_runtimeStats.TryGetValue(modifier.Type, out Stat stat))
+            {
+                stat.AddModifier(modifier);
+
+                if (modifier.Type == StatType.MaxHealth)
+                {
+                    if (currentHealth > stat.Value)
+                    {
+                        currentHealth = stat.Value;
+                    }
+                }
+
+                SignalBus.Get<OnStatsChange>().Invoke(this);
+            }
+        }
+
+        private void ApplySelectedModifier(StatModifier modifier)
+        {
+            ApplyModifier(modifier);
         }
 
         public float GetStatValue(StatType type)

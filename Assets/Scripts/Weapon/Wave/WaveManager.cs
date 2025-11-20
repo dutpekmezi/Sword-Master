@@ -58,6 +58,11 @@ namespace dutpekmezi
             {
                 GenerateEnemyWawe(EnemiesPerWawe);
             }
+
+            if (Input.GetKeyDown(KeyCode.H))
+            {
+                
+            }
         }
 
         public void GenerateEnemyWawe(int count)

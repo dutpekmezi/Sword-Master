@@ -1,0 +1,56 @@
+using UnityEngine;
+using System.Collections.Generic;
+using dutpekmezi;
+
+namespace dutpekmezi
+{
+    [System.Serializable]
+    public struct StatConfig
+    {
+        public StatType Type;
+        public Color Color;
+        public Sprite Icon;
+    }
+
+    [CreateAssetMenu(fileName = "StatConfigData", menuName = "Game/Scriptable Objects/Stat/Stat Config Data")]
+    public class StatConfigData : ScriptableObject
+    {
+        public List<StatConfig> StatConfigs;
+
+        private Dictionary<StatType, StatConfig> _configLookup;
+
+        private static readonly StatConfig DefaultConfig = new StatConfig { Type = 0, Color = Color.white, Icon = null };
+
+        public void InitializeLookup()
+        {
+            if (_configLookup == null)
+            {
+                _configLookup = new Dictionary<StatType, StatConfig>();
+
+                foreach (var item in StatConfigs)
+                {
+                    if (!_configLookup.ContainsKey(item.Type))
+                    {
+                        _configLookup.Add(item.Type, item);
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Duplicate StatType found in StatConfigData: {item.Type}. Skipping duplicate entry.");
+                    }
+                }
+            }
+        }
+
+        public StatConfig GetConfig(StatType type)
+        {
+            if (_configLookup == null) InitializeLookup();
+
+            if (_configLookup.TryGetValue(type, out StatConfig config))
+            {
+                return config;
+            }
+
+            return DefaultConfig;
+        }
+    }
+}

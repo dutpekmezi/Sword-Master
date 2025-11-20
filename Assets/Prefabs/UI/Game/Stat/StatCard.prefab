@@ -375,6 +375,7 @@ GameObject:
   - component: {fileID: 6328294562491492465}
   - component: {fileID: 1748386901240840309}
   - component: {fileID: 152687078320648584}
+  - component: {fileID: 4252068037023066015}
   m_Layer: 5
   m_Name: StatCard
   m_TagString: Untagged
@@ -486,8 +487,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: dutpekmezi.WeaponCardUI, Assembly-CSharp
+      - m_Target: {fileID: 4252068037023066015}
+        m_TargetAssemblyTypeName: dutpekmezi.StatCardUI, Assembly-CSharp
         m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
@@ -524,3 +525,18 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &4252068037023066015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6956687355921163000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cccdb10ebbb6684daf5a7a4618c47fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StatCardUI
+  statImage: {fileID: 4133517322589396004}
+  statValueText: {fileID: 7885375313267359397}
+  statNameText: {fileID: 7847808533208676864}

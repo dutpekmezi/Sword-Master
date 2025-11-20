@@ -15,6 +15,8 @@ namespace dutpekmezi
 
         private List<WeaponCardUI> displayingWeaponCards = new List<WeaponCardUI>();
 
+        private bool onSelecting = false;
+
         private void Start()
         {
             SignalBus.Get<OnWeaponSelected>().Subscribe(OnWeaponSelectedHandler);
@@ -23,6 +25,10 @@ namespace dutpekmezi
         }
         public void DisplayWeapons()
         {
+            if (onSelecting) return;
+
+            onSelecting = true;
+
             scnreenDim.SetActive(true);
 
             var selectedWeapons = new List<WeaponData>();
@@ -50,7 +56,9 @@ namespace dutpekmezi
                 }
 
                 displayingWeaponCards.Clear();
-            } 
+            }
+
+            onSelecting = false;
         }
 
         private void OnWeaponSelectedHandler(WeaponData weaponData)
@@ -61,7 +69,5 @@ namespace dutpekmezi
         {
             DisplayWeapons();
         }
-
-
     }
 }

@@ -2,33 +2,42 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using Random = UnityEngine.Random;
+using Utils.Signal;
+using Dutpekmezi.Services.PoolService;
 
 namespace dutpekmezi
 {
     public class StatSystem : BaseSystem
     {
-        private readonly StatColorData _statColorData;
+        private readonly StatConfigData _statConfigData;
 
-        public StatSystem(StatColorData statColorData)
+        public static StatSystem Instance {  get; private set; }
+
+        public StatSystem(StatConfigData statConfigData)
         {
-            _statColorData = statColorData;
+            Instance = this;
+
+            _statConfigData = statConfigData;
 
             OnInitialize();
         }
 
         protected override void OnInitialize()
         {
-            if (_statColorData != null)
+            if (_statConfigData != null)
             {
-                _statColorData.InitializeLookup();
+                _statConfigData.InitializeLookup();
             }
         }
 
-        public Color GetStatColor(StatType statType)
+        public StatConfig GetStatConfig(StatType statType)
         {
-            if (_statColorData == null) return Color.white;
+            if (_statConfigData == null)
+            {
+                return new StatConfig { Type = statType, Color = Color.white, Icon = null };
+            }
 
-            return _statColorData.GetColor(statType);
+            return _statConfigData.GetConfig(statType);
         }
 
         public StatType GetRandomStatType(List<StatType> availableTypes)
@@ -52,35 +61,41 @@ namespace dutpekmezi
                 case StatType.MaxHealth:
                     operation = Random.value > 0.6f ? ModifierOperation.FlatAdd : ModifierOperation.PercentAdd;
                     value = operation == ModifierOperation.FlatAdd ? (2f * level) : (0.05f * level);
+                    type = StatType.MaxHealth;
                     break;
 
                 case StatType.MoveSpeed:
                     operation = ModifierOperation.PercentAdd;
                     value = 0.05f + (level * 0.01f);
+                    type = StatType.MoveSpeed;
                     break;
 
                 case StatType.BodyDamage:
                     operation = Random.value > 0.7f ? ModifierOperation.PercentAdd : ModifierOperation.FlatAdd;
                     value = operation == ModifierOperation.FlatAdd ? (1f * level) : (0.03f * level);
+                    type = StatType.BodyDamage;
                     break;
 
                 case StatType.CooldownReduction:
                     operation = ModifierOperation.PercentAdd;
                     value = 0.02f + (level * 0.01f);
+                    type = StatType.CooldownReduction;
                     break;
 
                 case StatType.Energy:
                     operation = ModifierOperation.FlatAdd;
                     value = 5f + (level * 2f);
+                    type = StatType.Energy;
                     break;
 
                 default:
                     operation = ModifierOperation.FlatAdd;
                     value = 1f;
+                    type = StatType.MaxHealth;
                     break;
             }
 
-            return new StatModifier(value, operation, source);
+            return new StatModifier(value, operation, type, source);
         }
 
         public float ClampStatValue(StatType statType, float currentValue)
@@ -97,5 +112,14 @@ namespace dutpekmezi
                     return currentValue;
             }
         }
+        protected override void OnDispose()
+        {
+            
+        }
+
+
+        public class OnStatSelection : Signal { }
+
+        public class OnStatSelected : Signal<StatModifier> { }
     }
 }

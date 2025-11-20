@@ -13,6 +13,7 @@ namespace dutpekmezi
         [SerializeField] private CharacterDatas characterDatas;
         [SerializeField] private EnemyDatas enemyDatas;
         [SerializeField] private WeaponDatas weaponDatas;
+        [SerializeField] private StatConfigData statConfigData;
 
         [Header("Wave Settings")]
         [SerializeField] private int enemiesPerWave;
@@ -33,6 +34,7 @@ namespace dutpekmezi
         private CharacterSystem _characterSystem;
         private EnemySystem _enemySystem;
         private WeaponSystem _weaponSystem;
+        private StatSystem _statSystem;
         private WaveManager _waveManager;
 
         private bool _initialized;
@@ -60,6 +62,7 @@ namespace dutpekmezi
             _characterSystem = Bind(new CharacterSystem(characterDatas));
             _enemySystem = Bind(new EnemySystem(enemyDatas));
             _weaponSystem = Bind(new WeaponSystem(weaponDatas));
+            _statSystem = Bind(new StatSystem(statConfigData));
 
             _waveManager = Bind(new WaveManager(
                 _enemySystem,
@@ -80,6 +83,7 @@ namespace dutpekmezi
             _characterSystem.Tick();
             _enemySystem.Tick();
             _weaponSystem.Tick();
+            _statSystem.Tick();
             _waveManager.Tick();
         }
 
@@ -87,6 +91,9 @@ namespace dutpekmezi
         {
             if (Input.GetKeyDown(KeyCode.K))
                 SignalBus.Get<WeaponSystem.OnWeaponSelection>().Invoke();
+
+            if (Input.GetKeyDown(KeyCode.J))
+                SignalBus.Get<StatSystem.OnStatSelection>().Invoke();
 
             _logicTimer?.Update();
         }
