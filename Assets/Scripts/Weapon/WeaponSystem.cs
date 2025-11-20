@@ -28,13 +28,19 @@ namespace dutpekmezi
 
         protected override void OnInitialize()
         {
-            SignalBus.Get<CharacterSystem.OnCharacterSpawnedSignal>()
-                     .Subscribe(OnCharacterSpawned);
+            SignalBus.Get<CharacterSystem.OnCharacterSpawnedSignal>().Subscribe(OnCharacterSpawned);
+
+            SignalBus.Get<OnWeaponSelected>().Subscribe(EquipWeaponhandler);
         }
 
         private void OnCharacterSpawned(CharacterBase character)
         {
             _characterTransform = character.Transform;
+
+            if (_characterTransform == null)
+            {
+                _characterTransform = CharacterSystem.Instance.GetCurrentCharacter().transform;
+            }
         }
 
         public override void Tick()
@@ -43,18 +49,24 @@ namespace dutpekmezi
                 _currentWeapon.Tick();
         }
 
+        private void EquipWeaponhandler(WeaponData weaponData)
+        {
+            EquipWeapon(weaponData);
+        }
+
         public WeaponData EquipWeapon(WeaponData weaponData)
         {
             if (_characterTransform == null)
-                return null;
+                if (_characterTransform == null)
+                    _characterTransform = CharacterSystem.Instance.GetCurrentCharacter().transform;
 
             if (_currentWeapon != null)
                 ObjectPoolManager.DeSpawn(_currentWeapon.gameObject);
 
-            var go = ObjectPoolManager.SpawnObject(weaponData.Prefab, _characterTransform);
-            go.transform.localPosition = Vector3.zero;
+            var instance = ObjectPoolManager.SpawnObject(weaponData.Prefab, _characterTransform);
+            instance.transform.localPosition = Vector3.zero;
 
-            _currentWeapon = go.GetComponent<WeaponBase>();
+            _currentWeapon = instance.GetComponent<WeaponBase>();
 
             SignalBus.Get<OnWeaponEquippedSignal>().Invoke(weaponData);
 
@@ -88,5 +100,7 @@ namespace dutpekmezi
         }
 
         public class OnWeaponEquippedSignal : Signal<WeaponData> { }
+        public class OnWeaponSelection : Signal { }
+        public class OnWeaponSelected : Signal<WeaponData> { }
     }
 }

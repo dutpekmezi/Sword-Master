@@ -58,7 +58,10 @@ namespace dutpekmezi
 
             var prefab = _selectedCharacter.Prefab;
 
-            _currentCharacter = Dutpekmezi.Services.PoolService.ObjectPoolManager.SpawnObject(prefab, Vector2.zero);
+            var instance = Dutpekmezi.Services.PoolService.ObjectPoolManager.SpawnObject(prefab, Vector2.zero);
+            instance.Initialize();
+
+            _currentCharacter = instance;
 
             SignalBus.Get<OnCharacterSpawnedSignal>().Invoke(_currentCharacter);
 

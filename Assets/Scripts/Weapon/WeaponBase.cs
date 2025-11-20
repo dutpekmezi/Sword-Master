@@ -1,5 +1,6 @@
 using UnityEngine;
 using Utils.LogicTimer;
+using Utils.Signal;
 
 namespace dutpekmezi
 {
@@ -24,6 +25,10 @@ namespace dutpekmezi
         {
             Orbit();
             RotateSelf();
+        }
+
+        private void Update()
+        {
             Ability();
         }
 

@@ -147,6 +147,7 @@ GameObject:
   - component: {fileID: 8329129304469499974}
   - component: {fileID: 4678666796690210250}
   - component: {fileID: 7180433995722850173}
+  - component: {fileID: 704344492450533781}
   m_Layer: 5
   m_Name: WeaponImage
   m_TagString: Untagged
@@ -168,10 +169,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8095773272797501874}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -0.000015258789, y: 0}
+  m_SizeDelta: {x: 290, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4678666796690210250
 CanvasRenderer:
@@ -211,6 +212,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &704344492450533781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3044326830023948612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86710e43de46f6f4bac7c8e50813a599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.AspectRatioFitter
+  m_AspectMode: 1
+  m_AspectRatio: 0.56165624
 --- !u!1 &3995488591835800863
 GameObject:
   m_ObjectHideFlags: 0
@@ -222,7 +237,6 @@ GameObject:
   - component: {fileID: 8095773272797501874}
   - component: {fileID: 4986608087703153637}
   - component: {fileID: 1530356201816971940}
-  - component: {fileID: 8521193744028923922}
   m_Layer: 5
   m_Name: Frame
   m_TagString: Untagged
@@ -288,32 +302,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8521193744028923922
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3995488591835800863}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.HorizontalLayoutGroup
-  m_Padding:
-    m_Left: 5
-    m_Right: 5
-    m_Top: 15
-    m_Bottom: 15
-  m_ChildAlignment: 0
-  m_Spacing: 0
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 1
-  m_ChildControlHeight: 1
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
 --- !u!1 &4036879891365574720
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,7 +355,7 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 20
+    m_Top: 50
     m_Bottom: 0
   m_ChildAlignment: 0
   m_Spacing: 0
@@ -553,7 +541,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -7.5869, y: 325.6261}
-  m_SizeDelta: {x: 546.3301, y: 546.3301}
+  m_SizeDelta: {x: 546.3301, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7629974739358449884
 CanvasRenderer:
@@ -581,7 +569,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: 0
+  m_Spacing: 50
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -601,12 +589,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96c3243331d8ac74ba0131989b855526, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::dutpekmezi.WeaponCardUI
+  weaponTransform: {fileID: 8329129304469499974}
   frame: {fileID: 1530356201816971940}
   weaponImage: {fileID: 7180433995722850173}
   nameText: {fileID: 1691344233566191164}
   detailText: {fileID: 5026123117054416211}
   fadeDuration: 1
-  fadeValue: 0
+  fadeValue: 1
+  floatingEndValue: 50
+  floatingDuration: 1
 --- !u!114 &1748386901240840309
 MonoBehaviour:
   m_ObjectHideFlags: 0

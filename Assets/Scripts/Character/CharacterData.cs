@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace dutpekmezi
@@ -10,10 +12,7 @@ namespace dutpekmezi
 
         public Sprite Icon;
 
-        public int MaxHealth;
-        public int MaxEnergy;
-
-        public float MoveSpeed;
+        public List<Stat> BaseStats;
 
         public WeaponType WeaponType;
 

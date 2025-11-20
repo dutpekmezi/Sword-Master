@@ -1,29 +1,25 @@
-using Dutpekmezi.Services.SaveServices;
 using Dutpekmezi.Services;
-using dutpekmezi;
+using Dutpekmezi.Services.SaveServices;
 using UnityEngine;
 
-
-using UnityEditor.SearchService;
-using UnityEditor;
-
-public class CoreInstaller : MonoBehaviour
+namespace dutpekmezi
 {
-    [SerializeField] private SceneServiceSettings _sceneServiceSettings;
-
-    private void Start()
+    public class CoreInstaller : MonoBehaviour
     {
-        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        [SerializeField] private SceneServiceSettings _sceneServiceSettings;
 
-        InstallBindings();
-    }
+        private void Start()
+        {
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
-    private async void InstallBindings()
-    {
-        var sceneService = new SceneService(_sceneServiceSettings);
+            InstallBindings();
+        }
 
-        var saveService = new SaveService(new EncryptedSaveHandler());
+        private async void InstallBindings()
+        {
+            var sceneService = new SceneService(_sceneServiceSettings);
 
-        _ = SceneService.Load(_sceneServiceSettings.GetSceneAssetByType(SceneType.Menu));
+            var saveService = new SaveService(new EncryptedSaveHandler());
+        }
     }
 }

@@ -15,7 +15,14 @@ MonoBehaviour:
   Id: Knight
   Name: Knight
   Icon: {fileID: 21300000, guid: 78d03ce1d36c540d5a183e4b042d3afb, type: 3}
-  MaxHealth: 100
-  MoveSpeed: 1.25
+  BaseStats:
+  - Type: 0
+    baseValue: 100
+  - Type: 1
+    baseValue: 1.2
+  - Type: 2
+    baseValue: 1
+  - Type: 4
+    baseValue: 100
   WeaponType: 0
   Prefab: {fileID: 7342495170202269068, guid: ec5a60abe7119da498c224dde80df30d, type: 3}

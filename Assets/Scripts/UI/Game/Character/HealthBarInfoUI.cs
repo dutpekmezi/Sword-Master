@@ -40,10 +40,10 @@ namespace dutpekmezi
         private void UpdateSliders(CharacterBase character)
         {
             healthSlider.minValue = 0;
-            healthSlider.maxValue = characterData.MaxHealth;
+            healthSlider.maxValue = character.GetStatValue(StatType.MaxHealth);
             healthSlider.value = character.CurrentHealth;
 
-            healthText.text = $"{character.CurrentHealth} / {characterData.MaxHealth}";
+            healthText.text = $"{character.CurrentHealth} / {character.GetStatValue(StatType.MaxHealth)}";
         }
     }
 }

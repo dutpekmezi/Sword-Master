@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using Utils.LogicTimer;
+using Utils.Signal;
 
 namespace dutpekmezi
 {
@@ -82,8 +83,11 @@ namespace dutpekmezi
             _waveManager.Tick();
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
+            if (Input.GetKeyDown(KeyCode.K))
+                SignalBus.Get<WeaponSystem.OnWeaponSelection>().Invoke();
+
             _logicTimer?.Update();
         }
 

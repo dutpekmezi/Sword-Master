@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 namespace Dutpekmezi.Services
@@ -10,74 +9,45 @@ namespace Dutpekmezi.Services
     public class SceneServiceSettings : ScriptableObject
     {
         [Header("Base Scene")]
-        public SceneData BaseSceneData;
+        public SceneData BaseScene;
 
         [Header("Game Scenes")]
-        public List<SceneData> SceneDatas = new();
+        public List<SceneData> Scenes = new();
 
         [Header("Test Mode")]
         public bool TestMode = false;
-        public SceneData TestSceneData;
+        public SceneData TestScene;
 
-        public string GetBaseSceneName() => BaseSceneData?.SceneName;
+        public SceneData GetBaseScene() => BaseScene;
 
-        public IEnumerable<string> GetAllSceneNames()
+        public SceneData GetSceneByType(SceneType type)
         {
-            foreach (var scene in SceneDatas)
-                if (scene != null)
-                    yield return scene.SceneName;
-        }
+            if (BaseScene != null && BaseScene.SceneType == type)
+                return BaseScene;
 
-        public string GetTestSceneName() =>
-            TestMode && TestSceneData != null
-                ? TestSceneData.SceneName
-                : null;
+            foreach (var s in Scenes)
+                if (s.SceneType == type)
+                    return s;
 
-        public string GetSceneNameByType(SceneType type)
-        {
-            if (BaseSceneData != null && BaseSceneData.SceneType == type)
-                return BaseSceneData.SceneName;
-
-            foreach (var data in SceneDatas)
-                if (data != null && data.SceneType == type)
-                    return data.SceneName;
-
-            if (TestSceneData != null && TestSceneData.SceneType == type)
-                return TestSceneData.SceneName;
+            if (TestMode && TestScene != null && TestScene.SceneType == type)
+                return TestScene;
 
             return null;
         }
 
-#if UNITY_EDITOR
-        public SceneData GetSceneDataByType(SceneType type)
+        public SceneData GetSceneByName(string sceneName)
         {
-            if (BaseSceneData != null && BaseSceneData.SceneType == type)
-                return BaseSceneData;
+            if (BaseScene != null && BaseScene.SceneName == sceneName)
+                return BaseScene;
 
-            foreach (var data in SceneDatas)
-                if (data != null && data.SceneType == type)
-                    return data;
+            foreach (var s in Scenes)
+                if (s.SceneName == sceneName)
+                    return s;
 
-            if (TestSceneData != null && TestSceneData.SceneType == type)
-                return TestSceneData;
+            if (TestMode && TestScene != null && TestScene.SceneName == sceneName)
+                return TestScene;
 
             return null;
         }
-
-        public SceneData GetSceneDataByName(string name)
-        {
-            if (BaseSceneData != null && BaseSceneData.SceneName == name)
-                return BaseSceneData;
-
-            foreach (var data in SceneDatas)
-                if (data != null && data.SceneName == name)
-                    return data;
-
-            if (TestSceneData != null && TestSceneData.SceneName == name)
-                return TestSceneData;
-
-            return null;
-        }
-#endif
     }
 }

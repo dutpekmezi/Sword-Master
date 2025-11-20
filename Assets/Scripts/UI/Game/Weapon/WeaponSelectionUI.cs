@@ -1,7 +1,8 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using Utils.Signal;
+using static dutpekmezi.WeaponSystem;
 
 namespace dutpekmezi
 {
@@ -13,10 +14,15 @@ namespace dutpekmezi
         [SerializeField] private GameObject scnreenDim;
 
         private List<WeaponCardUI> displayingWeaponCards = new List<WeaponCardUI>();
+
+        private void Start()
+        {
+            SignalBus.Get<OnWeaponSelected>().Subscribe(OnWeaponSelectedHandler);
+
+            SignalBus.Get<OnWeaponSelection>().Subscribe(OnWeaponSelectionHendler);
+        }
         public void DisplayWeapons()
         {
-            SignalBus.Get<OnWeaponSelected>().Subscribe(WeaponSelected);
-
             scnreenDim.SetActive(true);
 
             var selectedWeapons = new List<WeaponData>();
@@ -25,7 +31,7 @@ namespace dutpekmezi
 
             foreach (var weapon in selectedWeapons)
             {
-                var instance = Instantiate(weaponCardPrefab, parent);
+                var instance = Dutpekmezi.Services.PoolService.ObjectPoolManager.SpawnObject(weaponCardPrefab, parent);
                 instance.Init(weapon);
 
                 displayingWeaponCards.Add(instance);
@@ -40,20 +46,22 @@ namespace dutpekmezi
             {
                 foreach (var weaponCard in displayingWeaponCards)
                 {
-                    Destroy(weaponCard.gameObject);
+                    Dutpekmezi.Services.PoolService.ObjectPoolManager.DeSpawn(weaponCard.gameObject);
                 }
 
                 displayingWeaponCards.Clear();
             } 
         }
 
-        private void WeaponSelected(WeaponData weaponData)
+        private void OnWeaponSelectedHandler(WeaponData weaponData)
         {
             HideWeapons();
-
-            WeaponSystem.Instance.EquipWeapon(weaponData);
+        }
+        private void OnWeaponSelectionHendler()
+        {
+            DisplayWeapons();
         }
 
-        public class OnWeaponSelected : Signal<WeaponData> { }
+
     }
 }

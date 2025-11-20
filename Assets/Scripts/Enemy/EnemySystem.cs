@@ -110,9 +110,6 @@ namespace dutpekmezi
 
         protected override void OnDispose()
         {
-            foreach (var e in activeEnemies)
-                ObjectPoolManager.DeSpawn(e.gameObject);
-
             activeEnemies.Clear();
             enemyGroups.Clear();
         }

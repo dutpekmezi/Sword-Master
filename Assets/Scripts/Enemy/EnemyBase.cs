@@ -27,8 +27,6 @@ namespace dutpekmezi
         {
             isDead = false;
             currentHealth = enemyData.MaxHealth;
-
-            SignalBus.Get<OnTakeDamage>().Subscribe(OnTakeDamagehandler);
         }
 
         public void Tick(Vector2 playerPos)
@@ -45,8 +43,10 @@ namespace dutpekmezi
             );
         }
 
-        private void OnTakeDamagehandler(EnemyBase enemy, int dmg)
+        public void OnTakeDamagehandler(int dmg)
         {
+            if (isDead) return;
+
             TakeDamage(dmg);
         }
 
@@ -76,10 +76,11 @@ namespace dutpekmezi
             if (character != null)
             {
                 SignalBus.Get<CharacterBase.OnTakeDamage>().Invoke(character, enemyData.AttackDamage);
+
+                OnTakeDamagehandler(1);
             }
         }
 
         public class OnDeath : Signal<EnemyBase> {}
-        public class OnTakeDamage : Signal<EnemyBase, int> {}
     }
 }

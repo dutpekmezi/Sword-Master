@@ -21,5 +21,5 @@ MonoBehaviour:
   SelfOrbitSpeed: 360
   AttackDamage: 1
   AbilityDamage: 2
-  Prefab: {fileID: 116068156932863756, guid: a7b62e456ff077648a85bd250f7eb413, type: 3}
+  Prefab: {fileID: 664721132477608274, guid: a7b62e456ff077648a85bd250f7eb413, type: 3}
   WeaponType: 0
