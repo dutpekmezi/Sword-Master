@@ -402,6 +402,10 @@ MonoBehaviour:
   characterDatas: {fileID: 11400000, guid: c52ddee16365a854f805a35a2dc46201, type: 2}
   enemyDatas: {fileID: 11400000, guid: 1847da9bbe11b1047b5481cc1bb0b4bc, type: 2}
   weaponDatas: {fileID: 11400000, guid: c8f66e4d63709db4d84a86ca5d125bbc, type: 2}
+  statConfigData: {fileID: 11400000, guid: 7e1fe012667125d4a99ef3f5618041d8, type: 2}
+  preChaosDuration: 300
+  preChaosWaweSpawnRate: 30
+  preChaosGroupSpawnRate: 0
   enemiesPerWave: 30
   waveSpawnRadius: 20
   waveSpawnDeflection: 5
@@ -410,6 +414,7 @@ MonoBehaviour:
   groupSpawnDeflection: 5
   enemyGroupRadius: 5
   enemyGroupDeflection: 2
+  waveTimerUI: {fileID: 1516540807999556645}
 --- !u!1 &866297411
 GameObject:
   m_ObjectHideFlags: 0
@@ -11863,6 +11868,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 510b9c3d320167f4e9f5e1d257d52424, type: 3}
+--- !u!114 &1516540807999556645 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8154542980469135787, guid: 510b9c3d320167f4e9f5e1d257d52424, type: 3}
+  m_PrefabInstance: {fileID: 1516540807999556644}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f7d02cf25910bf48b694f79a6ad50a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::dutpekmezi.WaveTimerUI
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

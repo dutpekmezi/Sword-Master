@@ -122,6 +122,7 @@ namespace dutpekmezi
         MaxHealth,
         MoveSpeed,
         BodyDamage,
+        WeaponOrbitSpeed,
         CooldownReduction,
         Energy,
         HealthRegen,

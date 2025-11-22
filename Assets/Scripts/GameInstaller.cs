@@ -15,7 +15,12 @@ namespace dutpekmezi
         [SerializeField] private WeaponDatas weaponDatas;
         [SerializeField] private StatConfigData statConfigData;
 
-        [Header("Wave Settings")]
+        [Header("Wave Time Settings")]
+        [SerializeField] private float preChaosDuration;
+        [SerializeField] private float preChaosWaweSpawnRate;
+        [SerializeField] private float preChaosGroupSpawnRate;
+
+        [Header("Enemy Wave Settings")]
         [SerializeField] private int enemiesPerWave;
         [SerializeField] private float waveSpawnRadius;
         [SerializeField] private float waveSpawnDeflection;
@@ -27,6 +32,9 @@ namespace dutpekmezi
         [SerializeField] private float enemyGroupRadius;
         [SerializeField] private float enemyGroupDeflection;
 
+        [Header("UI settings")]
+        [SerializeField] private WaveTimerUI waveTimerUI;
+
         private LogicTimer _logicTimer;
         private List<IDisposable> _disposables = new();
 
@@ -36,6 +44,7 @@ namespace dutpekmezi
         private WeaponSystem _weaponSystem;
         private StatSystem _statSystem;
         private WaveManager _waveManager;
+        private UIManager _uiManager;
 
         private bool _initialized;
 
@@ -63,6 +72,7 @@ namespace dutpekmezi
             _enemySystem = Bind(new EnemySystem(enemyDatas));
             _weaponSystem = Bind(new WeaponSystem(weaponDatas));
             _statSystem = Bind(new StatSystem(statConfigData));
+            _uiManager = Bind(new UIManager(waveTimerUI));
 
             _waveManager = Bind(new WaveManager(
                 _enemySystem,
@@ -74,7 +84,10 @@ namespace dutpekmezi
                 enemyGroupRadius,
                 enemyGroupDeflection,
                 waveSpawnRadius,
-                waveSpawnDeflection
+                waveSpawnDeflection,
+                preChaosDuration,
+                preChaosWaweSpawnRate,
+                preChaosGroupSpawnRate
             ));
         }
 
@@ -85,6 +98,7 @@ namespace dutpekmezi
             _weaponSystem.Tick();
             _statSystem.Tick();
             _waveManager.Tick();
+            _uiManager.Tick();
         }
 
         private void Update()

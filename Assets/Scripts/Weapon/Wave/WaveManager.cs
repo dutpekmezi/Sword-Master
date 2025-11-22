@@ -1,8 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Utils.LogicTimer;
 
 namespace dutpekmezi
 {
+    public enum WaveState
+    {
+        PreChaos,
+        Chaos,
+        Pause
+    }
+
     public class WaveManager : BaseSystem
     {
         private EnemySystem enemySystem;
@@ -13,11 +21,21 @@ namespace dutpekmezi
         public float GroupSpawnDeflection { get; private set; }
         public float EnemyGroupRadius { get; private set; }
         public float EnemyGroupDeflection { get; private set; }
-
-
         public int EnemiesPerWawe { get; private set; }
         public float WaweSpawnRadius { get; private set; }
         public float WaweSpawnDeflection { get; private set; }
+
+        public float PreChaosDuration { get; private set; }
+        public float PreChaosWaweSpawnRate { get; private set; }
+        public float PreChaosGroupSpawnRate { get; private set; }
+        public float CurrentPreChaosTime => currentPreChaosTime;
+
+        private WaveState currentWaveState = WaveState.PreChaos;
+        private float currentPreChaosTime = 0f;
+        private float waveSpawnTimer = 0f;
+        private float groupSpawnTimer = 0f;
+
+        public static WaveManager Instance { get; private set; }
 
         public WaveManager(
             EnemySystem enemySystem,
@@ -29,9 +47,14 @@ namespace dutpekmezi
             float enemyGroupRadius,
             float enemyGroupDeflection,
             float waweSpawnRadius,
-            float waweSpawnDeflection
+            float waweSpawnDeflection,
+            float preChaosDuration,
+            float preChaosWaweSpawnRate,
+            float preChaosGroupSpawnRate
         )
         {
+            Instance = this;
+
             this.enemySystem = enemySystem;
             this.characterSystem = characterSystem;
 
@@ -45,15 +68,28 @@ namespace dutpekmezi
             WaweSpawnRadius = waweSpawnRadius;
             WaweSpawnDeflection = waweSpawnDeflection;
 
+            PreChaosDuration = preChaosDuration;
+            PreChaosGroupSpawnRate = preChaosGroupSpawnRate;
+            PreChaosWaweSpawnRate = preChaosWaweSpawnRate;
+
             OnInitialize();
         }
 
         protected override void OnInitialize()
         {
+            currentWaveState = WaveState.PreChaos;
+            currentPreChaosTime = PreChaosDuration;
+            waveSpawnTimer = 0f;
+            groupSpawnTimer = 0f;
         }
 
         public override void Tick()
         {
+            if (currentWaveState == WaveState.PreChaos)
+            {
+                HandlePreChaosSpawning();
+            }
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 GenerateEnemyWawe(EnemiesPerWawe);
@@ -61,7 +97,34 @@ namespace dutpekmezi
 
             if (Input.GetKeyDown(KeyCode.H))
             {
-                
+                GenerateEnemyGroup(EnemiesPerGroup);
+            }
+        }
+
+        private void HandlePreChaosSpawning()
+        {
+            float dt = LogicTimer.FixedDelta;
+
+            currentPreChaosTime -= dt;
+            waveSpawnTimer += dt;
+            groupSpawnTimer += dt;
+
+            if (currentPreChaosTime >= PreChaosDuration)
+            {
+                currentWaveState = WaveState.Chaos;
+                return;
+            }
+
+            if (waveSpawnTimer >= PreChaosWaweSpawnRate && PreChaosWaweSpawnRate > 0)
+            {
+                GenerateEnemyWawe(EnemiesPerWawe);
+                waveSpawnTimer = 0f;
+            }
+
+            if (groupSpawnTimer >= PreChaosGroupSpawnRate && PreChaosGroupSpawnRate > 0)
+            {
+                GenerateEnemyGroup(EnemiesPerGroup);
+                groupSpawnTimer = 0f;
             }
         }
 
@@ -78,7 +141,6 @@ namespace dutpekmezi
         public void GenerateEnemyGroup(int totalEnemies)
         {
             List<EnemyBase> createdEnemies = new List<EnemyBase>();
-
 
             for (int i = 0; i < totalEnemies; i++)
             {
@@ -98,15 +160,12 @@ namespace dutpekmezi
 
             EnemyGroup newGroup = new EnemyGroup();
 
-            for (int i = 0; i < createdEnemies.Count; i += EnemiesPerGroup)
-            {
-                int end = Mathf.Min(i + EnemiesPerGroup, createdEnemies.Count);
 
-                for (int j = i + 1; j < end; j++)
-                {
-                    newGroup.members.Add(createdEnemies[j]);
-                }
+            for (int i = 0; i < createdEnemies.Count; i++)
+            {
+                newGroup.members.Add(createdEnemies[i]);
             }
+
 
             enemySystem.EnemyGroups.Add(newGroup);
             newGroup.SetSubscribes(newGroup.members);

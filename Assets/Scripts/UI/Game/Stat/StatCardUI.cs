@@ -30,6 +30,7 @@ namespace dutpekmezi
             statNameText.color = statConfig.Color;
 
             statValueText.text = FormatModifierValue(modifier);
+            statValueText.color = statConfig.Color;
         }
 
         private string FormatModifierValue(StatModifier mod)
