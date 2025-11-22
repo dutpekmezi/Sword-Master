@@ -14,7 +14,7 @@ namespace dutpekmezi
         [SerializeField] private BoxCollider2D col;
 
         [Header("Movement Settings")]
-        [SerializeField] private float smoothMove = 10f; // For smoother acceleration
+        [SerializeField] private float smoothMove = 10f;
 
         private Vector2 moveInput;
         private Vector2 moveVelocity;
