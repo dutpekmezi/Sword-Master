@@ -16,6 +16,7 @@ namespace dutpekmezi
         private EnemySystem enemySystem;
         private CharacterSystem characterSystem;
 
+        public Transform WaveEntitiesHolder {  get; private set; }
         public int EnemiesPerGroup { get; private set; }
         public float GroupSpawnRadius { get; private set; }
         public float GroupSpawnDeflection { get; private set; }
@@ -50,7 +51,8 @@ namespace dutpekmezi
             float waweSpawnDeflection,
             float preChaosDuration,
             float preChaosWaweSpawnRate,
-            float preChaosGroupSpawnRate
+            float preChaosGroupSpawnRate,
+            Transform levelEntitesHolder
         )
         {
             Instance = this;
@@ -71,6 +73,8 @@ namespace dutpekmezi
             PreChaosDuration = preChaosDuration;
             PreChaosGroupSpawnRate = preChaosGroupSpawnRate;
             PreChaosWaweSpawnRate = preChaosWaweSpawnRate;
+
+            WaveEntitiesHolder = levelEntitesHolder;
 
             OnInitialize();
         }

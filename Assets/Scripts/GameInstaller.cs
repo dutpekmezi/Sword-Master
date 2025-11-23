@@ -15,6 +15,11 @@ namespace dutpekmezi
         [SerializeField] private WeaponDatas weaponDatas;
         [SerializeField] private StatConfigData statConfigData;
 
+        [Header("Wave Entites Settings")]
+        [SerializeField] private Transform waveEntitiesHolder;
+        [SerializeField] private StatueBase statStatue;
+        [SerializeField] private StatueBase weaponStatue;
+
         [Header("Wave Time Settings")]
         [SerializeField] private float preChaosDuration;
         [SerializeField] private float preChaosWaweSpawnRate;
@@ -45,6 +50,7 @@ namespace dutpekmezi
         private StatSystem _statSystem;
         private WaveManager _waveManager;
         private UIManager _uiManager;
+        private StatueManager _statueManager;
 
         private bool _initialized;
 
@@ -73,6 +79,7 @@ namespace dutpekmezi
             _weaponSystem = Bind(new WeaponSystem(weaponDatas));
             _statSystem = Bind(new StatSystem(statConfigData));
             _uiManager = Bind(new UIManager(waveTimerUI));
+            _statueManager = Bind(new StatueManager(statStatue, weaponStatue));
 
             _waveManager = Bind(new WaveManager(
                 _enemySystem,
@@ -87,7 +94,9 @@ namespace dutpekmezi
                 waveSpawnDeflection,
                 preChaosDuration,
                 preChaosWaweSpawnRate,
-                preChaosGroupSpawnRate
+                preChaosGroupSpawnRate,
+                waveEntitiesHolder
+
             ));
         }
 
