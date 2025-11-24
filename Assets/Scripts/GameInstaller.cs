@@ -37,6 +37,11 @@ namespace dutpekmezi
         [SerializeField] private float enemyGroupRadius;
         [SerializeField] private float enemyGroupDeflection;
 
+        [Header("Statues")]
+        [SerializeField] private int statuesPerWave;
+        [SerializeField] private float statueSpawnRadius;
+        [SerializeField] private float statueSpawnDeflection;
+
         [Header("UI settings")]
         [SerializeField] private WaveTimerUI waveTimerUI;
 
@@ -92,6 +97,9 @@ namespace dutpekmezi
                 enemyGroupDeflection,
                 waveSpawnRadius,
                 waveSpawnDeflection,
+                statuesPerWave,
+                statueSpawnRadius,
+                statueSpawnDeflection,
                 preChaosDuration,
                 preChaosWaweSpawnRate,
                 preChaosGroupSpawnRate,
@@ -108,6 +116,7 @@ namespace dutpekmezi
             _statSystem.Tick();
             _waveManager.Tick();
             _uiManager.Tick();
+            _statueManager.Tick();
         }
 
         private void Update()

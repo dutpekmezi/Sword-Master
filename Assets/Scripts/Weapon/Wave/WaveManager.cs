@@ -17,17 +17,27 @@ namespace dutpekmezi
         private CharacterSystem characterSystem;
 
         public Transform WaveEntitiesHolder {  get; private set; }
+
+        //------------------------------ENEMY GROUP----------------------------------------//
         public int EnemiesPerGroup { get; private set; }
         public float GroupSpawnRadius { get; private set; }
         public float GroupSpawnDeflection { get; private set; }
         public float EnemyGroupRadius { get; private set; }
         public float EnemyGroupDeflection { get; private set; }
+
+        //------------------------------ENEMY WAVE----------------------------------------//
         public int EnemiesPerWawe { get; private set; }
         public float WaweSpawnRadius { get; private set; }
         public float WaweSpawnDeflection { get; private set; }
 
+        //------------------------------STATUES----------------------------------------//
+        public int StatuesPerWave { get; private set; }
+        public float StatueSpawnRadius { get; private set; }
+        public float StatueSpawnDeflection { get; private set; }
+
+        //------------------------------GAME WAVE STAGE----------------------------------------//
         public float PreChaosDuration { get; private set; }
-        public float PreChaosWaweSpawnRate { get; private set; }
+        public float PreChaosWaveSpawnRate { get; private set; }
         public float PreChaosGroupSpawnRate { get; private set; }
         public float CurrentPreChaosTime => currentPreChaosTime;
 
@@ -49,6 +59,9 @@ namespace dutpekmezi
             float enemyGroupDeflection,
             float waweSpawnRadius,
             float waweSpawnDeflection,
+            int statuesPerWave,
+            float statueSpawnRadius,
+            float statueSpawnDeflection,
             float preChaosDuration,
             float preChaosWaweSpawnRate,
             float preChaosGroupSpawnRate,
@@ -70,9 +83,13 @@ namespace dutpekmezi
             WaweSpawnRadius = waweSpawnRadius;
             WaweSpawnDeflection = waweSpawnDeflection;
 
+            StatuesPerWave = statuesPerWave;
+            StatueSpawnRadius = statueSpawnRadius;
+            StatueSpawnDeflection = statueSpawnDeflection;
+
             PreChaosDuration = preChaosDuration;
             PreChaosGroupSpawnRate = preChaosGroupSpawnRate;
-            PreChaosWaweSpawnRate = preChaosWaweSpawnRate;
+            PreChaosWaveSpawnRate = preChaosWaweSpawnRate;
 
             WaveEntitiesHolder = levelEntitesHolder;
 
@@ -119,8 +136,10 @@ namespace dutpekmezi
                 return;
             }
 
-            if (waveSpawnTimer >= PreChaosWaweSpawnRate && PreChaosWaweSpawnRate > 0)
+            if (waveSpawnTimer >= PreChaosWaveSpawnRate && PreChaosWaveSpawnRate > 0)
             {
+                GenerateStatStatues(2);
+                GenerateWeaponStatues(2);
                 GenerateEnemyWawe(EnemiesPerWawe);
                 waveSpawnTimer = 0f;
             }
@@ -173,6 +192,28 @@ namespace dutpekmezi
 
             enemySystem.EnemyGroups.Add(newGroup);
             newGroup.SetSubscribes(newGroup.members);
+        }
+
+        public void GenerateStatStatues(int count)
+        {
+            var statues = StatueManager.Instance.CreateStatStatues(count);
+
+            foreach (var statue in statues)
+            {
+                var randomPos = GenerateRandomPos(StatueSpawnRadius, StatueSpawnDeflection, characterSystem.GetCurrentCharacter().transform.position);
+                statue.transform.position = randomPos;
+            }
+        }
+
+        public void GenerateWeaponStatues(int count)
+        {
+            var statues = StatueManager.Instance.CreateWeaponStatues(count);
+
+            foreach (var statue in statues)
+            {
+                var randomPos = GenerateRandomPos(StatueSpawnRadius, StatueSpawnDeflection, characterSystem.GetCurrentCharacter().transform.position);
+                statue.transform.position = randomPos;
+            }
         }
 
         public Vector2 GenerateRandomPos(float radius, float deflection, Vector2 center)

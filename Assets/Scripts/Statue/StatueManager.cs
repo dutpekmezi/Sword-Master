@@ -8,9 +8,9 @@ namespace dutpekmezi
 {
     public class StatueManager : BaseSystem
     {
-        private List<StatueBase> activeStatues;
-        private List<StatueBase> activeStatStatues;
-        private List<StatueBase> activeWeaponStatues;
+        private List<StatueBase> activeStatues = new List<StatueBase>();
+        private List<StatStatue> activeStatStatues = new List<StatStatue>();
+        private List<WeaponStatue> activeWeaponStatues = new List<WeaponStatue>();
 
         private StatueBase statStatue;
         private StatueBase weaponStatue;
@@ -39,16 +39,33 @@ namespace dutpekmezi
             activeStatues.Clear();
         }
 
+        //-------------------STAT STATUE----------------------------//
+
         public StatueBase CreateStatStatue()
         {
             var instance = Dutpekmezi.Services.PoolService.ObjectPoolManager.SpawnObject(statStatue, WaveManager.Instance.WaveEntitiesHolder);
             instance.Init(StatueType.Stat);
 
             activeStatues.Add(instance);
-            activeStatStatues.Add(instance);
+            activeStatStatues.Add((StatStatue)instance);
 
             return instance;
         }
+
+        public List<StatueBase> CreateStatStatues(int count)
+        {
+            var createdStatues = new List<StatueBase>();
+
+            for (int i = 0; i < count; i++)
+            {
+                var instance = CreateStatStatue();
+                createdStatues.Add(instance);
+            }
+
+            return createdStatues;
+        }
+
+        //-------------------WEAPON STATUE----------------------------//
 
         public StatueBase CreateWeaponStatue()
         {
@@ -56,9 +73,22 @@ namespace dutpekmezi
             instance.Init(StatueType.Weapon);
 
             activeStatues.Add(instance);
-            activeWeaponStatues.Add(instance);
+            activeWeaponStatues.Add((WeaponStatue)instance);
 
             return instance;
+        }
+
+        public List<StatueBase> CreateWeaponStatues(int count)
+        {
+            var createdStatues = new List<StatueBase>();
+
+            for (int i = 0; i < count; i++)
+            {
+                var instance = CreateWeaponStatue();
+                createdStatues.Add(instance);
+            }
+
+            return createdStatues;
         }
     }
 }
