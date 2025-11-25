@@ -1,15 +1,15 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using Random = UnityEngine.Random;
 using Utils.Signal;
-using Dutpekmezi.Services.PoolService;
 
 namespace dutpekmezi
 {
     public class StatSystem : BaseSystem
     {
         private readonly StatConfigData _statConfigData;
+
+        public StatConfigData StatConfigData => _statConfigData;
 
         public static StatSystem Instance {  get; private set; }
 
@@ -51,7 +51,7 @@ namespace dutpekmezi
             return availableTypes[Random.Range(0, availableTypes.Count)];
         }
 
-        public StatModifier GenerateRandomModifier(StatType type, int level = 1, object source = null)
+        public StatModifier CreateRandomModifier(StatType type, int level = 1, object source = null)
         {
             float value = 0f;
             ModifierOperation operation;

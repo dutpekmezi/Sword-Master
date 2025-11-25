@@ -37,11 +37,12 @@ namespace dutpekmezi
             float direction = 1f;
             currentAngle += weaponData.OrbitSpeed * direction * LogicTimer.FixedDelta;
 
-            Vector3 charPos = CharacterSystem.Instance.GetCurrentCharacter().transform.position;
+            var character = CharacterSystem.Instance.GetCurrentCharacter();
+            Vector3 charPos = character.transform.position;
             Vector2 offset = new Vector2(
                 Mathf.Cos(currentAngle * Mathf.Deg2Rad),
                 Mathf.Sin(currentAngle * Mathf.Deg2Rad)
-            ) * weaponData.OrbitRadius;
+            ) * character.GetStatValue(StatType.WeaponOrbitRadius);
 
             transform.position = charPos + (Vector3)offset;
         }

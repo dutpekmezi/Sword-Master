@@ -17,6 +17,8 @@ namespace dutpekmezi
     {
         public List<StatConfig> StatConfigs;
 
+        public int SelectableStatCount;
+
         private Dictionary<StatType, StatConfig> _configLookup;
 
         private static readonly StatConfig DefaultConfig = new StatConfig { Type = 0, Color = Color.white, Icon = null };

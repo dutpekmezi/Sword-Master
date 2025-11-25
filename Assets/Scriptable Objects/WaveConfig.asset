@@ -13,8 +13,6 @@ MonoBehaviour:
   m_Name: WaveConfig
   m_EditorClassIdentifier: Assembly-CSharp::dutpekmezi.WaveConfig
   waveEntitiesHolder: {fileID: 0}
-  statStatue: {fileID: 0}
-  weaponStatue: {fileID: 0}
   preChaosDuration: 300
   preChaosWaveSpawnRate: 30
   preChaosGroupSpawnRate: 0
@@ -29,3 +27,6 @@ MonoBehaviour:
   statuesPerWave: 1
   statueSpawnRadius: 30
   statueSpawnDeflection: 15
+  maxStatue: 10
+  maxStatStatue: 8
+  maxWeaponStatue: 2

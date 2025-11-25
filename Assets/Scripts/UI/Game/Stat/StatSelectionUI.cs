@@ -30,17 +30,25 @@ namespace dutpekmezi
 
             scnreenDim.SetActive(false);
 
-            var statModifier = StatSystem.Instance.GenerateRandomModifier(StatType.MaxHealth, 10);
-            var statModifier2 = StatSystem.Instance.GenerateRandomModifier(StatType.MoveSpeed, 10);
+            var character = CharacterSystem.Instance.GetCurrentCharacter();
 
-            var instance = Dutpekmezi.Services.PoolService.ObjectPoolManager.SpawnObject(statCardPrefab, parent);
-            instance.Init(statModifier);
+            List<StatType> availableStats = new List<StatType>(character.CharacterData.GetStatsType());
 
-            var instance2 = Dutpekmezi.Services.PoolService.ObjectPoolManager.SpawnObject(statCardPrefab, parent);
-            instance2.Init(statModifier2);
+            for (int i = 0; i < StatSystem.Instance.StatConfigData.SelectableStatCount; i++)
+            {
+                var randomIndex = Random.Range(0, availableStats.Count);
 
-            displayingStatCards.Add(instance);
-            displayingStatCards.Add(instance2);
+                var randomStatType = availableStats[randomIndex];
+
+                var randomModifier = StatSystem.Instance.CreateRandomModifier(randomStatType);
+
+                var instance = Dutpekmezi.Services.PoolService.ObjectPoolManager.SpawnObject(statCardPrefab, parent);
+                instance.Init(randomModifier);
+
+                displayingStatCards.Add(instance);
+                availableStats.Remove(randomStatType);
+            }
+
         }
 
         private void HideStatsHandler(StatModifier statModifier)

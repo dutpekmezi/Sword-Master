@@ -17,5 +17,17 @@ namespace dutpekmezi
         public WeaponType WeaponType;
 
         public CharacterBase Prefab;
+
+        public List<StatType> GetStatsType()
+        {
+            List<StatType> retunList = new List<StatType>();
+
+            foreach (var stat in BaseStats)
+            {
+                retunList.Add(stat.Type);
+            }
+
+            return retunList;
+        }
     }
 }
