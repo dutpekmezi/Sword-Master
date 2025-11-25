@@ -14,6 +14,11 @@ namespace dutpekmezi
 
         private StatueBase statStatue;
         private StatueBase weaponStatue;
+
+
+        public List<StatueBase> ActiveStatues => activeStatues;
+        public List<StatStatue> ActiveStatStatues => activeStatStatues;
+        public List<WeaponStatue> ActiveWeaponStatues => activeWeaponStatues;
         public static StatueManager Instance { get; private set; }
         public StatueManager(StatueBase statStatue, StatueBase weaponStatue)
         {

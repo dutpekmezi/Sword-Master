@@ -15,6 +15,7 @@ namespace dutpekmezi
     {
         private EnemySystem enemySystem;
         private CharacterSystem characterSystem;
+        private WaveConfig waveConfig;
 
         public Transform WaveEntitiesHolder {  get; private set; }
 
@@ -54,6 +55,8 @@ namespace dutpekmezi
         )
         {
             Instance = this;
+
+            this.waveConfig = waveConfig;
 
             this.enemySystem = enemySystem;
             this.characterSystem = characterSystem;
@@ -181,6 +184,8 @@ namespace dutpekmezi
 
         public void GenerateStatStatues(int count)
         {
+            if (StatueManager.Instance.ActiveStatStatues.Count >= waveConfig.maxStatStatue || StatueManager.Instance.ActiveStatues.Count >= waveConfig.maxStatStatue) return;
+
             var statues = StatueManager.Instance.CreateStatStatues(count);
 
             foreach (var statue in statues)
@@ -192,6 +197,8 @@ namespace dutpekmezi
 
         public void GenerateWeaponStatues(int count)
         {
+            if (StatueManager.Instance.ActiveWeaponStatues.Count >= waveConfig.maxWeaponStatue || StatueManager.Instance.ActiveStatues.Count >= waveConfig.maxStatStatue) return;
+
             var statues = StatueManager.Instance.CreateWeaponStatues(count);
 
             foreach (var statue in statues)
