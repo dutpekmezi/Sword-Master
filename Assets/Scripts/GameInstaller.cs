@@ -14,33 +14,11 @@ namespace dutpekmezi
         [SerializeField] private EnemyDatas enemyDatas;
         [SerializeField] private WeaponDatas weaponDatas;
         [SerializeField] private StatConfigData statConfigData;
+        [SerializeField] private WaveConfig waveConfig;
 
-        [Header("Wave Entites Settings")]
-        [SerializeField] private Transform waveEntitiesHolder;
+        [Header("Statue References")]
         [SerializeField] private StatueBase statStatue;
         [SerializeField] private StatueBase weaponStatue;
-
-        [Header("Wave Time Settings")]
-        [SerializeField] private float preChaosDuration;
-        [SerializeField] private float preChaosWaweSpawnRate;
-        [SerializeField] private float preChaosGroupSpawnRate;
-
-        [Header("Enemy Wave Settings")]
-        [SerializeField] private int enemiesPerWave;
-        [SerializeField] private float waveSpawnRadius;
-        [SerializeField] private float waveSpawnDeflection;
-
-        [Header("Enemy Group Wave Settings")]
-        [SerializeField] private int enemiesPerGroup;
-        [SerializeField] private float groupSpawnRadius;
-        [SerializeField] private float groupSpawnDeflection;
-        [SerializeField] private float enemyGroupRadius;
-        [SerializeField] private float enemyGroupDeflection;
-
-        [Header("Statues")]
-        [SerializeField] private int statuesPerWave;
-        [SerializeField] private float statueSpawnRadius;
-        [SerializeField] private float statueSpawnDeflection;
 
         [Header("UI settings")]
         [SerializeField] private WaveTimerUI waveTimerUI;
@@ -89,21 +67,7 @@ namespace dutpekmezi
             _waveManager = Bind(new WaveManager(
                 _enemySystem,
                 _characterSystem,
-                enemiesPerWave,
-                enemiesPerGroup,
-                groupSpawnRadius,
-                groupSpawnDeflection,
-                enemyGroupRadius,
-                enemyGroupDeflection,
-                waveSpawnRadius,
-                waveSpawnDeflection,
-                statuesPerWave,
-                statueSpawnRadius,
-                statueSpawnDeflection,
-                preChaosDuration,
-                preChaosWaweSpawnRate,
-                preChaosGroupSpawnRate,
-                waveEntitiesHolder
+                waveConfig
 
             ));
         }

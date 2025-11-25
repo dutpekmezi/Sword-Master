@@ -403,23 +403,9 @@ MonoBehaviour:
   enemyDatas: {fileID: 11400000, guid: 1847da9bbe11b1047b5481cc1bb0b4bc, type: 2}
   weaponDatas: {fileID: 11400000, guid: c8f66e4d63709db4d84a86ca5d125bbc, type: 2}
   statConfigData: {fileID: 11400000, guid: 7e1fe012667125d4a99ef3f5618041d8, type: 2}
-  waveEntitiesHolder: {fileID: 1391424006}
+  waveConfig: {fileID: 11400000, guid: 1a747af9cf9dab64db7b1f72222da018, type: 2}
   statStatue: {fileID: -4551841987901079533, guid: 994903e3c2a275a4497a1b8606c4c98e, type: 3}
   weaponStatue: {fileID: 9090101051857835159, guid: e7576f7495aef5245bde937ed9cb4a04, type: 3}
-  preChaosDuration: 300
-  preChaosWaweSpawnRate: 30
-  preChaosGroupSpawnRate: 0
-  enemiesPerWave: 30
-  waveSpawnRadius: 20
-  waveSpawnDeflection: 5
-  enemiesPerGroup: 20
-  groupSpawnRadius: 20
-  groupSpawnDeflection: 5
-  enemyGroupRadius: 5
-  enemyGroupDeflection: 2
-  statuesPerWave: 2
-  statueSpawnRadius: 30
-  statueSpawnDeflection: 20
   waveTimerUI: {fileID: 1516540807999556645}
 --- !u!1 &1384146160
 GameObject:

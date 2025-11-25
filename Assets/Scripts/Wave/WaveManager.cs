@@ -48,24 +48,9 @@ namespace dutpekmezi
 
         public static WaveManager Instance { get; private set; }
 
-        public WaveManager(
-            EnemySystem enemySystem,
+        public WaveManager(EnemySystem enemySystem,
             CharacterSystem characterSystem,
-            int enemiesPerWawe,
-            int enemiesPerGroup,
-            float groupSpawnRadius,
-            float groupSpawnDeflection,
-            float enemyGroupRadius,
-            float enemyGroupDeflection,
-            float waweSpawnRadius,
-            float waweSpawnDeflection,
-            int statuesPerWave,
-            float statueSpawnRadius,
-            float statueSpawnDeflection,
-            float preChaosDuration,
-            float preChaosWaweSpawnRate,
-            float preChaosGroupSpawnRate,
-            Transform levelEntitesHolder
+            WaveConfig waveConfig
         )
         {
             Instance = this;
@@ -73,25 +58,25 @@ namespace dutpekmezi
             this.enemySystem = enemySystem;
             this.characterSystem = characterSystem;
 
-            EnemiesPerGroup = enemiesPerGroup;
-            GroupSpawnRadius = groupSpawnRadius;
-            GroupSpawnDeflection = groupSpawnDeflection;
-            EnemyGroupRadius = enemyGroupRadius;
-            EnemyGroupDeflection = enemyGroupDeflection;
+            EnemiesPerGroup = waveConfig.enemiesPerGroup;
+            GroupSpawnRadius = waveConfig.groupSpawnRadius;
+            GroupSpawnDeflection = waveConfig.groupSpawnDeflection;
+            EnemyGroupRadius = waveConfig.enemyGroupRadius;
+            EnemyGroupDeflection = waveConfig.enemyGroupDeflection;
 
-            EnemiesPerWawe = enemiesPerWawe;
-            WaweSpawnRadius = waweSpawnRadius;
-            WaweSpawnDeflection = waweSpawnDeflection;
+            EnemiesPerWawe = waveConfig.enemiesPerWave;
+            WaweSpawnRadius = waveConfig.waveSpawnRadius;
+            WaweSpawnDeflection = waveConfig.waveSpawnDeflection;
 
-            StatuesPerWave = statuesPerWave;
-            StatueSpawnRadius = statueSpawnRadius;
-            StatueSpawnDeflection = statueSpawnDeflection;
+            StatuesPerWave = waveConfig.statuesPerWave;
+            StatueSpawnRadius = waveConfig.statueSpawnRadius;
+            StatueSpawnDeflection = waveConfig.statueSpawnDeflection;
 
-            PreChaosDuration = preChaosDuration;
-            PreChaosGroupSpawnRate = preChaosGroupSpawnRate;
-            PreChaosWaveSpawnRate = preChaosWaweSpawnRate;
+            PreChaosDuration = waveConfig.preChaosDuration;
+            PreChaosGroupSpawnRate = waveConfig.preChaosGroupSpawnRate;
+            PreChaosWaveSpawnRate = waveConfig.preChaosWaveSpawnRate;
 
-            WaveEntitiesHolder = levelEntitesHolder;
+            WaveEntitiesHolder = waveConfig.waveEntitiesHolder;
 
             OnInitialize();
         }
