@@ -848,12 +848,12 @@ TextureImporter:
       name: TX Props_21
       rect:
         serializedVersion: 2
-        x: 224
-        y: 416
-        width: 32
-        height: 32
+        x: 227
+        y: 355
+        width: 26
+        height: 13
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1016,28 +1016,6 @@ TextureImporter:
       bones: []
       spriteID: 002de06d8159bda4b9f21e7f2f0e9c5f
       internalID: -903223499
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: TX Props_32
-      rect:
-        serializedVersion: 2
-        x: 224
-        y: 384
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f514718a44d68ae44bf44c684b0783b0
-      internalID: 1790224295
       vertices: []
       indices: 
       edges: []
@@ -1214,28 +1192,6 @@ TextureImporter:
       bones: []
       spriteID: 2fc3430148fb9c14a8f6e400218b7ba2
       internalID: 1383588574
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: TX Props_42
-      rect:
-        serializedVersion: 2
-        x: 224
-        y: 352
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 40a8e6b60d88ae44d911c565f2842242
-      internalID: 1561032154
       vertices: []
       indices: 
       edges: []
@@ -2622,6 +2578,28 @@ TextureImporter:
       bones: []
       spriteID: 7fa95e45c8b46ed459e17f8905f2da64
       internalID: 1080817446
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TX Props_18
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 368
+        width: 26
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c95a16e9a04482c4bb5c58b3a40bc266
+      internalID: -1345727687
       vertices: []
       indices: 
       edges: []

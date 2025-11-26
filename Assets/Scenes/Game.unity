@@ -404,6 +404,7 @@ MonoBehaviour:
   weaponDatas: {fileID: 11400000, guid: c8f66e4d63709db4d84a86ca5d125bbc, type: 2}
   statConfigData: {fileID: 11400000, guid: 7e1fe012667125d4a99ef3f5618041d8, type: 2}
   waveConfig: {fileID: 11400000, guid: 1a747af9cf9dab64db7b1f72222da018, type: 2}
+  indicatorConfig: {fileID: 11400000, guid: ba65af8c56cada64e9b73bc6857a44ed, type: 2}
   statStatue: {fileID: -4551841987901079533, guid: 994903e3c2a275a4497a1b8606c4c98e, type: 3}
   weaponStatue: {fileID: 9090101051857835159, guid: e7576f7495aef5245bde937ed9cb4a04, type: 3}
   waveTimerUI: {fileID: 1516540807999556645}

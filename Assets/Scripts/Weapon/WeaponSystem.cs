@@ -31,6 +31,8 @@ namespace dutpekmezi
             SignalBus.Get<CharacterSystem.OnCharacterSpawnedSignal>().Subscribe(OnCharacterSpawned);
 
             SignalBus.Get<OnWeaponSelected>().Subscribe(EquipWeaponhandler);
+
+            SignalBus.Get<OnWeaponSelection>().Invoke();
         }
 
         private void OnCharacterSpawned(CharacterBase character)

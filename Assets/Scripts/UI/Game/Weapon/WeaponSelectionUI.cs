@@ -42,6 +42,8 @@ namespace dutpekmezi
 
                 displayingWeaponCards.Add(instance);
             }
+
+            GameInstaller.Instance.OnApplicationPause(true);
         }
 
         public void HideWeapons()
@@ -59,6 +61,8 @@ namespace dutpekmezi
             }
 
             onSelecting = false;
+
+            GameInstaller.Instance.OnApplicationPause(false);
         }
 
         private void OnWeaponSelectedHandler(WeaponData weaponData)

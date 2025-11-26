@@ -17,8 +17,6 @@ namespace dutpekmezi
         private CharacterSystem characterSystem;
         private WaveConfig waveConfig;
 
-        public Transform WaveEntitiesHolder {  get; private set; }
-
         //------------------------------ENEMY GROUP----------------------------------------//
         public int EnemiesPerGroup { get; private set; }
         public float GroupSpawnRadius { get; private set; }
@@ -79,8 +77,6 @@ namespace dutpekmezi
             PreChaosGroupSpawnRate = waveConfig.preChaosGroupSpawnRate;
             PreChaosWaveSpawnRate = waveConfig.preChaosWaveSpawnRate;
 
-            WaveEntitiesHolder = waveConfig.waveEntitiesHolder;
-
             OnInitialize();
         }
 
@@ -126,8 +122,8 @@ namespace dutpekmezi
 
             if (waveSpawnTimer >= PreChaosWaveSpawnRate && PreChaosWaveSpawnRate > 0)
             {
-                GenerateStatStatues(2);
-                GenerateWeaponStatues(2);
+                GenerateStatStatues(waveConfig.statuesPerWave);
+                GenerateIndicatorsForStatStatues();
                 GenerateEnemyWawe(EnemiesPerWawe);
                 waveSpawnTimer = 0f;
             }
@@ -184,12 +180,12 @@ namespace dutpekmezi
 
         public void GenerateStatStatues(int count)
         {
-            if (StatueManager.Instance.ActiveStatStatues.Count >= waveConfig.maxStatStatue || StatueManager.Instance.ActiveStatues.Count >= waveConfig.maxStatStatue) return;
-
-            var statues = StatueManager.Instance.CreateStatStatues(count);
-
-            foreach (var statue in statues)
+            for (int i = 0; i < count; i++)
             {
+                if (StatueManager.Instance.ActiveStatStatues.Count >= waveConfig.maxStatStatue || StatueManager.Instance.ActiveStatues.Count >= waveConfig.maxStatue) return;
+
+                var statue = StatueManager.Instance.CreateStatStatue();
+
                 var randomPos = GenerateRandomPos(StatueSpawnRadius, StatueSpawnDeflection, characterSystem.GetCurrentCharacter().transform.position);
                 statue.transform.position = randomPos;
             }
@@ -197,15 +193,29 @@ namespace dutpekmezi
 
         public void GenerateWeaponStatues(int count)
         {
-            if (StatueManager.Instance.ActiveWeaponStatues.Count >= waveConfig.maxWeaponStatue || StatueManager.Instance.ActiveStatues.Count >= waveConfig.maxStatStatue) return;
-
-            var statues = StatueManager.Instance.CreateWeaponStatues(count);
-
-            foreach (var statue in statues)
+            for (int i = 0; i < count; i++)
             {
+                if (StatueManager.Instance.ActiveWeaponStatues.Count >= waveConfig.maxWeaponStatue || StatueManager.Instance.ActiveStatues.Count >= waveConfig.maxStatue) return;
+
+                var statue = StatueManager.Instance.CreateWeaponStatue();
+
                 var randomPos = GenerateRandomPos(StatueSpawnRadius, StatueSpawnDeflection, characterSystem.GetCurrentCharacter().transform.position);
                 statue.transform.position = randomPos;
             }
+        }
+
+        public void GenerateIndicatorsForStatStatues()
+        {
+            var targetlist = StatueManager.Instance.GetStatStatuesTransform();
+
+            IndicatorManager.Instance.CreateTargetIndicators(targetlist, characterSystem.GetCurrentCharacter().transform);
+        }
+
+        public void GenerateIndicatorsForWeaponStatues()
+        {
+            var targetlist = StatueManager.Instance.GetWeaponStatuesTransform();
+
+            IndicatorManager.Instance.CreateTargetIndicators(targetlist, characterSystem.GetCurrentCharacter().transform);
         }
 
         public Vector2 GenerateRandomPos(float radius, float deflection, Vector2 center)

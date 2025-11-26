@@ -39,11 +39,12 @@ namespace dutpekmezi
             updateTimer = 0f;
 
             Dutpekmezi.Services.PoolService.ObjectPoolManager.DeSpawn(this.gameObject);
+            StatueManager.Instance.DisposeStatue(this);
         }
 
         private void OnTriggerExit2D(Collider2D col)
         {
-            if (col.gameObject != CharacterSystem.Instance.GetCurrentCharacter().gameObject) return;
+            if (col.transform != CharacterSystem.Instance.GetCurrentCharacter()) return;
 
             updateTimer = 0f;
         }

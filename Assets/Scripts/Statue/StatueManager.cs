@@ -1,8 +1,6 @@
-using Dutpekmezi.Services.PoolService;
-using NUnit.Framework;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using UnityEngine;
+using Utils.Signal;
 
 namespace dutpekmezi
 {
@@ -48,7 +46,7 @@ namespace dutpekmezi
 
         public StatueBase CreateStatStatue()
         {
-            var instance = Dutpekmezi.Services.PoolService.ObjectPoolManager.SpawnObject(statStatue, WaveManager.Instance.WaveEntitiesHolder);
+            var instance = Dutpekmezi.Services.PoolService.ObjectPoolManager.SpawnObject(statStatue, Vector2.zero);
             instance.Init(StatueType.Stat);
 
             activeStatues.Add(instance);
@@ -74,7 +72,7 @@ namespace dutpekmezi
 
         public StatueBase CreateWeaponStatue()
         {
-            var instance = Dutpekmezi.Services.PoolService.ObjectPoolManager.SpawnObject(weaponStatue, WaveManager.Instance.WaveEntitiesHolder);
+            var instance = Dutpekmezi.Services.PoolService.ObjectPoolManager.SpawnObject(weaponStatue, Vector2.zero);
             instance.Init(StatueType.Weapon);
 
             activeStatues.Add(instance);
@@ -95,5 +93,65 @@ namespace dutpekmezi
 
             return createdStatues;
         }
+
+        public List<Transform> GetStatStatuesTransform()
+        {
+            var transformList = new List<Transform>();
+
+            foreach (var instance in activeStatStatues)
+            {
+                transformList.Add(instance.transform);
+            }
+
+            return transformList;
+        }
+
+        public List<Transform> GetWeaponStatuesTransform()
+        {
+            var transformList = new List<Transform>();
+
+            foreach (var instance in activeWeaponStatues)
+            {
+                transformList.Add(instance.transform);
+            }
+
+            return transformList;
+        }
+
+        public List<Transform> GetAllStatuesTransform()
+        {
+            var transformList = new List<Transform>();
+
+            foreach (var instance in activeStatues)
+            {
+                transformList.Add(instance.transform);
+            }
+
+            return transformList;
+        }
+
+        public StatueBase DisposeStatue(StatueBase statue)
+        {
+            SignalBus.Get<OnStatueDispose>().Invoke(statue.transform);
+
+
+            if (statue.Type == StatueType.Stat)
+            {
+                activeStatStatues.Remove((StatStatue)statue);
+                activeStatues.Remove(statue);
+                return statue;
+            }
+
+            if (statue.Type == StatueType.Weapon)
+            {
+                activeWeaponStatues.Remove((WeaponStatue)statue);
+                activeStatues.Remove(statue);
+                return statue;
+            }
+
+            return null;
+        }
+
+        public class OnStatueDispose : Signal<Transform> {}
     }
 }

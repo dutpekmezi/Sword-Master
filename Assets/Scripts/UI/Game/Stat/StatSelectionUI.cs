@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Utils.Signal;
+using Utils.LogicTimer;
 
 namespace dutpekmezi
 {
@@ -28,7 +29,7 @@ namespace dutpekmezi
 
             onSelecting = true;
 
-            scnreenDim.SetActive(false);
+            scnreenDim.SetActive(true);
 
             var character = CharacterSystem.Instance.GetCurrentCharacter();
 
@@ -48,6 +49,8 @@ namespace dutpekmezi
                 displayingStatCards.Add(instance);
                 availableStats.Remove(randomStatType);
             }
+
+            GameInstaller.Instance.OnApplicationPause(true);
 
         }
 
@@ -71,6 +74,8 @@ namespace dutpekmezi
             }
 
             onSelecting = false;
+
+            GameInstaller.Instance.OnApplicationPause(false);
         }
 
         private void OnWeaponSelectedHandler(WeaponData weaponData)

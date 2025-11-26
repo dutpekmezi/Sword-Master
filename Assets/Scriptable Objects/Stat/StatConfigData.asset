@@ -19,3 +19,4 @@ MonoBehaviour:
   - Type: 1
     Color: {r: 1, g: 0.7375452, b: 0.28490567, a: 1}
     Icon: {fileID: 21300000, guid: ca5cefce1252a4b9ebb06c6124328897, type: 3}
+  SelectableStatCount: 3

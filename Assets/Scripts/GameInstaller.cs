@@ -15,6 +15,7 @@ namespace dutpekmezi
         [SerializeField] private WeaponDatas weaponDatas;
         [SerializeField] private StatConfigData statConfigData;
         [SerializeField] private WaveConfig waveConfig;
+        [SerializeField] private IndicatorConfig indicatorConfig;
 
         [Header("Statue References")]
         [SerializeField] private StatueBase statStatue;
@@ -34,11 +35,16 @@ namespace dutpekmezi
         private WaveManager _waveManager;
         private UIManager _uiManager;
         private StatueManager _statueManager;
+        private IndicatorManager _indicatorManager;
 
         private bool _initialized;
 
+        public static GameInstaller Instance { get; private set; }
+
         private async void Awake()
         {
+            Instance = this;
+
             await Initialize();
         }
 
@@ -63,6 +69,7 @@ namespace dutpekmezi
             _statSystem = Bind(new StatSystem(statConfigData));
             _uiManager = Bind(new UIManager(waveTimerUI));
             _statueManager = Bind(new StatueManager(statStatue, weaponStatue));
+            _indicatorManager = Bind(new IndicatorManager(indicatorConfig));
 
             _waveManager = Bind(new WaveManager(
                 _enemySystem,
@@ -81,6 +88,7 @@ namespace dutpekmezi
             _waveManager.Tick();
             _uiManager.Tick();
             _statueManager.Tick();
+            _indicatorManager.Tick();
         }
 
         private void Update()
@@ -94,7 +102,7 @@ namespace dutpekmezi
             _logicTimer?.Update();
         }
 
-        private void OnApplicationPause(bool pause)
+        public void OnApplicationPause(bool pause)
         {
             if (pause)
                 _logicTimer?.Pause();

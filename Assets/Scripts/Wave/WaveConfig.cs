@@ -6,10 +6,6 @@ namespace dutpekmezi
     [CreateAssetMenu(fileName = "WaveConfig", menuName = "Game/Scriptable Objects/Wave/WaveConfig")]
     public class WaveConfig : ScriptableObject
     {
-        [Header("Wave Entites Settings")]
-        public Transform waveEntitiesHolder;
-        
-
         [Header("Wave Time Settings")]
         public float preChaosDuration;
         public float preChaosWaveSpawnRate;
