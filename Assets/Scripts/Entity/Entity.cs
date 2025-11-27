@@ -14,6 +14,10 @@ namespace dutpekmezi
 
         [SerializeField] protected float currentHealth;
 
+        [SerializeField] protected int currentLevel;
+
+        [SerializeField] protected float currentExp;
+
         protected bool isDead = false;
 
         public float CurrentHealth => currentHealth;
@@ -77,7 +81,7 @@ namespace dutpekmezi
             return 0f;
         }
 
-        private void OnTakeDamageHandler(Entity entity, float dmg)
+        protected void OnTakeDamageHandler(Entity entity, float dmg)
         {
             if (isDead) return;
 
@@ -110,6 +114,22 @@ namespace dutpekmezi
             ObjectPoolManager.DeSpawn(gameObject);
 
             SignalBus.Get<OnDeath>().Invoke(this);
+            SignalBus.Get<OnEnemyKill>().Invoke(GetStatValue(StatType.ExpOnDeath));
+        }
+
+        protected virtual void Gainlevel(int amount = 1)
+        {
+            currentLevel += amount;
+        }
+
+        protected virtual void GainExp(float amount)
+        {
+            currentExp += amount;
+
+            if (currentExp >= GetStatValue(StatType.ExpToLevelUp))
+            {
+                Gainlevel();
+            }
         }
 
         public class OnTakeDamage : Signal<Entity, float> { }

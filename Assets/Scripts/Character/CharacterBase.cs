@@ -42,12 +42,14 @@ namespace dutpekmezi
             currentHealth = (int)GetStatValue(StatType.MaxHealth);
             currentEnergy = 0;
 
-            //SignalBus.Get<OnTakeDamage>().Subscribe(OnTakeDamageHandler);
+            SignalBus.Get<OnTakeDamage>().Subscribe(OnTakeDamageHandler);
 
             SignalBus.Get<StatSystem.OnStatSelected>().Subscribe(ApplySelectedModifier);
+
+            SignalBus.Get<OnEnemyKill>().Subscribe(GainExp);
         }
 
-        public void Tick()
+        public override void Tick()
         {
             if (isDead) return;
 
@@ -98,6 +100,6 @@ namespace dutpekmezi
             SignalBus.Get<OnStatsChange>().Invoke(this);
         }
 
-        
+        public class OnEnemyKill : Signal<float> { }
     }
 }

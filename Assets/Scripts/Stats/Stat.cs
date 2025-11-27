@@ -128,6 +128,8 @@ namespace dutpekmezi
         Energy,
         HealthRegen,
         EnergyRegen,
-        LifeSteel
+        LifeSteel,
+        ExpToLevelUp,
+        ExpOnDeath
     }
 }
