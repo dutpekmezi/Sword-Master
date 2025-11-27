@@ -4,7 +4,7 @@ using Utils.Signal;
 
 namespace dutpekmezi
 {
-    public class CharacterBase : MonoBehaviour
+    public class CharacterBase : Entity
     {
         [Header("Assigned Data")]
         [SerializeField] private CharacterData characterData;
@@ -19,22 +19,14 @@ namespace dutpekmezi
         private Vector2 moveInput;
         private Vector2 moveVelocity;
 
-        private Dictionary<StatType, Stat> _runtimeStats = new Dictionary<StatType, Stat>();
-
-        private bool isDead = false;
-
-        [SerializeField] private float currentHealth;
         [SerializeField] private float currentEnergy;
-        public float CurrentHealth => currentHealth;
         public float CurrentEnergy => currentEnergy;
 
         public bool isEnergyFull => currentEnergy >= GetStatValue(StatType.Energy); 
 
-        public Transform Transform => transform;
-
         public CharacterData CharacterData => characterData;
 
-        public void Initialize()
+        public override void Initialize()
         {
             isDead = false;
 
@@ -50,7 +42,7 @@ namespace dutpekmezi
             currentHealth = (int)GetStatValue(StatType.MaxHealth);
             currentEnergy = 0;
 
-            SignalBus.Get<OnTakeDamage>().Subscribe(OnTakeDamageHandler);
+            //SignalBus.Get<OnTakeDamage>().Subscribe(OnTakeDamageHandler);
 
             SignalBus.Get<StatSystem.OnStatSelected>().Subscribe(ApplySelectedModifier);
         }
@@ -85,64 +77,7 @@ namespace dutpekmezi
             rb.MovePosition(rb.position + moveVelocity * Utils.LogicTimer.LogicTimer.FixedDelta);
         }
 
-        public void ApplyModifier(StatModifier modifier)
-        {
-            if (_runtimeStats.TryGetValue(modifier.Type, out Stat stat))
-            {
-                stat.AddModifier(modifier);
-
-                if (modifier.Type == StatType.MaxHealth)
-                {
-                    if (currentHealth > stat.Value)
-                    {
-                        currentHealth = stat.Value;
-                    }
-                }
-
-                SignalBus.Get<OnStatsChange>().Invoke(this);
-            }
-        }
-
-        private void ApplySelectedModifier(StatModifier modifier)
-        {
-            ApplyModifier(modifier);
-        }
-
-        public float GetStatValue(StatType type)
-        {
-            if (_runtimeStats.TryGetValue(type, out Stat stat))
-            {
-                return stat.Value;
-            }
-            return 0f;
-        }
-
-        private void OnTakeDamageHandler(CharacterBase character, int dmg)
-        {
-            if (isDead) return;
-
-            TakeDamage(dmg);
-        }
-
-        private void TakeDamage(int damageAmount)
-        {
-            SetHealth(-damageAmount);
-        }
-
-        private void SetHealth(int amount)
-        {
-            if (isDead) return;
-
-            currentHealth += amount;
-
-            if (currentHealth <= 0)
-            {
-                currentHealth = 0;
-                isDead = true;
-            }
-
-            SignalBus.Get<OnStatsChange>().Invoke(this);
-        }
+        
 
         private void SetEnergy(int amount)
         {
@@ -163,7 +98,6 @@ namespace dutpekmezi
             SignalBus.Get<OnStatsChange>().Invoke(this);
         }
 
-        public class OnTakeDamage : Signal<CharacterBase, int> {}
-        public class OnStatsChange : Signal<CharacterBase> {}
+        
     }
 }

@@ -14,14 +14,14 @@ namespace dutpekmezi
         {
             foreach (EnemyBase enemy in enemies)
             {
-                SignalBus.Get<EnemyBase.OnDeath>().Subscribe(RemoveEnemy);
+                SignalBus.Get<Entity.OnDeath>().Subscribe(RemoveEnemy);
             }
         }
 
-        private void RemoveEnemy(EnemyBase enemy)
+        private void RemoveEnemy(Entity enemy)
         {
-            members.Remove(enemy);
-            members.Remove(enemy);
+            members.Remove((EnemyBase)enemy);
+            members.Remove((EnemyBase)enemy);
         }
     }
 }

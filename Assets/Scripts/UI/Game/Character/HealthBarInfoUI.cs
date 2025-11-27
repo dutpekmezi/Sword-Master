@@ -30,14 +30,14 @@ namespace dutpekmezi
 
             if (characterData == null || character == null) return;
 
-            SignalBus.Get<CharacterBase.OnStatsChange>().Subscribe(UpdateSliders);
+            SignalBus.Get<Entity.OnStatsChange>().Subscribe(UpdateSliders);
 
-            characterImage.sprite = characterData.Icon;
+            characterImage.sprite = characterData.Sprite;
 
             UpdateSliders(character);
         }
 
-        private void UpdateSliders(CharacterBase character)
+        private void UpdateSliders(Entity character)
         {
             healthSlider.minValue = 0;
             healthSlider.maxValue = character.GetStatValue(StatType.MaxHealth);

@@ -5,7 +5,7 @@ using Utils.Signal;
 
 namespace dutpekmezi
 {
-    public class EnemyBase : MonoBehaviour
+    public class EnemyBase : Entity
     {
         [Header("Assigned Datas")]
         [SerializeField] private EnemyData enemyData;
@@ -13,21 +13,11 @@ namespace dutpekmezi
         [Header("References")]
         [SerializeField] private Collider2D col;
 
-        public Transform Transform => transform;
-
-        private int currentHealth;
-        private bool isDead = false;
         [SerializeField] private bool isLeader = false;
 
         public bool IsDead => isDead;
         public bool IsLeader => isLeader;
         public EnemyData EnemyData => enemyData;
-
-        public void Initialize()
-        {
-            isDead = false;
-            currentHealth = enemyData.MaxHealth;
-        }
 
         public void Tick(Vector2 playerPos)
         {
@@ -39,7 +29,7 @@ namespace dutpekmezi
             transform.position = Vector2.MoveTowards(
                 currentPos,
                 playerPos,
-                enemyData.MoveSpeed * LogicTimer.FixedDelta
+                GetStatValue(StatType.MoveSpeed) * LogicTimer.FixedDelta
             );
         }
 
@@ -48,21 +38,6 @@ namespace dutpekmezi
             if (isDead) return;
 
             TakeDamage(dmg);
-        }
-
-        private void TakeDamage(int dmg)
-        {
-            currentHealth -= dmg;
-            if (currentHealth <= 0)
-                Die();
-        }
-
-        private void Die()
-        {
-            isDead = true;
-            ObjectPoolManager.DeSpawn(gameObject);
-
-            SignalBus.Get<OnDeath>().Invoke(this);
         }
 
         public void SetAsLeader()
@@ -75,12 +50,10 @@ namespace dutpekmezi
             var character = col.GetComponent<CharacterBase>();
             if (character != null)
             {
-                SignalBus.Get<CharacterBase.OnTakeDamage>().Invoke(character, enemyData.AttackDamage);
+                SignalBus.Get<CharacterBase.OnTakeDamage>().Invoke(character, GetStatValue(StatType.BodyDamage));
 
                 OnTakeDamagehandler(1);
             }
         }
-
-        public class OnDeath : Signal<EnemyBase> {}
     }
 }
