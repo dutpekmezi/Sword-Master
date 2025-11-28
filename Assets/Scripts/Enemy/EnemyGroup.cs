@@ -14,7 +14,7 @@ namespace dutpekmezi
         {
             foreach (EnemyBase enemy in enemies)
             {
-                SignalBus.Get<Entity.OnDeath>().Subscribe(RemoveEnemy);
+                //SignalBus.Get<Entity.OnDeath>().Subscribe(RemoveEnemy);
             }
         }
 

@@ -1,52 +1,35 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using Utils.LogicTimer;
 using Utils.Signal;
 
 namespace dutpekmezi
 {
     public class CharacterBase : Entity
     {
-        [Header("Assigned Data")]
-        [SerializeField] private CharacterData characterData;
+        [Header("Current Info")]
+        [SerializeField] private float currentEnergy;
+        [SerializeField] private float everySecondTickDuration;
 
-        [Header("References")]
-        [SerializeField] private Rigidbody2D rb;
-        [SerializeField] private BoxCollider2D col;
-
-        [Header("Movement Settings")]
-        [SerializeField] private float smoothMove = 10f;
+        private float tickTimer;
 
         private Vector2 moveInput;
         private Vector2 moveVelocity;
 
-        [SerializeField] private float currentEnergy;
         public float CurrentEnergy => currentEnergy;
-
         public bool isEnergyFull => currentEnergy >= GetStatValue(StatType.Energy); 
-
-        public CharacterData CharacterData => characterData;
 
         public override void Initialize()
         {
-            isDead = false;
+            base.Initialize();
 
-            _runtimeStats.Clear();
-
-            foreach (var baseStat in characterData.BaseStats)
-            {
-                Stat runtimeStat = new Stat(baseStat.BaseValue);
-
-                _runtimeStats.Add(baseStat.Type, runtimeStat);
-            }
-
-            currentHealth = (int)GetStatValue(StatType.MaxHealth);
             currentEnergy = 0;
-
-            SignalBus.Get<OnTakeDamage>().Subscribe(OnTakeDamageHandler);
+            tickTimer = everySecondTickDuration;
 
             SignalBus.Get<StatSystem.OnStatSelected>().Subscribe(ApplySelectedModifier);
-
             SignalBus.Get<OnEnemyKill>().Subscribe(GainExp);
+            SignalBus.Get<OnlevelUp>().Subscribe(OnLevelUpHandler);
         }
 
         public override void Tick()
@@ -54,8 +37,24 @@ namespace dutpekmezi
             if (isDead) return;
 
             HandleInput();
-
             MoveCharacter();
+            OnEverySecondTick();
+        }
+
+        private void OnEverySecondTick()
+        {
+            float dt = LogicTimer.FixedDelta;
+            tickTimer -= dt;
+
+            if (tickTimer <= 0f)
+            {
+                float regenAmount = GetStatValue(StatType.HealthRegen);
+
+                if (regenAmount > 0)
+                    Heal((int)regenAmount);
+
+                tickTimer = everySecondTickDuration;
+            }
         }
 
         private void HandleInput()
@@ -79,9 +78,14 @@ namespace dutpekmezi
             rb.MovePosition(rb.position + moveVelocity * Utils.LogicTimer.LogicTimer.FixedDelta);
         }
 
-        
+        public override void ApplyModifier(StatModifier modifier)
+        {
+            base.ApplyModifier(modifier);
 
-        private void SetEnergy(int amount)
+            SignalBus.Get<OnStatsChange>().Invoke(this);
+        }
+
+        private void SetEnergy(float amount)
         {
             if (isDead || isEnergyFull) return;
 
@@ -100,6 +104,38 @@ namespace dutpekmezi
             SignalBus.Get<OnStatsChange>().Invoke(this);
         }
 
+        protected override void Gainlevel(int amount = 1)
+        {
+            base.Gainlevel(amount);
+
+            SignalBus.Get<OnlevelUp>().Invoke(amount);
+        }
+
+        protected override void GainExp(float amount)
+        {
+            base.GainExp(amount);
+
+            SetEnergy(amount);
+        }
+
+        private void OnLevelUpHandler(int level)
+        {
+            SignalBus.Get<StatSystem.OnStatSelection>().Invoke();
+        }
+
+        private void OnCollisionEnter2D(Collision2D col)
+        {
+            var enemy = col.gameObject.GetComponent<EnemyBase>();
+            if (enemy != null)
+            {
+                OnTakeDamageHandler(this, enemy.GetStatValue(StatType.BodyDamage));
+                SignalBus.Get<OnCollideWithEnemy>().Invoke(enemy, this, GetStatValue(StatType.BodyDamage));
+            }
+        }
+
         public class OnEnemyKill : Signal<float> { }
+        public class OnCollideWithEnemy : Signal<EnemyBase,CharacterBase, float> { }
+        public class OnStatsChange : Signal<CharacterBase> { }
+        public class OnlevelUp : Signal<int> { }
     }
 }

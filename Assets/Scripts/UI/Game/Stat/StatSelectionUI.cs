@@ -19,7 +19,6 @@ namespace dutpekmezi
         private void Start()
         {
             SignalBus.Get<StatSystem.OnStatSelection>().Subscribe(DisplayStats);
-
             SignalBus.Get<StatSystem.OnStatSelected>().Subscribe(HideStatsHandler);
         }
 
@@ -33,7 +32,7 @@ namespace dutpekmezi
 
             var character = CharacterSystem.Instance.GetCurrentCharacter();
 
-            List<StatType> availableStats = new List<StatType>(character.CharacterData.GetStatsType());
+            List<StatType> availableStats = new List<StatType>(character.EntityData.GetStatsType());
 
             for (int i = 0; i < StatSystem.Instance.StatConfigData.SelectableStatCount; i++)
             {

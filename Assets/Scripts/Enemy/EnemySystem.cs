@@ -65,8 +65,7 @@ namespace dutpekmezi
             int idx = Random.Range(0, enemyDatas.Enemies.Count);
             EnemyData data = enemyDatas.Enemies[idx];
 
-            var go = ObjectPoolManager.SpawnObject(data.Prefab, pos);
-            var enemy = go.GetComponent<EnemyBase>();
+            EnemyBase enemy = (EnemyBase)ObjectPoolManager.SpawnObject(data.Prefab, pos);
 
             enemy.Initialize();
             RegisterEnemy(enemy);

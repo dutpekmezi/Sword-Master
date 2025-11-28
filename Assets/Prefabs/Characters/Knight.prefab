@@ -47,12 +47,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5c3ab2783042044aaf9bb5bdb0ecb8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterData: {fileID: 11400000, guid: 75b40bbcf2ed50b45978601990d2574d, type: 2}
+  entityData: {fileID: 11400000, guid: 75b40bbcf2ed50b45978601990d2574d, type: 2}
+  currentHealth: 0
+  currentLevel: 0
+  currentExp: 0
   rb: {fileID: 3460207415227507878}
   col: {fileID: 2840507195096158369}
-  smoothMove: 20
-  currentHealth: 0
   currentEnergy: 0
+  everySecondTickDuration: 1
 --- !u!50 &3460207415227507878
 Rigidbody2D:
   serializedVersion: 5

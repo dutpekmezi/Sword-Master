@@ -16,7 +16,13 @@ MonoBehaviour:
   Name: Slime
   Description: Slime
   Sprite: {fileID: 0}
-  MaxHealth: 1
-  AttackDamage: 1
-  MoveSpeed: 1.1
+  BaseStats:
+  - Type: 0
+    baseValue: 1
+  - Type: 1
+    baseValue: 1.1
+  - Type: 2
+    baseValue: 1
+  - Type: 11
+    baseValue: 1
   Prefab: {fileID: 1662301267738328567, guid: 71716b921f14b224eacb7b90b295f172, type: 3}

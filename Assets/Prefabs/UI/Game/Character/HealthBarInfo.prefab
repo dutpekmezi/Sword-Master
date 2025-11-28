@@ -446,7 +446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 857bcc42e0129a6499fe6ab7ab220ad2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::dutpekmezi.HealthBarInfoUI
-  characterImage: {fileID: 273859869562736886}
+  entityImage: {fileID: 273859869562736886}
   healthSlider: {fileID: 3473217238155614769}
   energySlider: {fileID: 7678088775182830476}
   healthText: {fileID: 4369385583560786747}

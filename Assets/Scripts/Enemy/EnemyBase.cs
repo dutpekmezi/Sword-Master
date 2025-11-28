@@ -7,17 +7,15 @@ namespace dutpekmezi
 {
     public class EnemyBase : Entity
     {
-        [Header("Assigned Datas")]
-        [SerializeField] private EnemyData enemyData;
-
-        [Header("References")]
-        [SerializeField] private Collider2D col;
-
         [SerializeField] private bool isLeader = false;
 
-        public bool IsDead => isDead;
-        public bool IsLeader => isLeader;
-        public EnemyData EnemyData => enemyData;
+        public override void Initialize()
+        {
+            base.Initialize();
+
+            SignalBus.Get<CharacterBase.OnCollideWithEnemy>().Subscribe(OnCollideWithEnemyHandler);
+            SignalBus.Get<OnTakeDamage>().Subscribe(OnTakeDamageHandler);
+        }
 
         public void Tick(Vector2 playerPos)
         {
@@ -33,27 +31,34 @@ namespace dutpekmezi
             );
         }
 
-        public void OnTakeDamagehandler(int dmg)
+        public override void ApplyModifier(StatModifier modifier)
         {
-            if (isDead) return;
+            base.ApplyModifier(modifier);
 
-            TakeDamage(dmg);
+            SignalBus.Get<OnStatsChange>().Invoke(this);
         }
 
-        public void SetAsLeader()
+        protected override void SetHealth(int amount)
         {
-            isLeader = true;
+            base.SetHealth(amount);
+
+            SignalBus.Get<OnStatsChange>().Invoke(this);
         }
 
-        private void OnTriggerEnter2D(Collider2D col)
+        protected override void Die()
         {
-            var character = col.GetComponent<CharacterBase>();
-            if (character != null)
-            {
-                SignalBus.Get<CharacterBase.OnTakeDamage>().Invoke(character, GetStatValue(StatType.BodyDamage));
+            base.Die();
 
-                OnTakeDamagehandler(1);
-            }
+            SignalBus.Get<CharacterBase.OnEnemyKill>().Invoke(GetStatValue(StatType.ExpOnDeath));
         }
+
+        private void OnCollideWithEnemyHandler(EnemyBase enemy, CharacterBase character, float dmg)
+        {
+            if (enemy != this) return;
+            SignalBus.Get<OnTakeDamage>().Invoke(enemy, dmg);
+        }
+
+        public class OnStatsChange : Signal<EnemyBase> { }
+        public class OnTakeDamage : Signal<Entity, float> { }
     }
 }

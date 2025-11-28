@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using UnityEngine;
-using Utils.Logger;
 
 namespace Utils.LogicTimer
 {
@@ -21,12 +20,14 @@ namespace Utils.LogicTimer
 
         public float LerpAlpha => (float)(_accumulator / FixedDelta);
 
+        public float DeltaTime { get; private set; }
+
         public static LogicTimer Instance { get; private set; }
 
         public LogicTimer(Action onTick)
         {
             if (Instance != null)
-                throw new System.Exception("LogicTimer already has an instance");
+                throw new Exception("LogicTimer already has an instance");
 
             Instance = this;
 
@@ -52,6 +53,7 @@ namespace Utils.LogicTimer
         public void Pause()
         {
             if (IsPaused) return;
+
             IsPaused = true;
             _stopwatch.Stop();
         }
@@ -59,9 +61,11 @@ namespace Utils.LogicTimer
         public void Resume()
         {
             if (!IsPaused) return;
+
             IsPaused = false;
             _stopwatch.Start();
-            _lastTime = _stopwatch.ElapsedTicks; // Reset timing to avoid a jump
+
+            _lastTime = _stopwatch.ElapsedTicks;
         }
 
         public void Stop()
@@ -71,15 +75,17 @@ namespace Utils.LogicTimer
             _lastTime = 0;
         }
 
-
         public void Update()
         {
             if (IsPaused || !_stopwatch.IsRunning)
                 return;
 
             long elapsedTicks = _stopwatch.ElapsedTicks;
+
             double passedSeconds = (double)(elapsedTicks - _lastTime) / Stopwatch.Frequency;
-            
+
+            DeltaTime = (float)passedSeconds;
+
             _accumulator += passedSeconds;
             _totalTime += passedSeconds;
 
@@ -92,5 +98,4 @@ namespace Utils.LogicTimer
             }
         }
     }
-
 }

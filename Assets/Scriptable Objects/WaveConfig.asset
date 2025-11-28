@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: WaveConfig
   m_EditorClassIdentifier: Assembly-CSharp::dutpekmezi.WaveConfig
   preChaosDuration: 300
-  preChaosWaveSpawnRate: 10
+  preChaosWaveSpawnRate: 1
   preChaosGroupSpawnRate: 0
-  enemiesPerWave: 20
+  enemiesPerWave: 1
   waveSpawnRadius: 30
   waveSpawnDeflection: 10
   enemiesPerGroup: 0
@@ -23,9 +23,9 @@ MonoBehaviour:
   groupSpawnDeflection: 0
   enemyGroupRadius: 0
   enemyGroupDeflection: 0
-  statuesPerWave: 10
+  statuesPerWave: 2
   statueSpawnRadius: 10
   statueSpawnDeflection: 2
-  maxStatue: 10
+  maxStatue: 2
   maxStatStatue: 10
   maxWeaponStatue: 0

@@ -13,7 +13,7 @@ namespace dutpekmezi
 
             if (enemy != null)
             {
-                enemy.OnTakeDamagehandler(weaponData.AbilityDamage);
+                SignalBus.Get<EnemyBase.OnTakeDamage>().Invoke(enemy, weaponData.AbilityDamage);
             }
         }
     }

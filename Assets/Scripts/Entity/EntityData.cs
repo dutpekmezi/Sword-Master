@@ -2,27 +2,30 @@ using dutpekmezi;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EntityData : ScriptableObject
+namespace dutpekmezi
 {
-    public string Id;
-    public string Name;
-    public string Description;
-
-    public Sprite Sprite;
-
-    public List<Stat> BaseStats;
-
-    public Entity Prefab;
-
-    public List<StatType> GetStatsType()
+    public abstract class EntityData : ScriptableObject
     {
-        List<StatType> retunList = new List<StatType>();
+        public string Id;
+        public string Name;
+        public string Description;
 
-        foreach (var stat in BaseStats)
+        public Sprite Sprite;
+
+        public List<Stat> BaseStats;
+
+        public Entity Prefab;
+
+        public List<StatType> GetStatsType()
         {
-            retunList.Add(stat.Type);
-        }
+            List<StatType> retunList = new List<StatType>();
 
-        return retunList;
+            foreach (var stat in BaseStats)
+            {
+                retunList.Add(stat.Type);
+            }
+
+            return retunList;
+        }
     }
 }

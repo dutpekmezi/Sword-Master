@@ -141,7 +141,7 @@ namespace dutpekmezi
             {
                 var randomPos = GenerateRandomPos(WaweSpawnRadius, WaweSpawnDeflection, CharacterSystem.Instance.GetCurrentCharacter().transform.position);
 
-                var instance = enemySystem.CreateRandomEnemy(randomPos);
+                enemySystem.CreateRandomEnemy(randomPos);
             }
         }
 

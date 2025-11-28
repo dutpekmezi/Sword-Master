@@ -2,13 +2,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Utils.Signal;
+using UnityEngine.TextCore.Text;
 
 namespace dutpekmezi
 {
     public class HealthBarInfoUI : MonoBehaviour
     {
         [Header("References")]
-        [SerializeField] private Image characterImage;
+        [SerializeField] private Image entityImage;
 
         [SerializeField] private Slider healthSlider;
         [SerializeField] private Slider energySlider;
@@ -30,20 +31,25 @@ namespace dutpekmezi
 
             if (characterData == null || character == null) return;
 
-            SignalBus.Get<Entity.OnStatsChange>().Subscribe(UpdateSliders);
+            SignalBus.Get<CharacterBase.OnStatsChange>().Subscribe(UpdateSliders);
 
-            characterImage.sprite = characterData.Sprite;
+            entityImage.sprite = characterData.Sprite;
 
             UpdateSliders(character);
         }
 
-        private void UpdateSliders(Entity character)
+        private void UpdateSliders(CharacterBase character)
         {
             healthSlider.minValue = 0;
             healthSlider.maxValue = character.GetStatValue(StatType.MaxHealth);
             healthSlider.value = character.CurrentHealth;
 
             healthText.text = $"{character.CurrentHealth} / {character.GetStatValue(StatType.MaxHealth)}";
+
+
+            energySlider.minValue = 0;
+            energySlider.maxValue = character.GetStatValue(StatType.Energy);
+            energySlider.value = character.CurrentEnergy;
         }
     }
 }

@@ -1,27 +1,30 @@
-using System.Collections.Generic;
-using UnityEditor.U2D.Animation;
-using UnityEngine;
-using static dutpekmezi.CharacterBase;
-using Utils.Signal;
 using Dutpekmezi.Services.PoolService;
-using static dutpekmezi.EnemyBase;
-
+using System.Collections.Generic;
+using UnityEngine;
 namespace dutpekmezi
 {
     public class Entity : MonoBehaviour
     {
-        protected Dictionary<StatType, Stat> _runtimeStats = new Dictionary<StatType, Stat>();
+        [Header("Assigned Data")]
+        [SerializeField] protected EntityData entityData;
 
+        [Header("Current Info")]
         [SerializeField] protected float currentHealth;
-
         [SerializeField] protected int currentLevel;
-
         [SerializeField] protected float currentExp;
 
+        [Header("References")]
+        [SerializeField] protected Rigidbody2D rb;
+        [SerializeField] protected Collider2D col;
+
+        protected Dictionary<StatType, Stat> _runtimeStats = new Dictionary<StatType, Stat>();
         protected bool isDead = false;
 
+        public EntityData EntityData => entityData;
+        public bool IsDead => isDead;
         public float CurrentHealth => currentHealth;
         public Transform Transform => transform;
+        public Rigidbody2D Rb => rb;
 
         public virtual void Initialize()
         {
@@ -29,7 +32,7 @@ namespace dutpekmezi
 
             _runtimeStats.Clear();
 
-            /*foreach (var baseStat in characterData.BaseStats)
+            foreach (var baseStat in entityData.BaseStats)
             {
                 Stat runtimeStat = new Stat(baseStat.BaseValue);
 
@@ -37,11 +40,6 @@ namespace dutpekmezi
             }
 
             currentHealth = (int)GetStatValue(StatType.MaxHealth);
-            currentEnergy = 0;*/
-
-            SignalBus.Get<OnTakeDamage>().Subscribe(OnTakeDamageHandler);
-
-            SignalBus.Get<StatSystem.OnStatSelected>().Subscribe(ApplySelectedModifier);
         }
 
         public virtual void Tick()
@@ -62,8 +60,6 @@ namespace dutpekmezi
                         currentHealth = stat.Value;
                     }
                 }
-
-                SignalBus.Get<OnStatsChange>().Invoke(this);
             }
         }
 
@@ -81,45 +77,54 @@ namespace dutpekmezi
             return 0f;
         }
 
-        protected void OnTakeDamageHandler(Entity entity, float dmg)
+        public void OnTakeDamageHandler(Entity entity, float dmg)
         {
-            if (isDead) return;
+            if (isDead ||entity != this) return;
 
             TakeDamage(dmg);
         }
 
         protected virtual void TakeDamage(float damageAmount)
         {
-            SetHealth(-damageAmount);
+            SetHealth((int)-damageAmount);
         }
 
-        private void SetHealth(float amount)
+        protected virtual void SetHealth(int amount)
         {
             if (isDead) return;
 
             currentHealth += amount;
 
+            if (currentHealth > GetStatValue(StatType.MaxHealth))
+            {
+                currentHealth = GetStatValue(StatType.MaxHealth);
+            }
+
             if (currentHealth <= 0)
             {
                 currentHealth = 0;
-                isDead = true;
+                Die();
             }
+        }
 
-            SignalBus.Get<OnStatsChange>().Invoke(this);
+        protected void Heal(int amount)
+        {
+            if (isDead) return;
+
+            SetHealth(amount);
         }
 
         protected virtual void Die()
         {
             isDead = true;
-            ObjectPoolManager.DeSpawn(gameObject);
 
-            SignalBus.Get<OnDeath>().Invoke(this);
-            SignalBus.Get<OnEnemyKill>().Invoke(GetStatValue(StatType.ExpOnDeath));
+            ObjectPoolManager.DeSpawn(this.gameObject);
         }
 
         protected virtual void Gainlevel(int amount = 1)
         {
             currentLevel += amount;
+            currentExp = 0;
         }
 
         protected virtual void GainExp(float amount)
@@ -131,9 +136,5 @@ namespace dutpekmezi
                 Gainlevel();
             }
         }
-
-        public class OnTakeDamage : Signal<Entity, float> { }
-        public class OnStatsChange : Signal<Entity> { }
-        public class OnDeath : Signal<Entity> { }
     }
 }

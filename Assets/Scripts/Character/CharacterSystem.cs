@@ -43,7 +43,7 @@ namespace dutpekmezi
 
         public CharacterData GetCurrentCharacterData()
         {
-            return _currentCharacter != null ? _currentCharacter.CharacterData : null;
+            return _currentCharacter != null ? (CharacterData)_currentCharacter.EntityData : null;
         }
 
         public CharacterBase GetCurrentCharacter()
