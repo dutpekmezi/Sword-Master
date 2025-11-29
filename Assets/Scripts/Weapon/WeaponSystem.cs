@@ -66,6 +66,7 @@ namespace dutpekmezi
                 ObjectPoolManager.DeSpawn(_currentWeapon.gameObject);
 
             var instance = ObjectPoolManager.SpawnObject(weaponData.Prefab, _characterTransform);
+            instance.Initialize();
             instance.transform.localPosition = Vector3.zero;
 
             _currentWeapon = instance.GetComponent<WeaponBase>();

@@ -55,6 +55,7 @@ namespace dutpekmezi
         {
             float value = 0f;
             ModifierOperation operation;
+            StatTarget target = GetStatTargetByStatType(type);
 
             switch (type)
             {
@@ -103,11 +104,11 @@ namespace dutpekmezi
                 default:
                     operation = ModifierOperation.FlatAdd;
                     value = 1f;
-                    type = StatType.MaxHealth;
+                    type = StatType.MaxHealth;;
                     break;
             }
 
-            return new StatModifier(value, operation, type, source);
+            return new StatModifier(value, operation, type, source, target);
         }
 
         public List<StatType> GetUpgradableStatTypes()
@@ -135,6 +136,16 @@ namespace dutpekmezi
                 //StatType.ExpOnDeath,
                 //StatType.PushForce
             };
+        }
+
+        public StatTarget GetStatTargetByStatType(StatType type)
+        {
+            if (type == StatType.WeaponOrbitRadius || type == StatType.WeaponOrbitSpeed)
+            {
+                return StatTarget.Weapon;
+            }
+            else
+                return StatTarget.Entity;
         }
 
         public float ClampStatValue(StatType statType, float currentValue)

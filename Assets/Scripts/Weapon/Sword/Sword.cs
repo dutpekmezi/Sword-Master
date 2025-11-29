@@ -33,7 +33,7 @@ namespace dutpekmezi
                     Mathf.Cos(targetAngle * Mathf.Deg2Rad),
                     Mathf.Sin(targetAngle * Mathf.Deg2Rad),
                     0f
-                ) * character.GetStatValue(StatType.WeaponOrbitRadius);
+                ) * GetStatValue(StatType.WeaponOrbitRadius);
 
                 isMoving = true;
                 SetRotate(false);
@@ -46,7 +46,7 @@ namespace dutpekmezi
             float z = transform.position.z;
 
             transform.DOMove(new Vector3(targetPosition.x, targetPosition.y, z),
-                                         Vector2.Distance(transform.position, targetPosition) / (character.GetStatValue(StatType.WeaponOrbitSpeed) * 0.2f))
+                                         Vector2.Distance(transform.position, targetPosition) / (GetStatValue(StatType.WeaponOrbitSpeed) * 5))
                 .SetEase(Ease.InOutSine)
                 .OnUpdate(() =>
                 {

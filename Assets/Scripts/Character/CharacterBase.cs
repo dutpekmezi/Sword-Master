@@ -80,7 +80,7 @@ namespace dutpekmezi
             rb.MovePosition(rb.position + moveVelocity * Utils.LogicTimer.LogicTimer.FixedDelta);
         }
 
-        public override void ApplyModifier(StatModifier modifier)
+        protected override void ApplyModifier(StatModifier modifier)
         {
             base.ApplyModifier(modifier);
 

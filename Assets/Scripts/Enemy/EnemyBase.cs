@@ -31,7 +31,7 @@ namespace dutpekmezi
             );
         }
 
-        public override void ApplyModifier(StatModifier modifier)
+        protected override void ApplyModifier(StatModifier modifier)
         {
             base.ApplyModifier(modifier);
 

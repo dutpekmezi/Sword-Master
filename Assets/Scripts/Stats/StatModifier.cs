@@ -11,6 +11,7 @@ namespace dutpekmezi
     public class StatModifier
     {
         public readonly StatType Type;
+        public readonly StatTarget Target;
 
         public readonly float Value;
         public readonly ModifierOperation Operation;
@@ -22,6 +23,15 @@ namespace dutpekmezi
             Operation = operation;
             Source = null;
             Type = type;
+        }
+
+        public StatModifier(float value, ModifierOperation operation, StatType type, object source, StatTarget target)
+        {
+            Value = value;
+            Operation = operation;
+            Source = null;
+            Type = type;
+            Target = target;
         }
 
         public StatModifier(float value, ModifierOperation operation, StatType type, object source)

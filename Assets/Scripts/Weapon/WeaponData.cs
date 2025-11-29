@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace dutpekmezi
@@ -21,6 +23,8 @@ namespace dutpekmezi
         public WeaponBase Prefab;
 
         public WeaponType WeaponType;
+
+        public List<Stat> BaseStats;
     }
 
     public enum WeaponType

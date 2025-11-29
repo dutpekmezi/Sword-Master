@@ -124,6 +124,7 @@ namespace dutpekmezi
         BodyDamage,
         WeaponOrbitSpeed,
         WeaponOrbitRadius,
+        WeaponSelfOrbitSpeed,
         CooldownReduction,
         Energy,
         HealthRegen,
@@ -132,6 +133,12 @@ namespace dutpekmezi
         ExpToLevelUp,
         ExpOnDeath,
         PushForce
+    }
+
+    public enum StatTarget
+    {
+        Entity,
+        Weapon
     }
 
     public static class StatTypeExtensions
