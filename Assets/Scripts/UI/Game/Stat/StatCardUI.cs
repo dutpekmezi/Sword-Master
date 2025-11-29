@@ -37,7 +37,7 @@ namespace dutpekmezi
 
             StatConfig statConfig = StatSystem.Instance.GetStatConfig(statType);
 
-            statNameText.text = statType.ToString();
+            statNameText.text = StatTypeExtensions.GetName(statType);
             frame.color = statConfig.Color;
 
             statValueText.text = FormatModifierValue(modifier);
@@ -53,7 +53,7 @@ namespace dutpekmezi
 
             if (mod.Operation == ModifierOperation.PercentAdd || mod.Operation == ModifierOperation.PercentMultiply)
             {
-                return $"{sign}{(mod.Value * 100):F1}%";
+                return $"{sign}{(mod.Value):F1}%";
             }
             else
             {

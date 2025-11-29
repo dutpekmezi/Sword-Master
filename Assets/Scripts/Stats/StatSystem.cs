@@ -59,14 +59,14 @@ namespace dutpekmezi
             switch (type)
             {
                 case StatType.MaxHealth:
-                    operation = Random.value > 0.6f ? ModifierOperation.FlatAdd : ModifierOperation.PercentAdd;
-                    value = operation == ModifierOperation.FlatAdd ? (2f * level) : (0.05f * level);
+                    operation = Random.value > 0.07f ? ModifierOperation.FlatAdd : ModifierOperation.PercentAdd;
+                    value = operation == ModifierOperation.FlatAdd ? (0.1f * level) : (0.01f * level);
                     type = StatType.MaxHealth;
                     break;
 
                 case StatType.MoveSpeed:
                     operation = ModifierOperation.PercentAdd;
-                    value = 0.05f + (level * 0.01f);
+                    value = (level * 0.01f);
                     type = StatType.MoveSpeed;
                     break;
 
@@ -82,10 +82,22 @@ namespace dutpekmezi
                     type = StatType.CooldownReduction;
                     break;
 
-                case StatType.Energy:
+                case StatType.HealthRegen:
                     operation = ModifierOperation.FlatAdd;
-                    value = 5f + (level * 2f);
-                    type = StatType.Energy;
+                    value = (level * 0.1f);
+                    type = StatType.HealthRegen;
+                    break;
+
+                case StatType.WeaponOrbitRadius:
+                    operation = ModifierOperation.PercentAdd;
+                    value = (level * 0.01f);
+                    type = StatType.WeaponOrbitRadius;
+                    break;
+
+                case StatType.WeaponOrbitSpeed:
+                    operation = ModifierOperation.PercentAdd;
+                    value = (level * 0.01f);
+                    type = StatType.WeaponOrbitSpeed;
                     break;
 
                 default:
@@ -96,6 +108,33 @@ namespace dutpekmezi
             }
 
             return new StatModifier(value, operation, type, source);
+        }
+
+        public List<StatType> GetUpgradableStatTypes()
+        {
+            return new List<StatType>
+            {
+                StatType.MaxHealth,
+                StatType.MoveSpeed,
+
+                //StatType.BodyDamage,
+
+                StatType.WeaponOrbitSpeed,
+                StatType.WeaponOrbitRadius,
+                StatType.CooldownReduction,
+
+                //StatType.Energy,
+
+                StatType.HealthRegen,
+
+                //StatType.EnergyRegen,
+
+                StatType.LifeSteel,
+
+                //StatType.ExpToLevelUp,
+                //StatType.ExpOnDeath,
+                //StatType.PushForce
+            };
         }
 
         public float ClampStatValue(StatType statType, float currentValue)

@@ -23,6 +23,8 @@ namespace dutpekmezi
         public EntityData EntityData => entityData;
         public bool IsDead => isDead;
         public float CurrentHealth => currentHealth;
+        public float CurrentExp => currentExp;
+        public int CurrentLevel => currentLevel;
         public Transform Transform => transform;
         public Rigidbody2D Rb => rb;
 
@@ -107,7 +109,7 @@ namespace dutpekmezi
             }
         }
 
-        protected void Heal(int amount)
+        protected virtual void Heal(int amount)
         {
             if (isDead) return;
 

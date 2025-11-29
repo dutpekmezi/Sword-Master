@@ -25,11 +25,13 @@ namespace dutpekmezi
             base.Initialize();
 
             currentEnergy = 0;
+            currentLevel = 1;
             tickTimer = everySecondTickDuration;
 
             SignalBus.Get<StatSystem.OnStatSelected>().Subscribe(ApplySelectedModifier);
             SignalBus.Get<OnEnemyKill>().Subscribe(GainExp);
             SignalBus.Get<OnlevelUp>().Subscribe(OnLevelUpHandler);
+            SignalBus.Get<OnStatsChange>().Invoke(this);
         }
 
         public override void Tick()
@@ -81,6 +83,13 @@ namespace dutpekmezi
         public override void ApplyModifier(StatModifier modifier)
         {
             base.ApplyModifier(modifier);
+
+            SignalBus.Get<OnStatsChange>().Invoke(this);
+        }
+
+        protected override void SetHealth(int amount)
+        {
+            base.SetHealth(amount);
 
             SignalBus.Get<OnStatsChange>().Invoke(this);
         }

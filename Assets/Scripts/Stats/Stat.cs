@@ -133,4 +133,24 @@ namespace dutpekmezi
         ExpOnDeath,
         PushForce
     }
+
+    public static class StatTypeExtensions
+    {
+        public static string GetName(this StatType statType)
+        {
+            string name = statType.ToString();
+
+            string result = "";
+            foreach (char c in name)
+            {
+                if (char.IsUpper(c) && result.Length > 0 && result[result.Length - 1] != ' ')
+                {
+                    result += " ";
+                }
+                result += c;
+            }
+
+            return result.Trim();
+        }
+    }
 }

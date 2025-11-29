@@ -13,8 +13,10 @@ namespace dutpekmezi
 
         [SerializeField] private Slider healthSlider;
         [SerializeField] private Slider energySlider;
+        [SerializeField] private Slider levelSlider;
 
         [SerializeField] private TextMeshProUGUI healthText;
+        [SerializeField] private TextMeshProUGUI levelText;
 
         private CharacterData characterData;
         private CharacterBase character;
@@ -40,16 +42,34 @@ namespace dutpekmezi
 
         private void UpdateSliders(CharacterBase character)
         {
+            UpdateHealthSlider(character);
+            UpdateEnergySlider(character);
+            UpdateLevelSlider(character);
+        }
+
+        private void UpdateHealthSlider(CharacterBase character)
+        {
             healthSlider.minValue = 0;
             healthSlider.maxValue = character.GetStatValue(StatType.MaxHealth);
             healthSlider.value = character.CurrentHealth;
 
-            healthText.text = $"{character.CurrentHealth} / {character.GetStatValue(StatType.MaxHealth)}";
+            healthText.text = $"{(int)character.CurrentHealth} / {(int)character.GetStatValue(StatType.MaxHealth)}";
+        }
 
-
+        private void UpdateEnergySlider(CharacterBase character)
+        {
             energySlider.minValue = 0;
             energySlider.maxValue = character.GetStatValue(StatType.Energy);
             energySlider.value = character.CurrentEnergy;
+        }
+
+        private void UpdateLevelSlider(CharacterBase character)
+        {
+            levelSlider.minValue = 0;
+            levelSlider.maxValue = character.GetStatValue(StatType.ExpToLevelUp);
+            levelSlider.value = character.CurrentExp;
+
+            levelText.text = $"{character.CurrentLevel}";
         }
     }
 }

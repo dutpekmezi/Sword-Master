@@ -23,28 +23,30 @@ namespace dutpekmezi
         {
             if (Input.GetMouseButtonDown(0) && !isMoving)
             {
+                var character = CharacterSystem.Instance.GetCurrentCharacter();
+
                 targetAngle = currentAngle + 180f;
                 if (targetAngle > 360f)
                     targetAngle -= 360f;
 
-                targetPosition = CharacterSystem.Instance.GetCurrentCharacter().transform.position + new Vector3(
+                targetPosition = character.transform.position + new Vector3(
                     Mathf.Cos(targetAngle * Mathf.Deg2Rad),
                     Mathf.Sin(targetAngle * Mathf.Deg2Rad),
                     0f
-                ) * weaponData.OrbitRadius;
+                ) * character.GetStatValue(StatType.WeaponOrbitRadius);
 
                 isMoving = true;
                 SetRotate(false);
-                MoveToOpposite();
+                MoveToOpposite(character);
             }
         }
 
-        private void MoveToOpposite()
+        private void MoveToOpposite(CharacterBase character)
         {
             float z = transform.position.z;
 
             transform.DOMove(new Vector3(targetPosition.x, targetPosition.y, z),
-                                         Vector2.Distance(transform.position, targetPosition) / moveSpeed)
+                                         Vector2.Distance(transform.position, targetPosition) / (character.GetStatValue(StatType.WeaponOrbitSpeed) * 0.2f))
                 .SetEase(Ease.InOutSine)
                 .OnUpdate(() =>
                 {

@@ -34,10 +34,11 @@ namespace dutpekmezi
 
         private void Orbit()
         {
-            float direction = 1f;
-            currentAngle += weaponData.OrbitSpeed * direction * LogicTimer.FixedDelta;
-
             var character = CharacterSystem.Instance.GetCurrentCharacter();
+
+            float direction = 1f;
+            currentAngle += character.GetStatValue(StatType.WeaponOrbitSpeed) * direction * LogicTimer.FixedDelta;
+
             Vector3 charPos = character.transform.position;
             Vector2 offset = new Vector2(
                 Mathf.Cos(currentAngle * Mathf.Deg2Rad),
