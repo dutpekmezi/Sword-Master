@@ -1,6 +1,8 @@
 using Dutpekmezi.Services.PoolService;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+
 namespace dutpekmezi
 {
     public class Entity : MonoBehaviour
@@ -12,6 +14,10 @@ namespace dutpekmezi
         [SerializeField] protected float currentHealth;
         [SerializeField] protected int currentLevel;
         [SerializeField] protected float currentExp;
+
+        [Header("Runtime Stats (LIVE)")]
+        [SerializeField]
+        private List<Stat> _runtimeStatsList = new List<Stat>();
 
         [Header("References")]
         [SerializeField] protected Rigidbody2D rb;
@@ -42,11 +48,26 @@ namespace dutpekmezi
             }
 
             currentHealth = (int)GetStatValue(StatType.MaxHealth);
+
+            SyncRuntimeStatsForInspector();
         }
 
         public virtual void Tick()
         {
+            SyncRuntimeStatsForInspector();
+        }
 
+        private void OnValidate()
+        {
+            if (!Application.isPlaying)
+            {
+                SyncRuntimeStatsForInspector();
+            }
+        }
+
+        private void SyncRuntimeStatsForInspector()
+        {
+            _runtimeStatsList = _runtimeStats.Values.ToList();
         }
 
         protected virtual void ApplyModifier(StatModifier modifier)
@@ -81,9 +102,14 @@ namespace dutpekmezi
             return 0f;
         }
 
+        public List<Stat> GetAllStatValue()
+        {
+            return _runtimeStats.Values.ToList();
+        }
+
         public void OnTakeDamageHandler(Entity entity, float dmg)
         {
-            if (isDead ||entity != this) return;
+            if (isDead || entity != this) return;
 
             TakeDamage(dmg);
         }

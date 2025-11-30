@@ -11,7 +11,7 @@ namespace dutpekmezi
 
         public StatConfigData StatConfigData => _statConfigData;
 
-        public static StatSystem Instance {  get; private set; }
+        public static StatSystem Instance { get; private set; }
 
         public StatSystem(StatConfigData statConfigData)
         {
@@ -51,120 +51,77 @@ namespace dutpekmezi
             return availableTypes[Random.Range(0, availableTypes.Count)];
         }
 
-        public StatModifier CreateRandomModifier(StatType type, int level = 1, object source = null)
+        public StatModifier CreateRandomModifier(StatType type, float scaleFactor = 1, object source = null)
         {
-            float value = 0f;
+            StatConfig config = GetStatConfig(type);
+
+            float value;
             ModifierOperation operation;
-            StatTarget target = GetStatTargetByStatType(type);
+            StatTarget target = config.Target;
 
-            switch (type)
+            if (config.FlatAddChance > 0 && Random.value < config.FlatAddChance)
             {
-                case StatType.MaxHealth:
-                    operation = Random.value > 0.07f ? ModifierOperation.FlatAdd : ModifierOperation.PercentAdd;
-                    value = operation == ModifierOperation.FlatAdd ? (0.1f * level) : (0.01f * level);
-                    type = StatType.MaxHealth;
-                    break;
+                operation = ModifierOperation.FlatAdd;
+                value = config.BaseFlatValue + (config.BaseValuePerLevel * scaleFactor);
+            }
+            else
+            {
+                operation = config.DefaultOperation;
+                value = config.BaseValuePerLevel * scaleFactor;
 
-                case StatType.MoveSpeed:
-                    operation = ModifierOperation.PercentAdd;
-                    value = (level * 0.01f);
-                    type = StatType.MoveSpeed;
-                    break;
-
-                case StatType.BodyDamage:
-                    operation = Random.value > 0.7f ? ModifierOperation.PercentAdd : ModifierOperation.FlatAdd;
-                    value = operation == ModifierOperation.FlatAdd ? (1f * level) : (0.03f * level);
-                    type = StatType.BodyDamage;
-                    break;
-
-                case StatType.CooldownReduction:
-                    operation = ModifierOperation.PercentAdd;
-                    value = 0.02f + (level * 0.01f);
-                    type = StatType.CooldownReduction;
-                    break;
-
-                case StatType.HealthRegen:
-                    operation = ModifierOperation.FlatAdd;
-                    value = (level * 0.1f);
-                    type = StatType.HealthRegen;
-                    break;
-
-                case StatType.WeaponOrbitRadius:
-                    operation = ModifierOperation.PercentAdd;
-                    value = (level * 0.01f);
-                    type = StatType.WeaponOrbitRadius;
-                    break;
-
-                case StatType.WeaponOrbitSpeed:
-                    operation = ModifierOperation.PercentAdd;
-                    value = (level * 0.01f);
-                    type = StatType.WeaponOrbitSpeed;
-                    break;
-
-                default:
-                    operation = ModifierOperation.FlatAdd;
-                    value = 1f;
-                    type = StatType.MaxHealth;;
-                    break;
+                if (type == StatType.CooldownReduction)
+                {
+                    value += 0.02f;
+                }
             }
 
             return new StatModifier(value, operation, type, source, target);
         }
 
+        public Dictionary<StatType, Stat> ScaleStats(Dictionary<StatType, Stat> targetStats, int scaleAmount)
+        {
+            var returnList = new Dictionary<StatType, Stat>();
+
+            foreach (var stat in targetStats)
+            {
+                stat.Value.AddModifier(CreateRandomModifier(stat.Key, scaleAmount * 0.5f));
+                returnList.Add(stat.Key, stat.Value);
+            }
+
+            return returnList;
+        }
+
         public List<StatType> GetUpgradableStatTypes()
         {
-            return new List<StatType>
+            if (_statConfigData == null)
             {
-                StatType.MaxHealth,
-                StatType.MoveSpeed,
+                return new List<StatType>();
+            }
 
-                //StatType.BodyDamage,
-
-                StatType.WeaponOrbitSpeed,
-                StatType.WeaponOrbitRadius,
-                StatType.CooldownReduction,
-
-                //StatType.Energy,
-
-                StatType.HealthRegen,
-
-                //StatType.EnergyRegen,
-
-                StatType.LifeSteel,
-
-                //StatType.ExpToLevelUp,
-                //StatType.ExpOnDeath,
-                //StatType.PushForce
-            };
+            return _statConfigData.StatConfigs
+                .Where(config => config.IsUpgradable)
+                .Select(config => config.Type)
+                .ToList();
         }
 
         public StatTarget GetStatTargetByStatType(StatType type)
         {
-            if (type == StatType.WeaponOrbitRadius || type == StatType.WeaponOrbitSpeed)
-            {
-                return StatTarget.Weapon;
-            }
-            else
-                return StatTarget.Entity;
+            return GetStatConfig(type).Target;
         }
 
         public float ClampStatValue(StatType statType, float currentValue)
         {
-            switch (statType)
+            StatConfig config = GetStatConfig(statType);
+
+            if (config.ShouldClamp)
             {
-                case StatType.CooldownReduction:
-                    return Mathf.Clamp(currentValue, 0f, 0.90f);
-
-                case StatType.MoveSpeed:
-                    return Mathf.Clamp(currentValue, 0.1f, 15f);
-
-                default:
-                    return currentValue;
+                return Mathf.Clamp(currentValue, config.MinValue, config.MaxValue);
             }
+            return currentValue;
         }
         protected override void OnDispose()
         {
-            
+
         }
 
 

@@ -23,6 +23,6 @@ MonoBehaviour:
     baseValue: 1.1
   - Type: 2
     baseValue: 1
-  - Type: 11
+  - Type: 12
     baseValue: 1
   Prefab: {fileID: 1662301267738328567, guid: 71716b921f14b224eacb7b90b295f172, type: 3}

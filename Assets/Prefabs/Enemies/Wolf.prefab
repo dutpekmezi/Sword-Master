@@ -78,6 +78,7 @@ MonoBehaviour:
   currentHealth: 0
   currentLevel: 0
   currentExp: 0
+  _runtimeStatsList: []
   rb: {fileID: 3977034603468201143}
   col: {fileID: -4458228649282235300}
   isLeader: 0

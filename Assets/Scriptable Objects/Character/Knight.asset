@@ -28,6 +28,8 @@ MonoBehaviour:
   - Type: 6
     baseValue: 300
   - Type: 7
-    baseValue: 1
+    baseValue: 100
+  - Type: 11
+    baseValue: 10
   Prefab: {fileID: 7342495170202269068, guid: ec5a60abe7119da498c224dde80df30d, type: 3}
   WeaponType: 0

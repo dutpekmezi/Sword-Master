@@ -49,15 +49,15 @@ namespace dutpekmezi
 
         private string FormatModifierValue(StatModifier mod)
         {
-            string sign = mod.Value >= 0 ? "+" : "";
+            string sign = "+";
 
-            if (mod.Operation == ModifierOperation.PercentAdd || mod.Operation == ModifierOperation.PercentMultiply)
+            if (mod.Operation == ModifierOperation.PercentMultiply)
             {
-                return $"{sign}{(mod.Value):F1}%";
+                return $"{sign}{(mod.Value)}%";
             }
             else
             {
-                return $"{sign}{mod.Value:F1}";
+                return $"{sign}{mod.Value}";
             }
         }
         private void LightAnim()

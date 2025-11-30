@@ -51,6 +51,7 @@ MonoBehaviour:
   currentHealth: 0
   currentLevel: 0
   currentExp: 0
+  _runtimeStatsList: []
   rb: {fileID: 3460207415227507878}
   col: {fileID: 2840507195096158369}
   currentEnergy: 0

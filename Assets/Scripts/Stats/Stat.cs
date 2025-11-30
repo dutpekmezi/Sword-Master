@@ -24,7 +24,7 @@ namespace dutpekmezi
         }
 
         private bool isDirty = true;
-        private float calculatedValue;
+        [SerializeField] private float calculatedValue;
         public float Value
         {
             get
@@ -79,7 +79,6 @@ namespace dutpekmezi
         private float CalculateFinalValue()
         {
             float finalValue = baseValue;
-            float percentAddSum = 0;
 
             statModifiers.Sort((a, b) => a.Operation.CompareTo(b.Operation));
 
@@ -91,26 +90,10 @@ namespace dutpekmezi
                 {
                     finalValue += mod.Value;
                 }
-                else if (mod.Operation == ModifierOperation.PercentAdd)
-                {
-                    percentAddSum += mod.Value;
-                }
                 else if (mod.Operation == ModifierOperation.PercentMultiply)
                 {
-
-                    if (percentAddSum != 0)
-                    {
-                        finalValue *= (1 + percentAddSum);
-                        percentAddSum = 0;
-                    }
-
                     finalValue *= (1 + mod.Value);
                 }
-            }
-
-            if (percentAddSum != 0)
-            {
-                finalValue *= (1 + percentAddSum);
             }
 
             return (float)Mathf.Round(finalValue * 100) / 100;

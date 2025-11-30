@@ -38,25 +38,6 @@ namespace dutpekmezi
         {
         }
 
-        public EnemyBase CreateRandomEnemy()
-        {
-            if (enemyDatas == null || enemyDatas.Enemies.Count == 0)
-                return null;
-
-            int idx = Random.Range(0, enemyDatas.Enemies.Count);
-            EnemyData data = enemyDatas.Enemies[idx];
-
-            var go = ObjectPoolManager.SpawnObject(data.Prefab, Vector2.zero);
-            var enemy = go.GetComponent<EnemyBase>();
-
-            enemy.Initialize();
-            RegisterEnemy(enemy);
-
-            SignalBus.Get<OnEnemySpawnedSignal>().Invoke(enemy);
-
-            return enemy;
-        }
-
         public EnemyBase CreateRandomEnemy(Vector2 pos)
         {
             if (enemyDatas == null || enemyDatas.Enemies.Count == 0)
@@ -75,17 +56,33 @@ namespace dutpekmezi
             return enemy;
         }
 
+        public EnemyBase CreateRandomEnemy()
+        {
+            if (enemyDatas == null || enemyDatas.Enemies.Count == 0)
+                return null;
+
+            int idx = Random.Range(0, enemyDatas.Enemies.Count);
+            EnemyData data = enemyDatas.Enemies[idx];
+
+            EnemyBase enemy = (EnemyBase)ObjectPoolManager.SpawnObject(data.Prefab, Vector2.zero);
+
+            enemy.Initialize();
+            RegisterEnemy(enemy);
+
+            SignalBus.Get<OnEnemySpawnedSignal>().Invoke(enemy);
+
+            return enemy;
+        }
+
         public EnemyData GetRandomEnemyData()
         {
             var randomIndex = Random.Range(0, enemyDatas.Enemies.Count);
-
             var randomEnemy = enemyDatas.Enemies[randomIndex];
 
             if (randomEnemy != null) return randomEnemy;
 
             return null;
         }
-
 
         public override void Tick()
         {

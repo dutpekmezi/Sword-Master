@@ -13,6 +13,10 @@ namespace dutpekmezi
         {
             base.Initialize();
 
+            currentLevel = CharacterSystem.Instance.GetCurrentCharacter().CurrentLevel;
+
+            _runtimeStats = StatSystem.Instance.ScaleStats(_runtimeStats, currentLevel);
+
             SignalBus.Get<CharacterBase.OnCollideWithEnemy>().Subscribe(OnCollideWithEnemyHandler);
             SignalBus.Get<OnTakeDamage>().Subscribe(OnTakeDamageHandler);
         }

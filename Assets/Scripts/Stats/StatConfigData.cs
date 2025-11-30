@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using dutpekmezi;
 
 namespace dutpekmezi
 {
@@ -10,6 +9,22 @@ namespace dutpekmezi
         public StatType Type;
         public Color Color;
         public Sprite Icon;
+
+        public bool IsUpgradable;
+
+
+        [Header("Modifier Defaults")]
+        public ModifierOperation DefaultOperation;
+        public float BaseValuePerLevel;
+        public float BaseFlatValue;
+        public float FlatAddChance;
+
+        [Header("Clamping")]
+        public bool ShouldClamp;
+        public float MinValue;
+        public float MaxValue;
+
+        public StatTarget Target;
     }
 
     [CreateAssetMenu(fileName = "StatConfigData", menuName = "Game/Scriptable Objects/Stat/Stat Config Data")]

@@ -3,8 +3,7 @@ namespace dutpekmezi
     public enum ModifierOperation
     {
         FlatAdd = 0,
-        PercentAdd = 1,
-        PercentMultiply = 2
+        PercentMultiply = 1
     }
 
     [System.Serializable]

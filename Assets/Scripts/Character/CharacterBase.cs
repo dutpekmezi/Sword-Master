@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using Unity.VisualScripting;
 using UnityEngine;
 using Utils.LogicTimer;
@@ -117,6 +118,9 @@ namespace dutpekmezi
         {
             base.Gainlevel(amount);
 
+            Scalelevel();
+
+            SignalBus.Get<OnStatsChange>().Invoke(this);
             SignalBus.Get<OnlevelUp>().Invoke(amount);
         }
 
@@ -125,6 +129,13 @@ namespace dutpekmezi
             base.GainExp(amount);
 
             SetEnergy(amount);
+        }
+
+        private void Scalelevel()
+        {
+            var modifier = StatSystem.Instance.CreateRandomModifier(StatType.ExpToLevelUp, currentLevel);
+
+            ApplyModifier(modifier);
         }
 
         private void OnLevelUpHandler(int level)
