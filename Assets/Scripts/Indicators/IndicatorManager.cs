@@ -3,12 +3,15 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 using Utils.Signal;
+using System.Linq;
+using Dutpekmezi.Services.PoolService;
 
 public class IndicatorManager : BaseSystem
 {
     private IndicatorConfig indicatorConfig;
 
     private Dictionary<TargetIndicator, Transform> targetIndicators = new Dictionary<TargetIndicator, Transform>();
+    private List<TargetIndicator> indicatorsToDispose = new List<TargetIndicator>();
 
     public IndicatorConfig IndicatorConfig => indicatorConfig;
 
@@ -30,25 +33,17 @@ public class IndicatorManager : BaseSystem
 
     public override void Tick()
     {
-        List<TargetIndicator> indicatorsToRemove = new List<TargetIndicator>();
-
         foreach (var indicatorPair in targetIndicators)
         {
             TargetIndicator indicator = indicatorPair.Key;
 
-            if (indicator == null || !indicator.gameObject.activeInHierarchy)
-            {
-                indicatorsToRemove.Add(indicator);
-            }
-            else
-            {
-                indicator.Tick();
-            }
+            indicator.Tick();
         }
 
-        foreach (var indicator in indicatorsToRemove)
+        foreach (var indicator in indicatorsToDispose)
         {
             targetIndicators.Remove(indicator);
+            ObjectPoolManager.DeSpawn(indicator.gameObject);
         }
     }
 
@@ -59,6 +54,11 @@ public class IndicatorManager : BaseSystem
 
     public TargetIndicator CreateTargetIndicator(Transform target, Transform center)
     {
+        if (targetIndicators.ContainsValue(target))
+        {
+            return null;
+        }
+
         var indicator = indicatorConfig.targetIndicator;
 
         var instance = Dutpekmezi.Services.PoolService.ObjectPoolManager.SpawnObject(indicator, Vector2.zero);
@@ -77,7 +77,10 @@ public class IndicatorManager : BaseSystem
         {
             var instance = CreateTargetIndicator(targetList[i], centerList[i]);
 
-            createdIndicators.Add(instance);
+            if (instance != null)
+            {
+                createdIndicators.Add(instance);
+            }
         }
 
         return createdIndicators;
@@ -91,7 +94,10 @@ public class IndicatorManager : BaseSystem
         {
             var instance = CreateTargetIndicator(targetList[i], center);
 
-            createdIndicators.Add(instance);
+            if (instance != null)
+            {
+                createdIndicators.Add(instance);
+            }
         }
 
         return createdIndicators;
@@ -99,7 +105,7 @@ public class IndicatorManager : BaseSystem
 
     private void OnTargetDestroyed(Transform destroyedTarget)
     {
-        List<TargetIndicator> indicatorsToDispose = new List<TargetIndicator>();
+        indicatorsToDispose = new List<TargetIndicator>();
 
         TargetIndicator[] keys = new TargetIndicator[targetIndicators.Count];
         targetIndicators.Keys.CopyTo(keys, 0);

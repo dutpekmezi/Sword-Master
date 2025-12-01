@@ -54,7 +54,7 @@ namespace dutpekmezi
                 float regenAmount = GetStatValue(StatType.HealthRegen);
 
                 if (regenAmount > 0)
-                    Heal((int)regenAmount);
+                    Heal(regenAmount);
 
                 tickTimer = everySecondTickDuration;
             }
@@ -88,7 +88,7 @@ namespace dutpekmezi
             SignalBus.Get<OnStatsChange>().Invoke(this);
         }
 
-        protected override void SetHealth(int amount)
+        protected override void SetHealth(float amount)
         {
             base.SetHealth(amount);
 

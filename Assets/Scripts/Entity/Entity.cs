@@ -119,7 +119,7 @@ namespace dutpekmezi
             SetHealth((int)-damageAmount);
         }
 
-        protected virtual void SetHealth(int amount)
+        protected virtual void SetHealth(float amount)
         {
             if (isDead) return;
 
@@ -137,7 +137,7 @@ namespace dutpekmezi
             }
         }
 
-        protected virtual void Heal(int amount)
+        protected virtual void Heal(float amount)
         {
             if (isDead) return;
 

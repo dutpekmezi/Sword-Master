@@ -19,17 +19,27 @@ MonoBehaviour:
   BaseStats:
   - Type: 0
     baseValue: 100
+    calculatedValue: 0
   - Type: 1
     baseValue: 1.2
+    calculatedValue: 0
   - Type: 2
     baseValue: 1
+    calculatedValue: 0
   - Type: 10
     baseValue: 10
+    calculatedValue: 0
   - Type: 6
     baseValue: 300
+    calculatedValue: 0
   - Type: 7
     baseValue: 100
+    calculatedValue: 0
   - Type: 11
     baseValue: 10
+    calculatedValue: 0
+  - Type: 8
+    baseValue: 0
+    calculatedValue: 0
   Prefab: {fileID: 7342495170202269068, guid: ec5a60abe7119da498c224dde80df30d, type: 3}
   WeaponType: 0

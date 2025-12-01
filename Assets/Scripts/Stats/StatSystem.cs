@@ -62,12 +62,12 @@ namespace dutpekmezi
             if (config.FlatAddChance > 0 && Random.value < config.FlatAddChance)
             {
                 operation = ModifierOperation.FlatAdd;
-                value = config.BaseFlatValue + (config.BaseValuePerLevel * scaleFactor);
+                value = config.DirectValue > 0f ? config.DirectValue : config.BaseFlatValue + (config.BaseFlatValuePerLevel * scaleFactor);
             }
             else
             {
                 operation = config.DefaultOperation;
-                value = config.BaseValuePerLevel * scaleFactor;
+                value = config.BasePercentValuePerLevel * scaleFactor;
 
                 if (type == StatType.CooldownReduction)
                 {

@@ -16,16 +16,99 @@ MonoBehaviour:
   - Type: 0
     Color: {r: 0.32941175, g: 1, b: 0.35859412, a: 1}
     Icon: {fileID: 21300000, guid: 0eabab3d6e1d1444c8210c04cbfa18dc, type: 3}
+    IsUpgradable: 1
+    DefaultOperation: 1
+    BaseFlatValuePerLevel: 0
+    BasePercentValuePerLevel: 0.01
+    BaseFlatValue: 1
+    FlatAddChance: 0.9
+    DirectValue: 0
+    ShouldClamp: 0
+    MinValue: 0
+    MaxValue: 0
+    Target: 0
+  - Type: 8
+    Color: {r: 0.28490567, g: 1, b: 0.60816747, a: 1}
+    Icon: {fileID: 21300000, guid: ca5cefce1252a4b9ebb06c6124328897, type: 3}
+    IsUpgradable: 1
+    DefaultOperation: 0
+    BaseFlatValuePerLevel: 0
+    BasePercentValuePerLevel: 0.01
+    BaseFlatValue: 0.01
+    FlatAddChance: 0.3
+    DirectValue: 0
+    ShouldClamp: 0
+    MinValue: 0
+    MaxValue: 0
+    Target: 0
   - Type: 1
     Color: {r: 1, g: 0.7375452, b: 0.28490567, a: 1}
     Icon: {fileID: 21300000, guid: ca5cefce1252a4b9ebb06c6124328897, type: 3}
-  - Type: 5
+    IsUpgradable: 1
+    DefaultOperation: 1
+    BaseFlatValuePerLevel: 0
+    BasePercentValuePerLevel: 0.01
+    BaseFlatValue: 0
+    FlatAddChance: 0.1
+    DirectValue: 0
+    ShouldClamp: 0
+    MinValue: 0
+    MaxValue: 0
+    Target: 0
+  - Type: 3
     Color: {r: 1, g: 1, b: 1, a: 1}
     Icon: {fileID: 21300000, guid: ca5cefce1252a4b9ebb06c6124328897, type: 3}
-  - Type: 7
-    Color: {r: 0.35996473, g: 1, b: 0, a: 1}
+    IsUpgradable: 1
+    DefaultOperation: 1
+    BaseFlatValuePerLevel: 0
+    BasePercentValuePerLevel: 0.01
+    BaseFlatValue: 0
+    FlatAddChance: 0
+    DirectValue: 0
+    ShouldClamp: 0
+    MinValue: 0
+    MaxValue: 0
+    Target: 1
+  - Type: 4
+    Color: {r: 1, g: 0.30052865, b: 0, a: 1}
     Icon: {fileID: 21300000, guid: ca5cefce1252a4b9ebb06c6124328897, type: 3}
-  - Type: 10
+    IsUpgradable: 1
+    DefaultOperation: 1
+    BaseFlatValuePerLevel: 0
+    BasePercentValuePerLevel: 0.01
+    BaseFlatValue: 0
+    FlatAddChance: 0
+    DirectValue: 0
+    ShouldClamp: 0
+    MinValue: 0
+    MaxValue: 0
+    Target: 1
+  - Type: 2
     Color: {r: 0, g: 0.5914922, b: 1, a: 1}
     Icon: {fileID: 21300000, guid: ca5cefce1252a4b9ebb06c6124328897, type: 3}
+    IsUpgradable: 1
+    DefaultOperation: 0
+    BaseFlatValuePerLevel: 0
+    BasePercentValuePerLevel: 0.1
+    BaseFlatValue: 0.1
+    FlatAddChance: 0.5
+    DirectValue: 0
+    ShouldClamp: 0
+    MinValue: 0
+    MaxValue: 0
+    Target: 0
+  - Type: 11
+    Color: {r: 0, g: 0.5914922, b: 1, a: 1}
+    Icon: {fileID: 21300000, guid: ca5cefce1252a4b9ebb06c6124328897, type: 3}
+    IsUpgradable: 0
+    DefaultOperation: 0
+    BaseFlatValuePerLevel: 1
+    BasePercentValuePerLevel: 0
+    BaseFlatValue: 0
+    FlatAddChance: 1
+    DirectValue: 10
+    ShouldClamp: 0
+    MinValue: 0
+    MaxValue: 0
+    Target: 0
   SelectableStatCount: 3

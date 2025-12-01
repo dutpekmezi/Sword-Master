@@ -42,7 +42,7 @@ namespace dutpekmezi
             SignalBus.Get<OnStatsChange>().Invoke(this);
         }
 
-        protected override void SetHealth(int amount)
+        protected override void SetHealth(float amount)
         {
             base.SetHealth(amount);
 

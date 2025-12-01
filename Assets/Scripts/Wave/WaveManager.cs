@@ -124,7 +124,7 @@ namespace dutpekmezi
             {
                 GenerateStatStatues(waveConfig.statuesPerWave);
                 GenerateIndicatorsForStatStatues();
-                GenerateEnemyWawe(EnemiesPerWawe);
+                GenerateEnemyWawe(EnemiesPerWawe + characterSystem.GetCurrentCharacter().CurrentLevel - 1);
                 waveSpawnTimer = 0f;
             }
 

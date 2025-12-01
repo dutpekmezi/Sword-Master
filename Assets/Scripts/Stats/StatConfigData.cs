@@ -15,9 +15,11 @@ namespace dutpekmezi
 
         [Header("Modifier Defaults")]
         public ModifierOperation DefaultOperation;
-        public float BaseValuePerLevel;
+        public float BaseFlatValuePerLevel;
+        public float BasePercentValuePerLevel;
         public float BaseFlatValue;
         public float FlatAddChance;
+        public float DirectValue;
 
         [Header("Clamping")]
         public bool ShouldClamp;
