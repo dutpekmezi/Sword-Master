@@ -27,11 +27,11 @@ namespace dutpekmezi
         {
             _runtimeStats.Clear();
 
-            foreach (var baseStat in weaponData.BaseStats)
+            foreach (var baseStatConfig in weaponData.BaseStatConfigs)
             {
-                Stat runtimeStat = new Stat(baseStat.BaseValue);
+                Stat runtimeStat = new Stat(baseStatConfig.BaseStat.BaseValue);
 
-                _runtimeStats.Add(baseStat.Type, runtimeStat);
+                _runtimeStats.Add(baseStatConfig.BaseStat.Type, runtimeStat);
             }
 
             SignalBus.Get<StatSystem.OnStatSelected>().Subscribe(ApplySelectedModifier);

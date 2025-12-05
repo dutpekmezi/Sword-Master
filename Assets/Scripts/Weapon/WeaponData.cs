@@ -24,7 +24,7 @@ namespace dutpekmezi
 
         public WeaponType WeaponType;
 
-        public List<Stat> BaseStats;
+        public List<BaseStatConfig> BaseStatConfigs;
     }
 
     public enum WeaponType

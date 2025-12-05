@@ -99,6 +99,9 @@ namespace dutpekmezi
             if (Input.GetKeyDown(KeyCode.J))
                 SignalBus.Get<StatSystem.OnStatSelection>().Invoke();
 
+            if (Input.GetKeyDown(KeyCode.L))
+                _characterSystem.GetCurrentCharacter().Gainlevel();
+
             _logicTimer?.Update();
         }
 

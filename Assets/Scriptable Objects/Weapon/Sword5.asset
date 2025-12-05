@@ -23,13 +23,16 @@ MonoBehaviour:
   AbilityDamage: 2
   Prefab: {fileID: 116068156932863756, guid: 07c56970382472948b897c8640dfea06, type: 3}
   WeaponType: 0
-  BaseStats:
-  - Type: 3
-    baseValue: 2
-    calculatedValue: 0
-  - Type: 5
-    baseValue: 270
-    calculatedValue: 0
-  - Type: 4
-    baseValue: 2
-    calculatedValue: 0
+  WeaponStatConfigs:
+  - BaseStat:
+      Type: 3
+      baseValue: 2
+    IsUpgradable: 1
+  - BaseStat:
+      Type: 4
+      baseValue: 1.5
+    IsUpgradable: 1
+  - BaseStat:
+      Type: 5
+      baseValue: 270
+    IsUpgradable: 1

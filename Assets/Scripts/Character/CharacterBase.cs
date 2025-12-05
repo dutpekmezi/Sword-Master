@@ -114,7 +114,7 @@ namespace dutpekmezi
             SignalBus.Get<OnStatsChange>().Invoke(this);
         }
 
-        protected override void Gainlevel(int amount = 1)
+        public override void Gainlevel(int amount = 1)
         {
             base.Gainlevel(amount);
 

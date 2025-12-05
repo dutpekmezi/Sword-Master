@@ -16,30 +16,26 @@ MonoBehaviour:
   Name: Knight
   Description: Knigh
   Sprite: {fileID: 21300000, guid: 78d03ce1d36c540d5a183e4b042d3afb, type: 3}
-  BaseStats:
-  - Type: 0
-    baseValue: 100
-    calculatedValue: 0
-  - Type: 1
-    baseValue: 1.2
-    calculatedValue: 0
-  - Type: 2
-    baseValue: 1
-    calculatedValue: 0
-  - Type: 10
-    baseValue: 10
-    calculatedValue: 0
-  - Type: 6
-    baseValue: 300
-    calculatedValue: 0
-  - Type: 7
-    baseValue: 100
-    calculatedValue: 0
-  - Type: 11
-    baseValue: 10
-    calculatedValue: 0
-  - Type: 8
-    baseValue: 0
-    calculatedValue: 0
+  BaseStatConfigs:
+  - BaseStat:
+      Type: 0
+      baseValue: 100
+    IsUpgradable: 1
+  - BaseStat:
+      Type: 1
+      baseValue: 1.2
+    IsUpgradable: 1
+  - BaseStat:
+      Type: 2
+      baseValue: 1
+    IsUpgradable: 0
+  - BaseStat:
+      Type: 8
+      baseValue: 0
+    IsUpgradable: 1
+  - BaseStat:
+      Type: 11
+      baseValue: 0
+    IsUpgradable: 1
   Prefab: {fileID: 7342495170202269068, guid: ec5a60abe7119da498c224dde80df30d, type: 3}
   WeaponType: 0

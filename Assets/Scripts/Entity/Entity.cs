@@ -23,7 +23,7 @@ namespace dutpekmezi
         [SerializeField] protected Rigidbody2D rb;
         [SerializeField] protected Collider2D col;
 
-        protected Dictionary<StatType, Stat> _runtimeStats = new Dictionary<StatType, Stat>();
+        protected Dictionary<StatType, BaseStatConfig> _runtimeStats = new Dictionary<StatType, BaseStatConfig>();
         protected bool isDead = false;
 
         public EntityData EntityData => entityData;
@@ -40,47 +40,32 @@ namespace dutpekmezi
 
             _runtimeStats.Clear();
 
-            foreach (var baseStat in entityData.BaseStats)
+            foreach (var baseStatConfig in entityData.BaseStatConfigs)
             {
-                Stat runtimeStat = new Stat(baseStat.BaseValue);
+                Stat runtimeStat = new Stat(baseStatConfig.BaseStat.BaseValue);
 
-                _runtimeStats.Add(baseStat.Type, runtimeStat);
+                _runtimeStats.Add(baseStatConfig.BaseStat.Type, baseStatConfig);
             }
 
             currentHealth = (int)GetStatValue(StatType.MaxHealth);
-
-            SyncRuntimeStatsForInspector();
         }
 
         public virtual void Tick()
         {
-            SyncRuntimeStatsForInspector();
-        }
-
-        private void OnValidate()
-        {
-            if (!Application.isPlaying)
-            {
-                SyncRuntimeStatsForInspector();
-            }
-        }
-
-        private void SyncRuntimeStatsForInspector()
-        {
-            _runtimeStatsList = _runtimeStats.Values.ToList();
+            
         }
 
         protected virtual void ApplyModifier(StatModifier modifier)
         {
-            if (_runtimeStats.TryGetValue(modifier.Type, out Stat stat))
+            if (_runtimeStats.TryGetValue(modifier.Type, out BaseStatConfig statConfig))
             {
-                stat.AddModifier(modifier);
+                statConfig.BaseStat.AddModifier(modifier);
 
                 if (modifier.Type == StatType.MaxHealth)
                 {
-                    if (currentHealth > stat.Value)
+                    if (currentHealth > statConfig.BaseStat.Value)
                     {
-                        currentHealth = stat.Value;
+                        currentHealth = statConfig.BaseStat.Value;
                     }
                 }
             }
@@ -95,16 +80,11 @@ namespace dutpekmezi
 
         public float GetStatValue(StatType type)
         {
-            if (_runtimeStats.TryGetValue(type, out Stat stat))
+            if (_runtimeStats.TryGetValue(type, out BaseStatConfig statConfig))
             {
-                return stat.Value;
+                return statConfig.BaseStat.Value;
             }
             return 0f;
-        }
-
-        public List<Stat> GetAllStatValue()
-        {
-            return _runtimeStats.Values.ToList();
         }
 
         public void OnTakeDamageHandler(Entity entity, float dmg)
@@ -151,7 +131,7 @@ namespace dutpekmezi
             ObjectPoolManager.DeSpawn(this.gameObject);
         }
 
-        protected virtual void Gainlevel(int amount = 1)
+        public virtual void Gainlevel(int amount = 1)
         {
             currentLevel += amount;
             currentExp = 0;

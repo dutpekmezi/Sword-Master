@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
@@ -24,7 +25,7 @@ namespace dutpekmezi
         }
 
         private bool isDirty = true;
-        [SerializeField] private float calculatedValue;
+        private float calculatedValue;
         public float Value
         {
             get
@@ -122,6 +123,13 @@ namespace dutpekmezi
     {
         Entity,
         Weapon
+    }
+
+    [Serializable]
+    public class BaseStatConfig
+    {
+        public Stat BaseStat;
+        public bool IsUpgradable = true;
     }
 
     public static class StatTypeExtensions

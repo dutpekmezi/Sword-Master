@@ -1,4 +1,5 @@
 using dutpekmezi;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -13,7 +14,7 @@ namespace dutpekmezi
 
         public Sprite Sprite;
 
-        public List<Stat> BaseStats;
+        public List<BaseStatConfig> BaseStatConfigs;
 
         public Entity Prefab;
 
@@ -21,9 +22,22 @@ namespace dutpekmezi
         {
             List<StatType> retunList = new List<StatType>();
 
-            foreach (var stat in BaseStats)
+            foreach (var stat in BaseStatConfigs)
             {
-                retunList.Add(stat.Type);
+                retunList.Add(stat.BaseStat.Type);
+            }
+
+            return retunList;
+        }
+
+        public List<StatType> GetUpgradableStatsType()
+        {
+            List<StatType> retunList = new List<StatType>();
+
+            foreach (var stat in BaseStatConfigs)
+            {
+                if (stat.IsUpgradable)
+                    retunList.Add(stat.BaseStat.Type);
             }
 
             return retunList;

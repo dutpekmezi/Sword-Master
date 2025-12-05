@@ -78,14 +78,19 @@ namespace dutpekmezi
             return new StatModifier(value, operation, type, source, target);
         }
 
-        public Dictionary<StatType, Stat> ScaleStats(Dictionary<StatType, Stat> targetStats, int scaleAmount)
+        public Dictionary<StatType, BaseStatConfig> ScaleStats(Dictionary<StatType, BaseStatConfig> targetStats, int scaleAmount)
         {
-            var returnList = new Dictionary<StatType, Stat>();
+            var returnList = new Dictionary<StatType, BaseStatConfig>();
 
             foreach (var stat in targetStats)
             {
-                stat.Value.AddModifier(CreateRandomModifier(stat.Key, scaleAmount * 0.5f));
-                returnList.Add(stat.Key, stat.Value);
+                var modifier = new StatModifier(scaleAmount * 0.01f, ModifierOperation.PercentMultiply, stat.Key);
+
+                if (stat.Value.IsUpgradable)
+                {
+                    stat.Value.BaseStat.AddModifier(modifier);
+                    returnList.Add(stat.Key, stat.Value);
+                }
             }
 
             return returnList;

@@ -15,6 +15,8 @@ namespace dutpekmezi
 
             currentLevel = CharacterSystem.Instance.GetCurrentCharacter().CurrentLevel;
 
+            var upgradableStatsType = entityData.GetUpgradableStatsType();
+
             _runtimeStats = StatSystem.Instance.ScaleStats(_runtimeStats, currentLevel);
 
             SignalBus.Get<CharacterBase.OnCollideWithEnemy>().Subscribe(OnCollideWithEnemyHandler);
