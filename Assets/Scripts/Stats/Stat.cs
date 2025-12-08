@@ -16,9 +16,16 @@ namespace dutpekmezi
             get { return baseValue; }
             set
             {
-                if (baseValue != value)
+                float newValue = value;
+
+                if (StatSystem.Instance != null)
                 {
-                    baseValue = value;
+                    newValue = StatSystem.Instance.ClampStatValue(Type, value);
+                }
+
+                if (baseValue != newValue)
+                {
+                    baseValue = newValue;
                     isDirty = true;
                 }
             }
