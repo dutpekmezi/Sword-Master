@@ -97,7 +97,14 @@ namespace dutpekmezi
                 }
             }
 
-            return (float)Mathf.Round(finalValue * 100) / 100;
+            finalValue = (float)Mathf.Round(finalValue * 100) / 100;
+
+            if (StatSystem.Instance != null)
+            {
+                finalValue = StatSystem.Instance.ClampStatValue(Type, finalValue);
+            }
+
+            return finalValue;
         }
     }
 
