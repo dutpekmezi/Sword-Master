@@ -120,6 +120,11 @@ namespace dutpekmezi
 
             if (config.ShouldClamp)
             {
+                if (config.MaxValue <= config.MinValue)
+                {
+                    return Mathf.Max(currentValue, config.MinValue);
+                }
+
                 return Mathf.Clamp(currentValue, config.MinValue, config.MaxValue);
             }
             return currentValue;
