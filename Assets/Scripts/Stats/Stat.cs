@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 namespace dutpekmezi
@@ -16,9 +17,17 @@ namespace dutpekmezi
             get { return baseValue; }
             set
             {
-                if (baseValue != value)
+
+                float newValue = value;
+
+                if (StatSystem.Instance != null)
                 {
-                    baseValue = value;
+                    newValue = StatSystem.Instance.ClampStatValue(Type, value);
+                }
+
+                if (baseValue != newValue)
+                {
+                    baseValue = newValue;
                     isDirty = true;
                 }
             }
