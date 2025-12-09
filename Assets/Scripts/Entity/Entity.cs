@@ -42,7 +42,7 @@ namespace dutpekmezi
 
             foreach (var baseStatConfig in entityData.BaseStatConfigs)
             {
-                Stat runtimeStat = new Stat(baseStatConfig.BaseStat.BaseValue);
+                Stat runtimeStat = new Stat(baseStatConfig);
 
                 BaseStatConfig _baseStatConfig = new BaseStatConfig(runtimeStat);
 

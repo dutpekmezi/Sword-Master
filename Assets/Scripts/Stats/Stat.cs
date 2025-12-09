@@ -17,17 +17,9 @@ namespace dutpekmezi
             get { return baseValue; }
             set
             {
-
-                float newValue = value;
-
-                if (StatSystem.Instance != null)
+                if (baseValue != value)
                 {
-                    newValue = StatSystem.Instance.ClampStatValue(Type, value);
-                }
-
-                if (baseValue != newValue)
-                {
-                    baseValue = newValue;
+                    baseValue = value;
                     isDirty = true;
                 }
             }
@@ -51,11 +43,17 @@ namespace dutpekmezi
         private readonly List<StatModifier> statModifiers;
         public readonly ReadOnlyCollection<StatModifier> Modifiers;
 
-        public Stat(float baseValue)
+        public Stat(BaseStatConfig statConfig)
         {
-            this.baseValue = baseValue;
+            Initialize(statConfig);
             statModifiers = new List<StatModifier>();
             Modifiers = statModifiers.AsReadOnly();
+        }
+
+        private void Initialize(BaseStatConfig statConfig)
+        {
+            this.baseValue = statConfig.BaseStat.BaseValue;
+            Type = statConfig.BaseStat.Type;
         }
 
         public void AddModifier(StatModifier mod)
@@ -92,6 +90,8 @@ namespace dutpekmezi
 
             statModifiers.Sort((a, b) => a.Operation.CompareTo(b.Operation));
 
+            float sumPercentAdd = 0;
+
             for (int i = 0; i < statModifiers.Count; i++)
             {
                 StatModifier mod = statModifiers[i];
@@ -102,11 +102,22 @@ namespace dutpekmezi
                 }
                 else if (mod.Operation == ModifierOperation.PercentMultiply)
                 {
-                    finalValue *= (1 + mod.Value);
+                    sumPercentAdd += mod.Value;
                 }
             }
 
-            return (float)Mathf.Round(finalValue * 100) * 0.01f;
+            finalValue *= (1 + sumPercentAdd);
+
+            finalValue = (float)Mathf.Round(finalValue * 100) * 0.01f;
+
+            if (StatSystem.Instance != null)
+            {
+                finalValue = StatSystem.Instance.ClampStatValue(Type, finalValue);
+            }
+            else
+                Debug.Log($"Stat sistem yok haci");
+
+            return finalValue;
         }
     }
 

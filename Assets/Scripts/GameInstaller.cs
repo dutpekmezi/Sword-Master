@@ -63,10 +63,10 @@ namespace dutpekmezi
 
         private void InstallSystems()
         {
+            _statSystem = Bind(new StatSystem(statConfigData));
             _characterSystem = Bind(new CharacterSystem(characterDatas));
             _enemySystem = Bind(new EnemySystem(enemyDatas));
             _weaponSystem = Bind(new WeaponSystem(weaponDatas));
-            _statSystem = Bind(new StatSystem(statConfigData));
             _uiManager = Bind(new UIManager(waveTimerUI));
             _statueManager = Bind(new StatueManager(statStatue, weaponStatue));
             _indicatorManager = Bind(new IndicatorManager(indicatorConfig));
@@ -81,10 +81,10 @@ namespace dutpekmezi
 
         private void OnFixedUpdate()
         {
+            _statSystem.Tick();
             _characterSystem.Tick();
             _enemySystem.Tick();
             _weaponSystem.Tick();
-            _statSystem.Tick();
             _waveManager.Tick();
             _uiManager.Tick();
             _statueManager.Tick();

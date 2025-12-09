@@ -29,7 +29,7 @@ namespace dutpekmezi
 
             foreach (var baseStatConfig in weaponData.BaseStatConfigs)
             {
-                Stat runtimeStat = new Stat(baseStatConfig.BaseStat.BaseValue);
+                Stat runtimeStat = new Stat(baseStatConfig);
 
                 BaseStatConfig _baseStatConfig = new BaseStatConfig(runtimeStat);
 
