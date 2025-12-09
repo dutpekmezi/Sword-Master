@@ -23,7 +23,7 @@ MonoBehaviour:
   AbilityDamage: 2
   Prefab: {fileID: 116068156932863756, guid: 2fb9fc427af9ef7459ade53f353f629d, type: 3}
   WeaponType: 0
-  WeaponStatConfigs:
+  BaseStatConfigs:
   - BaseStat:
       Type: 3
       baseValue: 2

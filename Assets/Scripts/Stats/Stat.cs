@@ -97,7 +97,7 @@ namespace dutpekmezi
                 }
             }
 
-            return (float)Mathf.Round(finalValue * 100) / 100;
+            return (float)Mathf.Round(finalValue * 100) * 0.01f;
         }
     }
 
@@ -130,6 +130,11 @@ namespace dutpekmezi
     {
         public Stat BaseStat;
         public bool IsUpgradable = true;
+
+        public BaseStatConfig(Stat stat)
+        {
+            BaseStat = stat;
+        }
     }
 
     public static class StatTypeExtensions

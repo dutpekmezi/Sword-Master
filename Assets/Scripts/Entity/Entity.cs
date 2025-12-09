@@ -44,7 +44,9 @@ namespace dutpekmezi
             {
                 Stat runtimeStat = new Stat(baseStatConfig.BaseStat.BaseValue);
 
-                _runtimeStats.Add(baseStatConfig.BaseStat.Type, baseStatConfig);
+                BaseStatConfig _baseStatConfig = new BaseStatConfig(runtimeStat);
+
+                _runtimeStats.Add(baseStatConfig.BaseStat.Type, _baseStatConfig);
             }
 
             currentHealth = (int)GetStatValue(StatType.MaxHealth);

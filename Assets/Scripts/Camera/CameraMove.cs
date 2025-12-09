@@ -46,8 +46,8 @@ namespace dutpekmezi
 
         private void OnDisable()
         {
-            SignalBus.Get<WeaponSystem.OnWeaponEquippedSignal>().UnSubscribe(OnWeaponEquipped);
-            SignalBus.Get<StatSystem.OnStatSelected>().UnSubscribe(OnStatSelected);
+            SignalBus.Get<WeaponSystem.OnWeaponEquippedSignal>().Unsubscribe(OnWeaponEquipped);
+            SignalBus.Get<StatSystem.OnStatSelected>().Unsubscribe(OnStatSelected);
         }
 
         private void Start()

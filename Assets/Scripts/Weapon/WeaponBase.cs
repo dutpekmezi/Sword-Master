@@ -21,7 +21,7 @@ namespace dutpekmezi
 
         private bool canRotate = true;
 
-        protected Dictionary<StatType, Stat> _runtimeStats = new Dictionary<StatType, Stat>();
+        protected Dictionary<StatType, BaseStatConfig> _runtimeStats = new Dictionary<StatType, BaseStatConfig>();
 
         public virtual void Initialize()
         {
@@ -31,7 +31,9 @@ namespace dutpekmezi
             {
                 Stat runtimeStat = new Stat(baseStatConfig.BaseStat.BaseValue);
 
-                _runtimeStats.Add(baseStatConfig.BaseStat.Type, runtimeStat);
+                BaseStatConfig _baseStatConfig = new BaseStatConfig(runtimeStat);
+
+                _runtimeStats.Add(baseStatConfig.BaseStat.Type, _baseStatConfig);
             }
 
             SignalBus.Get<StatSystem.OnStatSelected>().Subscribe(ApplySelectedModifier);
@@ -89,9 +91,9 @@ namespace dutpekmezi
 
         protected virtual void ApplyModifier(StatModifier modifier)
         {
-            if (_runtimeStats.TryGetValue(modifier.Type, out Stat stat))
+            if (_runtimeStats.TryGetValue(modifier.Type, out BaseStatConfig statConfig))
             {
-                stat.AddModifier(modifier);
+                statConfig.BaseStat.AddModifier(modifier);
             }
         }
 
@@ -104,9 +106,9 @@ namespace dutpekmezi
 
         public float GetStatValue(StatType type)
         {
-            if (_runtimeStats.TryGetValue(type, out Stat stat))
+            if (_runtimeStats.TryGetValue(type, out BaseStatConfig statConfig))
             {
-                return stat.Value;
+                return statConfig.BaseStat.Value;
             }
             return 0f;
         }

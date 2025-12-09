@@ -65,9 +65,9 @@ MonoBehaviour:
     BaseFlatValue: 0
     FlatAddChance: 0
     DirectValue: 0
-    ShouldClamp: 0
+    ShouldClamp: 1
     MinValue: 0
-    MaxValue: 0
+    MaxValue: 5
     Target: 1
   - Type: 4
     Color: {r: 1, g: 0.30052865, b: 0, a: 1}
@@ -79,9 +79,9 @@ MonoBehaviour:
     BaseFlatValue: 0
     FlatAddChance: 0
     DirectValue: 0
-    ShouldClamp: 0
+    ShouldClamp: 1
     MinValue: 0
-    MaxValue: 0
+    MaxValue: 5
     Target: 1
   - Type: 2
     Color: {r: 0, g: 0.5914922, b: 1, a: 1}
