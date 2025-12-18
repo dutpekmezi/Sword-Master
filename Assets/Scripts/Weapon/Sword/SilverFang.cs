@@ -7,7 +7,7 @@ namespace dutpekmezi
     public class SilverFang : WeaponBase
     {
         [Header("Ability Settings")]
-        [SerializeField] private Slash slash;
+        [SerializeField] private SlashObj slash;
         [SerializeField] private float slashObjScaleX;
         [SerializeField] private float slashObjScaleY;
         [SerializeField] private float slashObjScaleDuration;

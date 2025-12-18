@@ -10,16 +10,22 @@ namespace dutpekmezi
         [Header("Assigned Data")]
         [SerializeField] protected WeaponData weaponData;
 
+        [Header("Ability Data")]
+        [SerializeField] protected AbilityBase<WeaponBase> abilityData;
+
         [Header("Orbit Settings")]
         public bool clockwise = true;
 
         [Header("Rotation Settings")]
         public bool selfRotationClockwise = true;
 
-        protected float currentAngle;
+        public float currentAngle;
         protected Vector2 orbitCenter;
 
         private bool canRotate = true;
+
+        private float abilityCooldownTimer = 0f;
+        private bool isAbilityReady = true;
 
         protected Dictionary<StatType, BaseStatConfig> _runtimeStats = new Dictionary<StatType, BaseStatConfig>();
 
@@ -36,6 +42,9 @@ namespace dutpekmezi
                 _runtimeStats.Add(baseStatConfig.BaseStat.Type, _baseStatConfig);
             }
 
+            isAbilityReady = true;
+            abilityCooldownTimer = 0f;
+
             SignalBus.Get<StatSystem.OnStatSelected>().Subscribe(ApplySelectedModifier);
         }
 
@@ -43,11 +52,45 @@ namespace dutpekmezi
         {
             Orbit();
             RotateSelf();
+
+            if (abilityCooldownTimer > 0f)
+            {
+                abilityCooldownTimer -= LogicTimer.FixedDelta;
+                if (abilityCooldownTimer <= 0f)
+                {
+                    OnAbilityCooldownFinished();
+                }
+            }
         }
 
         private void Update()
         {
-            Ability();
+            if (CanUseAbility())
+            {
+                Ability();
+                StartAbilityCooldown();
+            }
+        }
+
+        protected void StartAbilityCooldown()
+        {
+            float cooldown = GetStatValue(StatType.AbilityCooldown);
+
+            if (cooldown > 0f)
+            {
+                abilityCooldownTimer = cooldown;
+                isAbilityReady = false;
+            }
+            else
+            {
+                isAbilityReady = true;
+                abilityCooldownTimer = 0f;
+            }
+        }
+
+        private void OnAbilityCooldownFinished()
+        {
+            isAbilityReady = true;
         }
 
         private void Orbit()
@@ -113,11 +156,19 @@ namespace dutpekmezi
             return 0f;
         }
 
-        protected void SetRotate(bool canRotate)
+        public void SetRotate(bool canRotate)
         {
             this.canRotate = canRotate;
         }
 
-        protected abstract void Ability();
+        protected virtual void Ability()
+        {
+            abilityData.UseAbility(this);
+        }
+
+        protected virtual bool CanUseAbility()
+        {
+            return isAbilityReady;
+        }
     }
 }

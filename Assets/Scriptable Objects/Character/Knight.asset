@@ -31,11 +31,11 @@ MonoBehaviour:
     IsUpgradable: 0
   - BaseStat:
       Type: 8
-      baseValue: 0
+      baseValue: 100
     IsUpgradable: 1
   - BaseStat:
-      Type: 11
-      baseValue: 0
-    IsUpgradable: 1
+      Type: 12
+      baseValue: 10
+    IsUpgradable: 0
   Prefab: {fileID: 7342495170202269068, guid: ec5a60abe7119da498c224dde80df30d, type: 3}
   WeaponType: 0

@@ -16,21 +16,21 @@ MonoBehaviour:
   Name: Slime
   Description: Slime
   Sprite: {fileID: 0}
-  entityStatConfigs:
+  BaseStatConfigs:
   - BaseStat:
       Type: 0
       baseValue: 1
     IsUpgradable: 0
   - BaseStat:
       Type: 1
-      baseValue: 1.15
+      baseValue: 1.1
+    IsUpgradable: 1
+  - BaseStat:
+      Type: 13
+      baseValue: 1.1
     IsUpgradable: 1
   - BaseStat:
       Type: 2
-      baseValue: 1
-    IsUpgradable: 1
-  - BaseStat:
-      Type: 12
-      baseValue: 1
+      baseValue: 1.1
     IsUpgradable: 1
   Prefab: {fileID: 1662301267738328567, guid: 71716b921f14b224eacb7b90b295f172, type: 3}

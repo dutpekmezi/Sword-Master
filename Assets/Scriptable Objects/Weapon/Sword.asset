@@ -36,3 +36,7 @@ MonoBehaviour:
       Type: 5
       baseValue: 270
     IsUpgradable: 1
+  - BaseStat:
+      Type: 7
+      baseValue: 2
+    IsUpgradable: 0

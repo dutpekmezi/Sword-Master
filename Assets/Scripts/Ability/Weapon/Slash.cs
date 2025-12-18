@@ -1,11 +1,14 @@
-using UnityEngine;
 using DG.Tweening;
 using DG.Tweening.Core.Easing;
-using Utils.Signal;
+using Dutpekmezi.Services.PoolService;
+using TMPro;
+using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 namespace dutpekmezi
 {
-    public class Sword : WeaponBase
+    [CreateAssetMenu(fileName = "Slash", menuName = "Game/Scriptable Objects/Ability/Weapon/Slash")]
+    public class Slash : AbilityBase<WeaponBase>
     {
         [Header("Ability Settings")]
         [SerializeField] private float moveSpeed = 5f;
@@ -15,17 +18,21 @@ namespace dutpekmezi
         [SerializeField] private float slashObjScaleDuration;
         [SerializeField] private float slashObjDeScaleDuration;
 
+        private WeaponBase weapon;
+
         private bool isMoving = false;
         private float targetAngle;
         private Vector2 targetPosition;
 
-        protected override void Ability()
+        protected override void ExecuteAbility(WeaponBase weapon)
         {
+            this.weapon = weapon;
+
             if (/*Input.GetMouseButtonDown(0) && */!isMoving)
             {
                 var character = CharacterSystem.Instance.GetCurrentCharacter();
 
-                targetAngle = currentAngle + 180f;
+                targetAngle = weapon.currentAngle + 180f;
                 if (targetAngle > 360f)
                     targetAngle -= 360f;
 
@@ -33,51 +40,49 @@ namespace dutpekmezi
                     Mathf.Cos(targetAngle * Mathf.Deg2Rad),
                     Mathf.Sin(targetAngle * Mathf.Deg2Rad),
                     0f
-                ) * GetStatValue(StatType.WeaponOrbitRadius);
+                ) * weapon.GetStatValue(StatType.WeaponOrbitRadius);
 
                 isMoving = true;
-                SetRotate(false);
-                MoveToOpposite(character);
+                weapon.SetRotate(false);
+                MoveToOpposite();
             }
         }
 
-        private void MoveToOpposite(CharacterBase character)
+        private void MoveToOpposite()
         {
-            float z = transform.position.z;
-
-            transform.DOMove(new Vector3(targetPosition.x, targetPosition.y, z),
-                                         Vector2.Distance(transform.position, targetPosition) / (GetStatValue(StatType.WeaponOrbitSpeed) * 5))
-                .SetEase(Ease.InOutSine)
-                .OnUpdate(() =>
-                {
-                    Vector2 dir = (targetPosition - (Vector2)transform.position).normalized;
+            float z = weapon.transform.position.z;
+            weapon.transform.DOMove(new Vector3(targetPosition.x, targetPosition.y, z),
+                                         Vector2.Distance(weapon.transform.position, targetPosition) / (weapon.GetStatValue(StatType.WeaponOrbitSpeed) * 5))
+            .SetEase(Ease.InOutSine)
+            .OnUpdate(() =>
+            {
+                    Vector2 dir = (targetPosition - (Vector2)weapon.transform.position).normalized;
                     if (dir != Vector2.zero)
-                        transform.up = dir;
+                        weapon.transform.up = dir;
                 })
                 .OnStart(() =>
                 {
-                    DOVirtual.DelayedCall(0.05f, Slash);
+                    DOVirtual.DelayedCall(0.05f, Slashing);
                 })
-                .OnComplete(() =>
-                {
-                    transform.position = new Vector3(targetPosition.x, targetPosition.y, z);
-                    currentAngle = targetAngle;
-                    isMoving = false;
-                    SetRotate(true);
+            .OnComplete(() =>
+            {
+                weapon.transform.position = new Vector3(targetPosition.x, targetPosition.y, z);
+                weapon.currentAngle = targetAngle;
+                isMoving = false;
+                weapon.SetRotate(true);
 
-                    DOTween.Kill(transform);
-                });
+                DOTween.Kill(weapon.transform);
+            });
         }
 
 
-        private void Slash()
+        private void Slashing()
         {
-            var slashObj = Dutpekmezi.Services.PoolService.ObjectPoolManager.SpawnObject(
+            var slashObj = ObjectPoolManager.SpawnObject(
                 slash, CharacterSystem.Instance.GetCurrentCharacter().transform.position);
-
             slashObj.transform.localScale = Vector2.zero;
 
-            slashObj.transform.rotation = transform.rotation;
+            slashObj.transform.rotation = weapon.transform.rotation;
 
             slashObj.transform.DOScale(new Vector2(slashObjScaleX, slashObjScaleY), slashObjScaleDuration)
                 .SetEase(Ease.OutBack)
@@ -94,15 +99,9 @@ namespace dutpekmezi
                 });
         }
 
-
-        private void OnTriggerEnter2D(Collider2D col)
+        protected override bool CanUse(WeaponBase weapon)
         {
-            EnemyBase enemy = col.GetComponent<EnemyBase>();
-
-            if (enemy != null)
-            {
-                SignalBus.Get<EnemyBase.OnTakeDamage>().Invoke(enemy, weaponData.AttackDamage);
-            }
+            return base.CanUse(weapon);
         }
     }
 }

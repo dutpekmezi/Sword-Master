@@ -16,21 +16,21 @@ MonoBehaviour:
   Name: Wolf
   Description: Wolf
   Sprite: {fileID: 0}
-  entityStatConfigs:
+  BaseStatConfigs:
   - BaseStat:
       Type: 0
       baseValue: 1
     IsUpgradable: 0
   - BaseStat:
       Type: 1
-      baseValue: 1.6
+      baseValue: 1.7
+    IsUpgradable: 1
+  - BaseStat:
+      Type: 13
+      baseValue: 1.7
     IsUpgradable: 1
   - BaseStat:
       Type: 2
-      baseValue: 3
-    IsUpgradable: 1
-  - BaseStat:
-      Type: 12
-      baseValue: 3
+      baseValue: 1.7
     IsUpgradable: 1
   Prefab: {fileID: 1662301267738328567, guid: 20cedce1b9764fe4b96315314e60d721, type: 3}

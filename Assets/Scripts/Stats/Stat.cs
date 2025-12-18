@@ -130,6 +130,7 @@ namespace dutpekmezi
         WeaponOrbitRadius,
         WeaponSelfOrbitSpeed,
         CooldownReduction,
+        AbilityCooldown,
         Energy,
         HealthRegen,
         EnergyRegen,

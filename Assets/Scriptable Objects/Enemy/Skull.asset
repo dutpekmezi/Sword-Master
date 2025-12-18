@@ -16,21 +16,21 @@ MonoBehaviour:
   Name: Skull
   Description: Skull
   Sprite: {fileID: 0}
-  entityStatConfigs:
+  BaseStatConfigs:
   - BaseStat:
       Type: 0
       baseValue: 1
     IsUpgradable: 0
   - BaseStat:
       Type: 1
-      baseValue: 1.8
+      baseValue: 2
+    IsUpgradable: 1
+  - BaseStat:
+      Type: 13
+      baseValue: 2
     IsUpgradable: 1
   - BaseStat:
       Type: 2
-      baseValue: 1
-    IsUpgradable: 1
-  - BaseStat:
-      Type: 12
-      baseValue: 1
+      baseValue: 2
     IsUpgradable: 1
   Prefab: {fileID: 1662301267738328567, guid: 0374e29707cb6794483541c47802aa63, type: 3}

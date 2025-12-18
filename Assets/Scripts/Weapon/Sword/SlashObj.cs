@@ -4,7 +4,7 @@ using Utils.Signal;
 
 namespace dutpekmezi
 {
-    public class Slash : MonoBehaviour
+    public class SlashObj : MonoBehaviour
     {
         [SerializeField] private WeaponData weaponData;
         private void OnTriggerEnter2D(Collider2D col)

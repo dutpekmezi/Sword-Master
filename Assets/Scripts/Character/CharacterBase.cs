@@ -13,13 +13,16 @@ namespace dutpekmezi
         [SerializeField] private float currentEnergy;
         [SerializeField] private float everySecondTickDuration;
 
+        [Header("Ability Data")]
+        [SerializeField] private AbilityBase<CharacterBase> abilityData;
+
         private float tickTimer;
 
         private Vector2 moveInput;
         private Vector2 moveVelocity;
 
         public float CurrentEnergy => currentEnergy;
-        public bool isEnergyFull => currentEnergy >= GetStatValue(StatType.Energy); 
+        public bool isEnergyFull => currentEnergy >= GetStatValue(StatType.Energy);
 
         public override void Initialize()
         {
@@ -58,6 +61,11 @@ namespace dutpekmezi
 
                 tickTimer = everySecondTickDuration;
             }
+        }
+
+        public void UseAbility()
+        {
+
         }
 
         private void HandleInput()
@@ -141,6 +149,11 @@ namespace dutpekmezi
         private void OnLevelUpHandler(int level)
         {
             SignalBus.Get<StatSystem.OnStatSelection>().Invoke();
+        }
+
+        public Vector2 GetMoveDirection()
+        {
+            return moveInput;
         }
 
         private void OnCollisionEnter2D(Collision2D col)
