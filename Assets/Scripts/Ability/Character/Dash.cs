@@ -4,7 +4,7 @@ using UnityEngine;
 namespace dutpekmezi
 {
     [CreateAssetMenu(fileName = "Dash", menuName = "Game/Scriptable Objects/Ability/Character/Dash")]
-    public class Dash : AbilityBase<CharacterBase> 
+    public class Dash : AbilityBase<CharacterBase>
     {
         [Header("Dash Settings")]
         [SerializeField] private float pushForce = 5f;
@@ -15,18 +15,12 @@ namespace dutpekmezi
         {
             Vector2 dashDirection = character.GetMoveDirection();
 
-            if (dashDirection.sqrMagnitude < 0.01f)
-            {
-                return;
-            }
+            if (dashDirection.sqrMagnitude < 0.01f) return;
 
             Vector3 targetPosition = character.transform.position + (Vector3)dashDirection.normalized * pushForce;
 
             character.transform.DOMove(targetPosition, dashDuration)
-                .SetEase(dashEase)
-                .OnComplete(() =>
-                {
-                });
+                .SetEase(dashEase);
         }
 
         protected override bool CanUse(CharacterBase character)

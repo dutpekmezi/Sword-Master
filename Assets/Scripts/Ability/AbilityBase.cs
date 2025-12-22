@@ -2,7 +2,12 @@ using UnityEngine;
 
 namespace dutpekmezi
 {
-    public abstract class AbilityBase<T> : ScriptableObject
+    public abstract class AbilityBase : ScriptableObject
+    {
+        
+    }
+
+    public abstract class AbilityBase<T> : AbilityBase
     {
         public virtual void UseAbility(T owner)
         {
