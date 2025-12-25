@@ -276,6 +276,50 @@ MonoBehaviour:
   maxOrthographicSize: 10
   minFollowDistance: 2
   maxFollowDistance: 10
+--- !u!1 &595611811
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 595611813}
+  - component: {fileID: 595611812}
+  m_Layer: 0
+  m_Name: InputManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &595611812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 595611811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0fd3a0e9e913bf49ba5eda4e448c85b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::dutpekmezi.InputManager
+--- !u!4 &595611813
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 595611811}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &691464192
 GameObject:
   m_ObjectHideFlags: 0
@@ -410,6 +454,7 @@ MonoBehaviour:
   statConfigData: {fileID: 11400000, guid: 7e1fe012667125d4a99ef3f5618041d8, type: 2}
   waveConfig: {fileID: 11400000, guid: 1a747af9cf9dab64db7b1f72222da018, type: 2}
   indicatorConfig: {fileID: 11400000, guid: ba65af8c56cada64e9b73bc6857a44ed, type: 2}
+  abilityDatas: {fileID: 11400000, guid: 5513bffc4037f8c4d9121c64ec317798, type: 2}
   statStatue: {fileID: -4551841987901079533, guid: 994903e3c2a275a4497a1b8606c4c98e, type: 3}
   weaponStatue: {fileID: 9090101051857835159, guid: e7576f7495aef5245bde937ed9cb4a04, type: 3}
   waveTimerUI: {fileID: 1516540807999556645}
@@ -21139,3 +21184,4 @@ SceneRoots:
   - {fileID: 1384146163}
   - {fileID: 1391424006}
   - {fileID: 1404190288}
+  - {fileID: 595611813}

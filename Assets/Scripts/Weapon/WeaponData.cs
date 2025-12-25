@@ -24,6 +24,8 @@ namespace dutpekmezi
 
         public WeaponType WeaponType;
 
+        public AbilityBase AbilityData;
+
         public List<BaseStatConfig> BaseStatConfigs;
     }
 

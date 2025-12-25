@@ -15,7 +15,7 @@ MonoBehaviour:
   preChaosDuration: 300
   preChaosWaveSpawnRate: 20
   preChaosGroupSpawnRate: 0
-  enemiesPerWave: 1000
+  enemiesPerWave: 0
   waveSpawnRadius: 30
   waveSpawnDeflection: 10
   enemiesPerGroup: 0
@@ -26,6 +26,6 @@ MonoBehaviour:
   statuesPerWave: 2
   statueSpawnRadius: 10
   statueSpawnDeflection: 2
-  maxStatue: 2
+  maxStatue: 0
   maxStatStatue: 10
   maxWeaponStatue: 0

@@ -1,5 +1,6 @@
 using DG.Tweening;
 using Dutpekmezi.Services.PoolService;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace dutpekmezi
@@ -70,27 +71,30 @@ namespace dutpekmezi
         private void Slashing()
         {
             var slashObj = ObjectPoolManager.SpawnObject(slash, CharacterSystem.Instance.GetCurrentCharacter().transform.position);
-            slashObj.transform.localScale = Vector2.zero;
-            slashObj.transform.rotation = weapon.transform.rotation;
 
-            slashObj.transform.DOScale(new Vector2(slashObjScaleX, slashObjScaleY), slashObjScaleDuration)
-                .SetEase(Ease.OutBack)
-                .OnComplete(() =>
-                {
-                    slashObj.transform.DOScale(Vector2.zero, slashObjDeScaleDuration)
-                        .SetEase(Ease.InBack)
-                        .OnComplete(() =>
-                        {
-                            slashObj.transform.rotation = Quaternion.identity;
-                            DOTween.Kill(slashObj.transform);
-                            ObjectPoolManager.DeSpawn(slashObj.gameObject);
-                        });
-                });
+            SlashSettings settings = new SlashSettings
+            {
+                ScaleX = slashObjScaleX,
+                ScaleY = slashObjScaleY,
+                ScaleDuration = slashObjScaleDuration,
+                DeScaleDuration = slashObjDeScaleDuration,
+                Rotation = weapon.transform.rotation
+            };
+
+            slashObj.Init(settings);
         }
 
         protected override bool CanUse(WeaponBase weapon)
         {
             return base.CanUse(weapon);
         }
+    }
+    public struct SlashSettings
+    {
+        public float ScaleX;
+        public float ScaleY;
+        public float ScaleDuration;
+        public float DeScaleDuration;
+        public Quaternion Rotation;
     }
 }

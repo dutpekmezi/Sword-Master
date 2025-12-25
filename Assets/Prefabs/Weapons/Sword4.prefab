@@ -134,6 +134,7 @@ MonoBehaviour:
   weaponData: {fileID: 11400000, guid: c9c7b0ea7105c9e4fb2629d4f865f71e, type: 2}
   clockwise: 1
   selfRotationClockwise: 1
+  currentAngle: 0
   moveSpeed: 20
   slash: {fileID: 5278200963858967047, guid: dd2d50c78897f114d9d9dcf9ca22a70b, type: 3}
   slashObjScaleX: 0.2

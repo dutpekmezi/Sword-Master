@@ -1,27 +1,27 @@
-using UnityEngine;
+    using UnityEngine;
 
-namespace dutpekmezi
-{
-    public abstract class AbilityBase : ScriptableObject
+    namespace dutpekmezi
     {
-        
-    }
-
-    public abstract class AbilityBase<T> : AbilityBase
-    {
-        public virtual void UseAbility(T owner)
+        public abstract class AbilityBase : ScriptableObject
         {
-            if (CanUse(owner))
+        
+        }
+
+        public abstract class AbilityBase<T> : AbilityBase
+        {
+            public virtual void UseAbility(T owner)
             {
-                ExecuteAbility(owner);
+                if (CanUse(owner))
+                {
+                    ExecuteAbility(owner);
+                }
+            }
+
+            protected abstract void ExecuteAbility(T owner);
+
+            protected virtual bool CanUse(T owner)
+            {
+                return true;
             }
         }
-
-        protected abstract void ExecuteAbility(T owner);
-
-        protected virtual bool CanUse(T owner)
-        {
-            return true;
-        }
     }
-}

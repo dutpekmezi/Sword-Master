@@ -180,6 +180,7 @@ MonoBehaviour:
   weaponData: {fileID: 11400000, guid: e649ebf0131e70742a037dc94d01ca14, type: 2}
   clockwise: 1
   selfRotationClockwise: 1
+  currentAngle: 0
   slash: {fileID: 5278200963858967047, guid: dd2d50c78897f114d9d9dcf9ca22a70b, type: 3}
   slashObjScaleX: 0.2
   slashObjScaleY: 20

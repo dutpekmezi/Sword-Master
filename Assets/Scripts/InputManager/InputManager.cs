@@ -9,6 +9,11 @@ namespace dutpekmezi
 
         private void Awake()
         {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(Instance);
+            }
+
             Instance = this;
         }
 
@@ -20,8 +25,9 @@ namespace dutpekmezi
             }
         }
 
-        private void OnAbiltiyButtonClick()
+        public void OnAbiltiyButtonClick()
         {
+            Debug.Log("Clicked");
             SignalBus.Get<OnAbilityButtonClick>().Invoke();
         }
 

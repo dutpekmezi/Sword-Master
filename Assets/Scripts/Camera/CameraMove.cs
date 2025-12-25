@@ -149,6 +149,8 @@ namespace dutpekmezi
 
         private void OnStatSelected(StatModifier modifier)
         {
+            if (modifier == null) return;
+
             if (modifier.Type == StatType.WeaponOrbitRadius)
             {
                 lastOrbitRadius = -1f;

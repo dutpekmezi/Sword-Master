@@ -132,7 +132,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponData: {fileID: 11400000, guid: e5a4abc1f08525b4c95edad2d0e0908c, type: 2}
-  abilityData: {fileID: 0}
   clockwise: 1
   selfRotationClockwise: 1
   currentAngle: 0

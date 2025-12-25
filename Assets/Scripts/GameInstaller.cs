@@ -16,6 +16,7 @@ namespace dutpekmezi
         [SerializeField] private StatConfigData statConfigData;
         [SerializeField] private WaveConfig waveConfig;
         [SerializeField] private IndicatorConfig indicatorConfig;
+        [SerializeField] private AbilityDatas abilityDatas;
 
         [Header("Statue References")]
         [SerializeField] private StatueBase statStatue;
@@ -32,6 +33,7 @@ namespace dutpekmezi
         private EnemySystem _enemySystem;
         private WeaponSystem _weaponSystem;
         private StatSystem _statSystem;
+        private AbilitySystem _abilitySystem;
         private WaveManager _waveManager;
         private UIManager _uiManager;
         private StatueManager _statueManager;
@@ -67,6 +69,7 @@ namespace dutpekmezi
             _characterSystem = Bind(new CharacterSystem(characterDatas));
             _enemySystem = Bind(new EnemySystem(enemyDatas));
             _weaponSystem = Bind(new WeaponSystem(weaponDatas));
+            _abilitySystem = Bind(new AbilitySystem(abilityDatas));
             _uiManager = Bind(new UIManager(waveTimerUI));
             _statueManager = Bind(new StatueManager(statStatue, weaponStatue));
             _indicatorManager = Bind(new IndicatorManager(indicatorConfig));
@@ -85,6 +88,7 @@ namespace dutpekmezi
             _characterSystem.Tick();
             _enemySystem.Tick();
             _weaponSystem.Tick();
+            _abilitySystem.Tick();
             _waveManager.Tick();
             _uiManager.Tick();
             _statueManager.Tick();

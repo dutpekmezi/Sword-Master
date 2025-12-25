@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Utils.Signal;
-using Utils.LogicTimer;
+
 
 namespace dutpekmezi
 {
@@ -10,7 +12,8 @@ namespace dutpekmezi
         [Header("References")]
         [SerializeField] private Transform parent;
         [SerializeField] private StatCardUI statCardPrefab;
-        [SerializeField] private GameObject scnreenDim;
+        [SerializeField] private Image scnreenDim;
+        [SerializeField] private GameObject abiltiyChangeButton;
 
         private bool onSelecting = false;
 
@@ -28,7 +31,8 @@ namespace dutpekmezi
 
             onSelecting = true;
 
-            scnreenDim.SetActive(true);
+            scnreenDim.enabled = true;
+            abiltiyChangeButton.SetActive(true);
 
             var character = CharacterSystem.Instance.GetCurrentCharacter();
 
@@ -60,7 +64,8 @@ namespace dutpekmezi
 
         private void HideStats()
         {
-            scnreenDim.SetActive(false);
+            scnreenDim.enabled = false;
+            abiltiyChangeButton.SetActive(false);
 
             if (displayingStatCards.Count > 0)
             {

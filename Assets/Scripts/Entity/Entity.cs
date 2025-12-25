@@ -59,6 +59,8 @@ namespace dutpekmezi
 
         protected virtual void ApplyModifier(StatModifier modifier)
         {
+            if (modifier == null) return;
+
             if (_runtimeStats.TryGetValue(modifier.Type, out BaseStatConfig statConfig))
             {
                 statConfig.BaseStat.AddModifier(modifier);
@@ -75,6 +77,8 @@ namespace dutpekmezi
 
         protected virtual void ApplySelectedModifier(StatModifier modifier)
         {
+            if (modifier == null) return;
+
             if (modifier.Target != StatTarget.Entity) return;
 
             ApplyModifier(modifier);

@@ -8,5 +8,6 @@ namespace dutpekmezi
     public class CharacterData : EntityData
     {
         public WeaponType WeaponType;
+        public AbilityBase AbilityData;
     }
 }

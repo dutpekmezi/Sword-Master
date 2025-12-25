@@ -1,3 +1,4 @@
+using DG.Tweening.Core.Easing;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using Unity.VisualScripting;
@@ -9,17 +10,19 @@ namespace dutpekmezi
 {
     public class CharacterBase : Entity
     {
+        [Header("Assigned Data")]
+        [SerializeField] private CharacterData characterData;
+
         [Header("Current Info")]
         [SerializeField] private float currentEnergy;
         [SerializeField] private float everySecondTickDuration;
 
-        [Header("Ability Data")]
-        [SerializeField] private AbilityBase<CharacterBase> abilityData;
-
         private float tickTimer;
-
         private Vector2 moveInput;
         private Vector2 moveVelocity;
+
+        private float abilityCooldownTimer = 0f;
+        private bool isAbilityReady = true;
 
         public float CurrentEnergy => currentEnergy;
         public bool isEnergyFull => currentEnergy >= GetStatValue(StatType.Energy);
@@ -31,10 +34,14 @@ namespace dutpekmezi
             currentEnergy = 0;
             currentLevel = 1;
             tickTimer = everySecondTickDuration;
+            isAbilityReady = true;
+            abilityCooldownTimer = 0f;
 
             SignalBus.Get<StatSystem.OnStatSelected>().Subscribe(ApplySelectedModifier);
             SignalBus.Get<OnEnemyKill>().Subscribe(GainExp);
             SignalBus.Get<OnlevelUp>().Subscribe(OnLevelUpHandler);
+            SignalBus.Get<InputManager.OnAbilityButtonClick>().Subscribe(UseAbility);
+
             SignalBus.Get<OnStatsChange>().Invoke(this);
         }
 
@@ -45,6 +52,20 @@ namespace dutpekmezi
             HandleInput();
             MoveCharacter();
             OnEverySecondTick();
+            HandleCooldown();
+        }
+
+        private void HandleCooldown()
+        {
+            if (!isAbilityReady)
+            {
+                abilityCooldownTimer -= LogicTimer.FixedDelta;
+                if (abilityCooldownTimer <= 0f)
+                {
+                    abilityCooldownTimer = 0f;
+                    isAbilityReady = true;
+                }
+            }
         }
 
         private void OnEverySecondTick()
@@ -65,7 +86,38 @@ namespace dutpekmezi
 
         public void UseAbility()
         {
+            if (isDead || !isAbilityReady) return;
 
+            var abilitySystem = AbilitySystem.Instance;
+
+            if (abilitySystem.CurrentMode != AbilitySystem.AbilityMode.Character) return;
+
+            if (characterData.AbilityData != null)
+            {
+                var genericAbility = characterData.AbilityData as AbilityBase<CharacterBase>;
+
+                if (genericAbility != null)
+                {
+                    genericAbility.UseAbility(this);
+                    StartAbilityCooldown();
+                }
+            }
+        }
+
+        private void StartAbilityCooldown()
+        {
+            float cooldown = GetStatValue(StatType.AbilityCooldown);
+
+            if (cooldown > 0f)
+            {
+                abilityCooldownTimer = cooldown;
+                isAbilityReady = false;
+            }
+            else
+            {
+                isAbilityReady = true;
+                abilityCooldownTimer = 0f;
+            }
         }
 
         private void HandleInput()
@@ -167,7 +219,7 @@ namespace dutpekmezi
         }
 
         public class OnEnemyKill : Signal<float> { }
-        public class OnCollideWithEnemy : Signal<EnemyBase,CharacterBase, float> { }
+        public class OnCollideWithEnemy : Signal<EnemyBase, CharacterBase, float> { }
         public class OnStatsChange : Signal<CharacterBase> { }
         public class OnlevelUp : Signal<int> { }
     }

@@ -63,7 +63,10 @@ namespace dutpekmezi
                     _characterTransform = CharacterSystem.Instance.GetCurrentCharacter().transform;
 
             if (_currentWeapon != null)
+            {
+                _currentWeapon.OnDispose();
                 ObjectPoolManager.DeSpawn(_currentWeapon.gameObject);
+            }
 
             var instance = ObjectPoolManager.SpawnObject(weaponData.Prefab, _characterTransform);
             instance.Initialize();

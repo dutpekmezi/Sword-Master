@@ -54,9 +54,9 @@ MonoBehaviour:
   _runtimeStatsList: []
   rb: {fileID: 3460207415227507878}
   col: {fileID: 2840507195096158369}
+  characterData: {fileID: 11400000, guid: 75b40bbcf2ed50b45978601990d2574d, type: 2}
   currentEnergy: 0
   everySecondTickDuration: 1
-  abilityData: {fileID: 0}
 --- !u!50 &3460207415227507878
 Rigidbody2D:
   serializedVersion: 5

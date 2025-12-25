@@ -1,3 +1,4 @@
+using DG.Tweening.Core.Easing;
 using System.Collections.Generic;
 using UnityEngine;
 using Utils.LogicTimer;
@@ -9,9 +10,6 @@ namespace dutpekmezi
     {
         [Header("Assigned Data")]
         [SerializeField] protected WeaponData weaponData;
-
-        [Header("Ability Data")]
-        [SerializeField] protected AbilityBase<WeaponBase> abilityData;
 
         [Header("Orbit Settings")]
         public bool clockwise = true;
@@ -36,9 +34,7 @@ namespace dutpekmezi
             foreach (var baseStatConfig in weaponData.BaseStatConfigs)
             {
                 Stat runtimeStat = new Stat(baseStatConfig);
-
                 BaseStatConfig _baseStatConfig = new BaseStatConfig(runtimeStat);
-
                 _runtimeStats.Add(baseStatConfig.BaseStat.Type, _baseStatConfig);
             }
 
@@ -46,6 +42,7 @@ namespace dutpekmezi
             abilityCooldownTimer = 0f;
 
             SignalBus.Get<StatSystem.OnStatSelected>().Subscribe(ApplySelectedModifier);
+            SignalBus.Get<InputManager.OnAbilityButtonClick>().Subscribe(Ability);
         }
 
         public void Tick()
@@ -53,22 +50,14 @@ namespace dutpekmezi
             Orbit();
             RotateSelf();
 
-            if (abilityCooldownTimer > 0f)
+            if (!isAbilityReady)
             {
                 abilityCooldownTimer -= LogicTimer.FixedDelta;
                 if (abilityCooldownTimer <= 0f)
                 {
-                    OnAbilityCooldownFinished();
+                    abilityCooldownTimer = 0f;
+                    isAbilityReady = true;
                 }
-            }
-        }
-
-        private void Update()
-        {
-            if (CanUseAbility())
-            {
-                Ability();
-                StartAbilityCooldown();
             }
         }
 
@@ -88,9 +77,28 @@ namespace dutpekmezi
             }
         }
 
-        private void OnAbilityCooldownFinished()
+        protected virtual void Ability()
         {
-            isAbilityReady = true;
+            if (!CanUseAbility()) return;
+
+            if (weaponData.AbilityData != null)
+            {
+                var genericAbility = weaponData.AbilityData as AbilityBase<WeaponBase>;
+
+                if (genericAbility != null)
+                {
+                    genericAbility.UseAbility(this);
+                    StartAbilityCooldown();
+                }
+            }
+        }
+
+        protected virtual bool CanUseAbility()
+        {
+            var abilitySystem = AbilitySystem.Instance;
+            bool isCorrectMode = abilitySystem.CurrentMode == AbilitySystem.AbilityMode.Weapon;
+
+            return isAbilityReady && isCorrectMode;
         }
 
         private void Orbit()
@@ -127,6 +135,8 @@ namespace dutpekmezi
 
         private void RotateSelf()
         {
+            if (!canRotate) return;
+
             transform.Rotate(Vector3.forward *
                 GetStatValue(StatType.WeaponSelfOrbitSpeed) *
                 LogicTimer.FixedDelta);
@@ -142,6 +152,7 @@ namespace dutpekmezi
 
         protected virtual void ApplySelectedModifier(StatModifier modifier)
         {
+            if (modifier == null) return;
             if (modifier.Target != StatTarget.Weapon) return;
 
             ApplyModifier(modifier);
@@ -161,14 +172,10 @@ namespace dutpekmezi
             this.canRotate = canRotate;
         }
 
-        protected virtual void Ability()
+        public void OnDispose()
         {
-            abilityData.UseAbility(this);
-        }
-
-        protected virtual bool CanUseAbility()
-        {
-            return isAbilityReady;
+            SignalBus.Get<StatSystem.OnStatSelected>().Unsubscribe(ApplySelectedModifier);
+            SignalBus.Get<InputManager.OnAbilityButtonClick>().Unsubscribe(Ability);
         }
     }
 }
