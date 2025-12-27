@@ -1,12 +1,10 @@
-using DG.Tweening.Core.Easing;
-using System.Collections.Generic;
 using UnityEngine;
 using Utils.LogicTimer;
 using Utils.Signal;
 
 namespace dutpekmezi
 {
-    public abstract class WeaponBase : MonoBehaviour
+    public abstract class WeaponBase : Entity
     {
         [Header("Assigned Data")]
         [SerializeField] protected WeaponData weaponData;
@@ -25,18 +23,17 @@ namespace dutpekmezi
         private float abilityCooldownTimer = 0f;
         private bool isAbilityReady = true;
 
-        protected Dictionary<StatType, BaseStatConfig> _runtimeStats = new Dictionary<StatType, BaseStatConfig>();
-
-        public virtual void Initialize()
+        public override void Initialize()
         {
-            _runtimeStats.Clear();
-
-            foreach (var baseStatConfig in weaponData.BaseStatConfigs)
+            if (weaponData == null)
             {
-                Stat runtimeStat = new Stat(baseStatConfig);
-                BaseStatConfig _baseStatConfig = new BaseStatConfig(runtimeStat);
-                _runtimeStats.Add(baseStatConfig.BaseStat.Type, _baseStatConfig);
+                Debug.LogError($"{name} is missing WeaponData assignment.");
+                return;
             }
+
+            entityData = weaponData;
+
+            base.Initialize();
 
             isAbilityReady = true;
             abilityCooldownTimer = 0f;
@@ -45,7 +42,7 @@ namespace dutpekmezi
             SignalBus.Get<InputManager.OnAbilityButtonClick>().Subscribe(Ability);
         }
 
-        public void Tick()
+        public override void Tick()
         {
             Orbit();
             RotateSelf();
@@ -142,29 +139,12 @@ namespace dutpekmezi
                 LogicTimer.FixedDelta);
         }
 
-        protected virtual void ApplyModifier(StatModifier modifier)
-        {
-            if (_runtimeStats.TryGetValue(modifier.Type, out BaseStatConfig statConfig))
-            {
-                statConfig.BaseStat.AddModifier(modifier);
-            }
-        }
-
-        protected virtual void ApplySelectedModifier(StatModifier modifier)
+        protected override void ApplySelectedModifier(StatModifier modifier)
         {
             if (modifier == null) return;
             if (modifier.Target != StatTarget.Weapon) return;
 
             ApplyModifier(modifier);
-        }
-
-        public float GetStatValue(StatType type)
-        {
-            if (_runtimeStats.TryGetValue(type, out BaseStatConfig statConfig))
-            {
-                return statConfig.BaseStat.Value;
-            }
-            return 0f;
         }
 
         public void SetRotate(bool canRotate)
