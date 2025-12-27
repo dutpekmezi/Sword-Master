@@ -63,11 +63,14 @@ namespace dutpekmezi
 
         protected void StartAbilityCooldown()
         {
-            float cooldown = GetStatValue(StatType.AbilityCooldown);
+            float baseCooldown = GetStatValue(StatType.AbilityCooldown);
+            float cdr = CharacterSystem.Instance.GetCurrentCharacter().GetStatValue(StatType.CooldownReduction);
 
-            if (cooldown > 0f)
+            float finalCooldown = baseCooldown * (1f - cdr);
+
+            if (finalCooldown > 0f)
             {
-                abilityCooldownTimer = cooldown;
+                abilityCooldownTimer = finalCooldown;
                 isAbilityReady = false;
             }
             else

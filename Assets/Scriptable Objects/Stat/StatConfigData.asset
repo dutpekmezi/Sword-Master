@@ -115,14 +115,14 @@ MonoBehaviour:
     Color: {r: 1, g: 1, b: 1, a: 1}
     Icon: {fileID: 21300000, guid: ca5cefce1252a4b9ebb06c6124328897, type: 3}
     IsUpgradable: 1
-    DefaultOperation: 0
+    DefaultOperation: 1
     BaseFlatValuePerLevel: 0.1
-    BasePercentValuePerLevel: 0
+    BasePercentValuePerLevel: 0.01
     BaseFlatValue: 0
-    FlatAddChance: 0.3
+    FlatAddChance: 0
     DirectValue: 0
     ShouldClamp: 1
     MinValue: 0
-    MaxValue: 0
+    MaxValue: 1
     Target: 1
   SelectableStatCount: 3
