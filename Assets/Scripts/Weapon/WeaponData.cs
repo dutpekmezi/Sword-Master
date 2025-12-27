@@ -1,16 +1,10 @@
-using NUnit.Framework;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace dutpekmezi
 {
     [CreateAssetMenu(fileName = "WeaponData", menuName = "Game/Scriptable Objects/Weapon/WeaponData")]
-    public class WeaponData : ScriptableObject
+    public class WeaponData : EntityData
     {
-        public string Id; // Id
-        public string Name; // The Name of the weapon
-        public string Description; // Detail sentence about the weapon
-
         public Sprite Icon;
 
         public float OrbitRadius; // Distance between weapon and character
@@ -20,13 +14,11 @@ namespace dutpekmezi
         public int AttackDamage; // Damage value when collide while spin
         public int AbilityDamage; // Damage value of ability
 
-        public WeaponBase Prefab;
-
         public WeaponType WeaponType;
 
         public AbilityBase AbilityData;
 
-        public List<BaseStatConfig> BaseStatConfigs;
+        public new WeaponBase Prefab => (WeaponBase)base.Prefab;
     }
 
     public enum WeaponType

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace dutpekmezi
 {
-    public class CharacterSystem : BaseSystem
+    public class CharacterSystem : EntitySystem
     {
         private readonly CharacterDatas _characterDatas;
 

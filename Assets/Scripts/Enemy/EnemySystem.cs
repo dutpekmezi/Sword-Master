@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace dutpekmezi
 {
-    public class EnemySystem : BaseSystem
+    public class EnemySystem : EntitySystem
     {
         private readonly EnemyDatas enemyDatas;
 
