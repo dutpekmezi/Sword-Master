@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace dutpekmezi
 {
-    public class WeaponSystem : BaseSystem
+    public class WeaponSystem : EntitySystem
     {
         private WeaponDatas weaponDatas;
 

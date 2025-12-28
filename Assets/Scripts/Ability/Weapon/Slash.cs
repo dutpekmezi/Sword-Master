@@ -6,7 +6,7 @@ using UnityEngine;
 namespace dutpekmezi
 {
     [CreateAssetMenu(fileName = "Slash", menuName = "Game/Scriptable Objects/Ability/Weapon/Slash")]
-    public class Slash : AbilityBase<WeaponBase>
+    public class Slash : AbilityBase
     {
         [Header("Ability Settings")]
         [SerializeField] private float moveSpeed = 5f;
@@ -21,8 +21,11 @@ namespace dutpekmezi
         private float targetAngle;
         private Vector2 targetPosition;
 
-        protected override void ExecuteAbility(WeaponBase weapon)
+        protected override void ExecuteAbility(Entity owner)
         {
+            if (owner is not WeaponBase weapon)
+                return;
+
             this.weapon = weapon;
 
             if (!isMoving)
@@ -84,8 +87,11 @@ namespace dutpekmezi
             slashObj.Init(settings);
         }
 
-        protected override bool CanUse(WeaponBase weapon)
+        protected override bool CanUse(Entity owner)
         {
+            if (owner is not WeaponBase weapon)
+                return false;
+
             return base.CanUse(weapon);
         }
     }
