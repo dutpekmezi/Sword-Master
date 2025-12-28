@@ -94,13 +94,8 @@ namespace dutpekmezi
 
             if (characterData.AbilityData != null)
             {
-                var genericAbility = characterData.AbilityData as AbilityBase<CharacterBase>;
-
-                if (genericAbility != null)
-                {
-                    genericAbility.UseAbility(this);
-                    StartAbilityCooldown();
-                }
+                characterData.AbilityData.UseAbility(this);
+                StartAbilityCooldown();
             }
         }
 

@@ -83,13 +83,8 @@ namespace dutpekmezi
 
             if (weaponData.AbilityData != null)
             {
-                var genericAbility = weaponData.AbilityData as AbilityBase<WeaponBase>;
-
-                if (genericAbility != null)
-                {
-                    genericAbility.UseAbility(this);
-                    StartAbilityCooldown();
-                }
+                weaponData.AbilityData.UseAbility(this);
+                StartAbilityCooldown();
             }
         }
 
