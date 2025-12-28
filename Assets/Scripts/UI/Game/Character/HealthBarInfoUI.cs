@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Utils.Signal;
-using UnityEngine.TextCore.Text;
 
 namespace dutpekmezi
 {
@@ -18,58 +16,76 @@ namespace dutpekmezi
         [SerializeField] private TextMeshProUGUI healthText;
         [SerializeField] private TextMeshProUGUI levelText;
 
-        private CharacterData characterData;
-        private CharacterBase character;
+        [Header("Runtime")]
+        [SerializeField] private Entity entity;
 
         private void Start()
         {
-            Init();
+            InitializeEntity(entity ?? CharacterSystem.Instance?.GetCurrentCharacter());
         }
 
-        private void Init()
+        private void Update()
         {
-            characterData = CharacterSystem.Instance.GetCurrentCharacterData();
-            character = CharacterSystem.Instance.GetCurrentCharacter();
-
-            if (characterData == null || character == null) return;
-
-            SignalBus.Get<CharacterBase.OnStatsChange>().Subscribe(UpdateSliders);
-
-            entityImage.sprite = characterData.Sprite;
-
-            UpdateSliders(character);
+            if (entity == null) return;
+            UpdateSliders(entity);
         }
 
-        private void UpdateSliders(CharacterBase character)
+        public void InitializeEntity(Entity targetEntity)
         {
-            UpdateHealthSlider(character);
-            UpdateEnergySlider(character);
-            UpdateLevelSlider(character);
+            entity = targetEntity;
+
+            if (entity == null) return;
+
+            if (entity.EntityData != null)
+            {
+                entityImage.sprite = entity.EntityData.Sprite;
+            }
+
+            bool hasEnergy = entity is CharacterBase;
+            if (energySlider != null)
+                energySlider.gameObject.SetActive(hasEnergy);
+            UpdateSliders(entity);
         }
 
-        private void UpdateHealthSlider(CharacterBase character)
+        private void UpdateSliders(Entity targetEntity)
         {
+            UpdateHealthSlider(targetEntity);
+            UpdateEnergySlider(targetEntity as CharacterBase);
+            UpdateLevelSlider(targetEntity);
+        }
+
+        private void UpdateHealthSlider(Entity targetEntity)
+        {
+            float maxHealth = targetEntity.GetStatValue(StatType.MaxHealth);
+            if (maxHealth <= 0f) maxHealth = 1f;
+
             healthSlider.minValue = 0;
-            healthSlider.maxValue = character.GetStatValue(StatType.MaxHealth);
-            healthSlider.value = character.CurrentHealth;
+            healthSlider.maxValue = maxHealth;
+            healthSlider.value = targetEntity.CurrentHealth;
 
-            healthText.text = $"{(int)character.CurrentHealth} / {(int)character.GetStatValue(StatType.MaxHealth)}";
+            healthText.text = $"{(int)targetEntity.CurrentHealth} / {(int)maxHealth}";
         }
 
         private void UpdateEnergySlider(CharacterBase character)
         {
+            if (energySlider == null) return;
+            if (character == null) return;
+
             energySlider.minValue = 0;
             energySlider.maxValue = character.GetStatValue(StatType.Energy);
             energySlider.value = character.CurrentEnergy;
         }
 
-        private void UpdateLevelSlider(CharacterBase character)
+        private void UpdateLevelSlider(Entity targetEntity)
         {
-            levelSlider.minValue = 0;
-            levelSlider.maxValue = character.GetStatValue(StatType.ExpToLevelUp);
-            levelSlider.value = character.CurrentExp;
+            float maxExp = targetEntity.GetStatValue(StatType.ExpToLevelUp);
+            if (maxExp <= 0f) maxExp = 1f;
 
-            levelText.text = $"{character.CurrentLevel}";
+            levelSlider.minValue = 0;
+            levelSlider.maxValue = maxExp;
+            levelSlider.value = targetEntity.CurrentExp;
+
+            levelText.text = $"{targetEntity.CurrentLevel}";
         }
     }
 }
