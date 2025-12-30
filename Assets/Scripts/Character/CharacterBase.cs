@@ -22,10 +22,13 @@ namespace dutpekmezi
         private Vector2 moveVelocity;
 
         private float abilityCooldownTimer = 0f;
+        private float abilityCooldownDuration = 0f;
         private bool isAbilityReady = true;
 
         public float CurrentEnergy => currentEnergy;
         public bool isEnergyFull => currentEnergy >= GetStatValue(StatType.Energy);
+        public float AbilityCooldownRemaining => abilityCooldownTimer;
+        public float AbilityCooldownDuration => abilityCooldownDuration;
 
         public override void Initialize()
         {
@@ -36,6 +39,7 @@ namespace dutpekmezi
             tickTimer = everySecondTickDuration;
             isAbilityReady = true;
             abilityCooldownTimer = 0f;
+            abilityCooldownDuration = CalculateFinalAbilityCooldown();
 
             SignalBus.Get<StatSystem.OnStatSelected>().Subscribe(ApplySelectedModifier);
             SignalBus.Get<OnEnemyKill>().Subscribe(GainExp);
@@ -64,7 +68,12 @@ namespace dutpekmezi
                 {
                     abilityCooldownTimer = 0f;
                     isAbilityReady = true;
+                    abilityCooldownDuration = CalculateFinalAbilityCooldown();
                 }
+            }
+            else
+            {
+                abilityCooldownDuration = CalculateFinalAbilityCooldown();
             }
         }
 
@@ -101,10 +110,9 @@ namespace dutpekmezi
 
         private void StartAbilityCooldown()
         {
-            float baseCooldown = GetStatValue(StatType.AbilityCooldown);
-            float cdr = GetStatValue(StatType.CooldownReduction);
+            float finalCooldown = CalculateFinalAbilityCooldown();
 
-            float finalCooldown = baseCooldown * (1f - cdr);
+            abilityCooldownDuration = finalCooldown;
 
             if (finalCooldown > 0f)
             {
@@ -116,6 +124,14 @@ namespace dutpekmezi
                 isAbilityReady = true;
                 abilityCooldownTimer = 0f;
             }
+        }
+
+        private float CalculateFinalAbilityCooldown()
+        {
+            float baseCooldown = GetStatValue(StatType.AbilityCooldown);
+            float cdr = GetStatValue(StatType.CooldownReduction);
+
+            return Mathf.Max(0f, baseCooldown * (1f - cdr));
         }
 
         private void HandleInput()

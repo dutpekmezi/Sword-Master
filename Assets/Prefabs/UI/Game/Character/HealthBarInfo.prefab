@@ -844,7 +844,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::dutpekmezi.HealthBarInfoUI
   entityImage: {fileID: 273859869562736886}
   healthSlider: {fileID: 3473217238155614769}
-  energySlider: {fileID: 7678088775182830476}
+  abilityCooldownSlider: {fileID: 7678088775182830476}
   levelSlider: {fileID: 530205044484904537}
   healthText: {fileID: 4369385583560786747}
   levelText: {fileID: 4944637217431138690}
@@ -887,7 +887,7 @@ GameObject:
   - component: {fileID: 7589817785466613509}
   - component: {fileID: 7678088775182830476}
   m_Layer: 0
-  m_Name: Energy_Slider
+  m_Name: AbilityCooldown_Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -52,7 +52,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::dutpekmezi.HealthBarInfoUI
   entityImage: {fileID: 0}
   healthSlider: {fileID: 0}
-  energySlider: {fileID: 0}
+  abilityCooldownSlider: {fileID: 0}
   levelSlider: {fileID: 0}
   healthText: {fileID: 0}
   levelText: {fileID: 0}
