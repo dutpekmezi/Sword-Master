@@ -12,7 +12,7 @@ namespace dutpekmezi
         [SerializeField] private Image entityImage;
 
         [SerializeField] private Slider healthSlider;
-        [SerializeField] private Slider energySlider;
+        [SerializeField] private Slider abilityCooldownSlider;
         [SerializeField] private Slider levelSlider;
 
         [SerializeField] private TextMeshProUGUI healthText;
@@ -24,6 +24,13 @@ namespace dutpekmezi
         private void Start()
         {
             Init();
+        }
+
+        private void Update()
+        {
+            if (character == null) return;
+
+            UpdateAbilityCooldownSlider(character);
         }
 
         private void Init()
@@ -43,7 +50,7 @@ namespace dutpekmezi
         private void UpdateSliders(CharacterBase character)
         {
             UpdateHealthSlider(character);
-            UpdateEnergySlider(character);
+            UpdateAbilityCooldownSlider(character);
             UpdateLevelSlider(character);
         }
 
@@ -56,11 +63,23 @@ namespace dutpekmezi
             healthText.text = $"{(int)character.CurrentHealth} / {(int)character.GetStatValue(StatType.MaxHealth)}";
         }
 
-        private void UpdateEnergySlider(CharacterBase character)
+        private void UpdateAbilityCooldownSlider(CharacterBase character)
         {
-            energySlider.minValue = 0;
-            energySlider.maxValue = character.GetStatValue(StatType.Energy);
-            energySlider.value = character.CurrentEnergy;
+            float duration = character.AbilityCooldownDuration;
+            float remaining = character.AbilityCooldownRemaining;
+
+            if (duration <= 0f)
+            {
+                abilityCooldownSlider.minValue = 0;
+                abilityCooldownSlider.maxValue = 1;
+                abilityCooldownSlider.value = 1;
+                return;
+            }
+
+            float elapsed = duration - remaining;
+            abilityCooldownSlider.minValue = 0;
+            abilityCooldownSlider.maxValue = duration;
+            abilityCooldownSlider.value = Mathf.Clamp(elapsed, 0, duration);
         }
 
         private void UpdateLevelSlider(CharacterBase character)
