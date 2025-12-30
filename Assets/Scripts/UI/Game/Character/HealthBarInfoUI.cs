@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Utils.Signal;
-using UnityEngine.TextCore.Text;
 
 namespace dutpekmezi
 {
@@ -10,6 +9,7 @@ namespace dutpekmezi
     {
         [Header("References")]
         [SerializeField] private Image entityImage;
+        [SerializeField] private CharacterBase character;
 
         [SerializeField] private Slider healthSlider;
         [SerializeField] private Slider abilityCooldownSlider;
@@ -19,11 +19,16 @@ namespace dutpekmezi
         [SerializeField] private TextMeshProUGUI levelText;
 
         private CharacterData characterData;
-        private CharacterBase character;
+        private bool isSubscribed;
 
         private void Start()
         {
             Init();
+        }
+
+        private void OnDestroy()
+        {
+            UnsubscribeFromSignals();
         }
 
         private void Update()
@@ -35,16 +40,61 @@ namespace dutpekmezi
 
         private void Init()
         {
-            characterData = CharacterSystem.Instance.GetCurrentCharacterData();
-            character = CharacterSystem.Instance.GetCurrentCharacter();
+            if (character == null)
+            {
+                character = CharacterSystem.Instance.GetCurrentCharacter();
+            }
+
+            characterData = character == null ? null : (CharacterData)character.EntityData;
 
             if (characterData == null || character == null) return;
 
-            SignalBus.Get<CharacterBase.OnStatsChange>().Subscribe(UpdateSliders);
+            SubscribeToSignals();
 
             entityImage.sprite = characterData.Sprite;
 
             UpdateSliders(character);
+        }
+
+        public void SetCharacter(CharacterBase targetCharacter)
+        {
+            if (targetCharacter == null || targetCharacter == character) return;
+
+            UnsubscribeFromSignals();
+
+            character = targetCharacter;
+            characterData = (CharacterData)character.EntityData;
+
+            if (characterData != null)
+            {
+                entityImage.sprite = characterData.Sprite;
+            }
+
+            SubscribeToSignals();
+            UpdateSliders(character);
+        }
+
+        private void SubscribeToSignals()
+        {
+            if (isSubscribed || character == null) return;
+
+            SignalBus.Get<CharacterBase.OnStatsChange>().Subscribe(OnCharacterStatsChange);
+            isSubscribed = true;
+        }
+
+        private void UnsubscribeFromSignals()
+        {
+            if (!isSubscribed) return;
+
+            SignalBus.Get<CharacterBase.OnStatsChange>().Unsubscribe(OnCharacterStatsChange);
+            isSubscribed = false;
+        }
+
+        private void OnCharacterStatsChange(CharacterBase changedCharacter)
+        {
+            if (changedCharacter != character) return;
+
+            UpdateSliders(changedCharacter);
         }
 
         private void UpdateSliders(CharacterBase character)
