@@ -15,6 +15,9 @@ namespace dutpekmezi
         private WeaponBase _currentWeapon;
         private Transform _characterTransform;
 
+        public WeaponBase CurrentWeapon => _currentWeapon;
+        public WeaponData CurrentWeaponData => (WeaponData)_currentWeapon?.EntityData;
+
         public static WeaponSystem Instance { get; private set; }
 
         public WeaponSystem(WeaponDatas datas)
