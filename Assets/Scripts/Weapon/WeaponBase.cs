@@ -21,6 +21,8 @@ namespace dutpekmezi
 
         private bool canRotate = true;
 
+        private Vector3 baseScale;
+
         private float abilityCooldownTimer = 0f;
         private float abilityCooldownDuration = 0f;
         private bool isAbilityReady = true;
@@ -39,6 +41,9 @@ namespace dutpekmezi
             entityData = weaponData;
 
             base.Initialize();
+
+            baseScale = transform.localScale; // stash prefab size once, pool might reuse
+            UpdateScaleFromStat();
 
             isAbilityReady = true;
             abilityCooldownTimer = 0f;
@@ -131,7 +136,7 @@ namespace dutpekmezi
             float direction = clockwise ? 1f : -1f;
 
             float angularSpeed;
-            const float BaseAngularFactor = 100f;
+            const float BaseAngularFactor = 100f; // fiddled so orbit speed feels ok
 
             if (radius > 0)
             {
@@ -170,6 +175,11 @@ namespace dutpekmezi
         protected override void ApplyModifier(StatModifier modifier)
         {
             base.ApplyModifier(modifier);
+
+            if (modifier.Type == StatType.Scale)
+            {
+                UpdateScaleFromStat(); // keep size tied to stat bumps
+            }
 
             SignalBus.Get<OnStatsChange>().Invoke(this);
         }
@@ -212,6 +222,18 @@ namespace dutpekmezi
         public void SetRotate(bool canRotate)
         {
             this.canRotate = canRotate;
+        }
+
+        private void UpdateScaleFromStat()
+        {
+            float scaleValue = GetStatValue(StatType.Scale);
+
+            if (scaleValue <= 0f)
+            {
+                scaleValue = 1f; // fallback so pooled stuff doesn't vanish
+            }
+
+            transform.localScale = baseScale * scaleValue;
         }
 
         public void OnDispose()
