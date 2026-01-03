@@ -131,7 +131,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdfbf7bc10531e54a84791f04d4fb64a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponData: {fileID: 11400000, guid: e5a4abc1f08525b4c95edad2d0e0908c, type: 2}
+  entityData: {fileID: 0}
+  currentHealth: 0
+  currentLevel: 0
+  currentExp: 0
+  _runtimeStatsList: []
+  rb: {fileID: 0}
+  col: {fileID: 0}
+  weaponData: {fileID: 11400000, guid: dec86c3c9a10e934c99dcf744309b9c3, type: 2}
   clockwise: 1
   selfRotationClockwise: 1
   currentAngle: 0

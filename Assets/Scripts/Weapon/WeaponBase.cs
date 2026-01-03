@@ -1,6 +1,7 @@
 using UnityEngine;
 using Utils.LogicTimer;
 using Utils.Signal;
+using static dutpekmezi.CharacterBase;
 
 namespace dutpekmezi
 {
@@ -45,6 +46,7 @@ namespace dutpekmezi
 
             SignalBus.Get<StatSystem.OnStatSelected>().Subscribe(ApplySelectedModifier);
             SignalBus.Get<InputManager.OnAbilityButtonClick>().Subscribe(Ability);
+            SignalBus.Get<OnlevelUp>().Subscribe(OnlevelUpHandler);
 
             SignalBus.Get<OnStatsChange>().Invoke(this);
         }
@@ -160,6 +162,11 @@ namespace dutpekmezi
                 LogicTimer.FixedDelta);
         }
 
+        protected virtual void OnTrigger(Entity entity)
+        {
+
+        }
+
         protected override void ApplyModifier(StatModifier modifier)
         {
             base.ApplyModifier(modifier);
@@ -174,11 +181,17 @@ namespace dutpekmezi
             SignalBus.Get<OnStatsChange>().Invoke(this);
         }
 
+        protected virtual void OnlevelUpHandler(int level)
+        {
+
+        }
+
         public override void Gainlevel(int amount = 1)
         {
             base.Gainlevel(amount);
 
             SignalBus.Get<OnStatsChange>().Invoke(this);
+            SignalBus.Get<OnLevelUp>().Invoke(currentLevel);
         }
 
         protected override void GainExp(float amount)
@@ -207,6 +220,17 @@ namespace dutpekmezi
             SignalBus.Get<InputManager.OnAbilityButtonClick>().Unsubscribe(Ability);
         }
 
+        private void OnTriggerEnter2D(Collider2D col)
+        {
+            var enemy = col.gameObject.GetComponent<EnemyBase>();
+            if (enemy != null)
+            {
+                OnTakeDamageHandler(this, enemy.GetStatValue(StatType.BodyDamage));
+                OnTrigger(enemy);
+            }
+        }
+
         public class OnStatsChange : Signal<WeaponBase> { }
+        public class OnLevelUp : Signal<int> { }
     }
 }

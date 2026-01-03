@@ -15,15 +15,7 @@ MonoBehaviour:
   Id: sword4
   Name: Sword 4
   Description: Sword 4 details
-  Icon: {fileID: 21300000, guid: 62aeed4fdee82094c99be06f56d288af, type: 3}
-  OrbitRadius: 2
-  OrbitSpeed: 90
-  SelfOrbitSpeed: 180
-  AttackDamage: 1
-  AbilityDamage: 2
-  Prefab: {fileID: 116068156932863756, guid: 2fb9fc427af9ef7459ade53f353f629d, type: 3}
-  WeaponType: 0
-  AbilityData: {fileID: 11400000, guid: 7bdb4ecd0ed50b041aa414e5b59a69aa, type: 2}
+  Sprite: {fileID: 0}
   BaseStatConfigs:
   - BaseStat:
       Type: 3
@@ -41,3 +33,16 @@ MonoBehaviour:
       Type: 7
       baseValue: 2
     IsUpgradable: 0
+  - BaseStat:
+      Type: 0
+      baseValue: 1000
+    IsUpgradable: 0
+  Prefab: {fileID: 116068156932863756, guid: 2fb9fc427af9ef7459ade53f353f629d, type: 3}
+  Icon: {fileID: 21300000, guid: 62aeed4fdee82094c99be06f56d288af, type: 3}
+  OrbitRadius: 2
+  OrbitSpeed: 90
+  SelfOrbitSpeed: 180
+  AttackDamage: 1
+  AbilityDamage: 2
+  WeaponType: 0
+  AbilityData: {fileID: 11400000, guid: 7bdb4ecd0ed50b041aa414e5b59a69aa, type: 2}

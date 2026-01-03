@@ -30,10 +30,6 @@ MonoBehaviour:
       baseValue: 1
     IsUpgradable: 0
   - BaseStat:
-      Type: 8
-      baseValue: 100
-    IsUpgradable: 1
-  - BaseStat:
       Type: 12
       baseValue: 10
     IsUpgradable: 0
@@ -44,7 +40,11 @@ MonoBehaviour:
   - BaseStat:
       Type: 6
       baseValue: 0
-    IsUpgradable: 0
+    IsUpgradable: 1
+  - BaseStat:
+      Type: 9
+      baseValue: 0
+    IsUpgradable: 1
   Prefab: {fileID: 7342495170202269068, guid: ec5a60abe7119da498c224dde80df30d, type: 3}
   WeaponType: 0
   AbilityData: {fileID: 11400000, guid: 805d3700eb844374193fc7e35d3542ec, type: 2}

@@ -20,14 +20,16 @@ namespace dutpekmezi
         private Vector2 targetPosition;
 
 
-        private void OnTriggerEnter2D(Collider2D col)
+        protected override void OnTrigger(Entity entity)
         {
-            EnemyBase enemy = col.GetComponent<EnemyBase>();
+            SignalBus.Get<EnemyBase.OnTakeDamage>().Invoke(entity, weaponData.AttackDamage);
+        }
 
-            if (enemy != null)
-            {
-                SignalBus.Get<EnemyBase.OnTakeDamage>().Invoke(enemy, weaponData.AttackDamage);
-            }
+        protected override void OnlevelUpHandler(int level)
+        {
+            var modifier = StatSystem.Instance.CreateRandomModifier(StatType.Scale, currentLevel);
+
+            ApplyModifier(modifier);
         }
     }
 }

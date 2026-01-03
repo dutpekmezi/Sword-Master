@@ -137,6 +137,7 @@ namespace dutpekmezi
         LifeSteel,
         ExpToLevelUp,
         ExpOnDeath,
+        Scale,
         PushForce
     }
 

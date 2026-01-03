@@ -177,6 +177,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf9bfb4ca88315a459e742716e6598c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::dutpekmezi.SilverFang
+  entityData: {fileID: 0}
+  currentHealth: 0
+  currentLevel: 0
+  currentExp: 0
+  _runtimeStatsList: []
+  rb: {fileID: 0}
+  col: {fileID: 0}
   weaponData: {fileID: 11400000, guid: e649ebf0131e70742a037dc94d01ca14, type: 2}
   clockwise: 1
   selfRotationClockwise: 1
