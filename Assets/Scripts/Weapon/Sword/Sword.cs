@@ -29,7 +29,7 @@ namespace dutpekmezi
         {
             var modifier = StatSystem.Instance.CreateRandomModifier(StatType.Scale, currentLevel);
 
-            ApplyModifier(modifier);
+            ApplyModifier(modifier); // bump size a bit when this blade levels
         }
     }
 }
