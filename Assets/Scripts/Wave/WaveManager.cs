@@ -141,27 +141,41 @@ namespace dutpekmezi
 
         public void GenerateStatStatues(int count)
         {
+            var characterPosition = (Vector2)characterSystem.GetCurrentCharacter().transform.position;
+            List<Vector2> occupiedPositions = GetCurrentStatuePositions();
+
             for (int i = 0; i < count; i++)
             {
                 if (StatueManager.Instance.ActiveStatStatues.Count >= waveConfig.maxStatStatue || StatueManager.Instance.ActiveStatues.Count >= waveConfig.maxStatue) return;
 
-                var statue = StatueManager.Instance.CreateStatStatue();
+                if (!TryGetStatueSpawnPosition(characterPosition, occupiedPositions, out var spawnPosition))
+                {
+                    continue;
+                }
 
-                var randomPos = GenerateRandomPos(waveConfig.statueSpawnRadius, waveConfig.statueSpawnDeflection, characterSystem.GetCurrentCharacter().transform.position);
-                statue.transform.position = randomPos;
+                var statue = StatueManager.Instance.CreateStatStatue();
+                statue.transform.position = spawnPosition;
+                occupiedPositions.Add(spawnPosition);
             }
         }
 
         public void GenerateWeaponStatues(int count)
         {
+            var characterPosition = (Vector2)characterSystem.GetCurrentCharacter().transform.position;
+            List<Vector2> occupiedPositions = GetCurrentStatuePositions();
+
             for (int i = 0; i < count; i++)
             {
                 if (StatueManager.Instance.ActiveWeaponStatues.Count >= waveConfig.maxWeaponStatue || StatueManager.Instance.ActiveStatues.Count >= waveConfig.maxStatue) return;
 
-                var statue = StatueManager.Instance.CreateWeaponStatue();
+                if (!TryGetStatueSpawnPosition(characterPosition, occupiedPositions, out var spawnPosition))
+                {
+                    continue;
+                }
 
-                var randomPos = GenerateRandomPos(waveConfig.statueSpawnRadius, waveConfig.statueSpawnDeflection, characterSystem.GetCurrentCharacter().transform.position);
-                statue.transform.position = randomPos;
+                var statue = StatueManager.Instance.CreateWeaponStatue();
+                statue.transform.position = spawnPosition;
+                occupiedPositions.Add(spawnPosition);
             }
         }
 
@@ -188,6 +202,50 @@ namespace dutpekmezi
             float y = center.y + Mathf.Sin(angle) * distance;
 
             return new Vector2(x, y);
+        }
+
+        private bool TryGetStatueSpawnPosition(Vector2 center, List<Vector2> occupiedPositions, out Vector2 spawnPosition)
+        {
+            const int maxAttempts = 20;
+
+            for (int attempt = 0; attempt < maxAttempts; attempt++)
+            {
+                var candidate = GenerateRandomPos(waveConfig.statueSpawnRadius, waveConfig.statueSpawnDeflection, center);
+
+                if (IsPositionFarEnough(candidate, occupiedPositions))
+                {
+                    spawnPosition = candidate;
+                    return true;
+                }
+            }
+
+            spawnPosition = Vector2.zero;
+            return false;
+        }
+
+        private bool IsPositionFarEnough(Vector2 candidate, List<Vector2> occupiedPositions)
+        {
+            foreach (var position in occupiedPositions)
+            {
+                if (Vector2.Distance(candidate, position) < waveConfig.statueMinimumDistance)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private List<Vector2> GetCurrentStatuePositions()
+        {
+            List<Vector2> positions = new List<Vector2>();
+
+            foreach (var statue in StatueManager.Instance.ActiveStatues)
+            {
+                positions.Add(statue.transform.position);
+            }
+
+            return positions;
         }
     }
 }
