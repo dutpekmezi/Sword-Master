@@ -11,6 +11,9 @@ namespace dutpekmezi
         public float preChaosWaveSpawnRate;
         public float preChaosGroupSpawnRate;
 
+        [Header("Enemy Settings")]
+        public float enemyStatScaleFactor;
+
         [Header("Enemy Wave Settings")]
         public int enemiesPerWave;
         public float waveSpawnRadius;
