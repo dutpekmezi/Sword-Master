@@ -38,7 +38,7 @@ namespace dutpekmezi
 
         private Sequence _sequence;
 
-        private void OnEnable()
+        private void Start()
         {
             if (playOnEnable)
             {

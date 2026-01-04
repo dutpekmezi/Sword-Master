@@ -77,7 +77,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 10
+  m_PixelsPerUnitMultiplier: 5
 --- !u!114 &8706255577401634191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,7 +234,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -13, y: -2}
+  m_SizeDelta: {x: -7.6000013, y: -1.7999997}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5697905229504750522
 CanvasRenderer:
@@ -273,7 +273,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 25
 --- !u!114 &534394252711074457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -363,7 +363,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 5
 --- !u!114 &3681142267085376828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -414,7 +414,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 410, y: 10}
+  m_SizeDelta: {x: 250, y: 10}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &1609687607400131101
 CanvasRenderer:
@@ -871,7 +871,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4477cc683c8eee44ab6479e05bb02b41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::dutpekmezi.WeaponHealthBarInfoUI
-  weaponImage: {fileID: 273859869562736886}
+  weaponImage: {fileID: 4553290904279308511}
   healthSlider: {fileID: 3473217238155614769}
   abilityCooldownSlider: {fileID: 7678088775182830476}
   levelSlider: {fileID: 530205044484904537}
@@ -952,7 +952,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 420, y: 20}
+  m_SizeDelta: {x: 350, y: 20}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &5826501957586508117
 CanvasRenderer:
@@ -1276,6 +1276,7 @@ GameObject:
   - component: {fileID: 9132630142896959594}
   - component: {fileID: 8825757505237457578}
   - component: {fileID: 4553290904279308511}
+  - component: {fileID: 9033107837263051406}
   m_Layer: 0
   m_Name: Weapon_Image (1)
   m_TagString: Untagged
@@ -1340,6 +1341,151 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &9033107837263051406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7115290216948373605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0030c740eed7ca49937d4b65e0b3603, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::dutpekmezi.DoAnim
+  target: {fileID: 9132630142896959594}
+  playOnEnable: 1
+  rebuildOnEnable: 1
+  loops: -1
+  loopType: 0
+  updateType: 0
+  useUnscaledTime: 0
+  move:
+    enabled: 0
+    duration: 0.35
+    delay: 0
+    ease: 6
+    placement: 0
+    to: {x: 0, y: 1, z: 0}
+    useLocal: 1
+    relative: 1
+    snapping: 0
+  rotate:
+    enabled: 1
+    duration: 2
+    delay: 0
+    ease: 1
+    placement: 0
+    euler: {x: 0, y: 360, z: 0}
+    useLocal: 1
+    relative: 1
+    rotateMode: 1
+  scale:
+    enabled: 0
+    duration: 0.35
+    delay: 0
+    ease: 6
+    placement: 0
+    targetScale: {x: 1.1, y: 1.1, z: 1.1}
+    relative: 0
+  anchor:
+    enabled: 0
+    duration: 0.35
+    delay: 0
+    ease: 6
+    placement: 0
+    rectTransform: {fileID: 0}
+    anchor: {x: 0, y: 75}
+    relative: 1
+  punchPosition:
+    enabled: 0
+    duration: 0.35
+    delay: 0
+    ease: 6
+    placement: 0
+    punchType: 0
+    punch: {x: 0, y: 30, z: 0}
+    vibrato: 10
+    elasticity: 1
+    snapping: 0
+  punchRotation:
+    enabled: 0
+    duration: 0.35
+    delay: 0
+    ease: 6
+    placement: 0
+    punchType: 1
+    punch: {x: 0, y: 30, z: 0}
+    vibrato: 10
+    elasticity: 1
+    snapping: 0
+  punchScale:
+    enabled: 0
+    duration: 0.35
+    delay: 0
+    ease: 6
+    placement: 0
+    punchType: 2
+    punch: {x: 0, y: 30, z: 0}
+    vibrato: 10
+    elasticity: 1
+    snapping: 0
+  shakePosition:
+    enabled: 0
+    duration: 0.35
+    delay: 0
+    ease: 6
+    placement: 0
+    shakeType: 0
+    strength: {x: 15, y: 0, z: 0}
+    vibrato: 10
+    randomness: 90
+    fadeOut: 1
+    snapping: 0
+  shakeRotation:
+    enabled: 0
+    duration: 0.35
+    delay: 0
+    ease: 6
+    placement: 0
+    shakeType: 1
+    strength: {x: 15, y: 0, z: 0}
+    vibrato: 10
+    randomness: 90
+    fadeOut: 1
+    snapping: 0
+  shakeScale:
+    enabled: 0
+    duration: 0.35
+    delay: 0
+    ease: 6
+    placement: 0
+    shakeType: 2
+    strength: {x: 15, y: 0, z: 0}
+    vibrato: 10
+    randomness: 90
+    fadeOut: 1
+    snapping: 0
+  shakeAnchor:
+    enabled: 0
+    duration: 0.35
+    delay: 0
+    ease: 6
+    placement: 0
+    rectTransform: {fileID: 0}
+    strength: {x: 10, y: 10}
+    vibrato: 10
+    randomness: 90
+    snapping: 0
+    fadeOut: 1
+  fade:
+    enabled: 0
+    duration: 0.35
+    delay: 0
+    ease: 6
+    placement: 0
+    canvasGroup: {fileID: 0}
+    alpha: 1
 --- !u!1 &8797333239407240922
 GameObject:
   m_ObjectHideFlags: 0

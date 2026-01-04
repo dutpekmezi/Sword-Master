@@ -39,12 +39,6 @@ public class IndicatorManager : BaseSystem
 
             indicator.Tick();
         }
-
-        foreach (var indicator in indicatorsToDispose)
-        {
-            targetIndicators.Remove(indicator);
-            ObjectPoolManager.DeSpawn(indicator.gameObject);
-        }
     }
 
     protected override void OnDispose()
@@ -61,7 +55,7 @@ public class IndicatorManager : BaseSystem
 
         var indicator = indicatorConfig.targetIndicator;
 
-        var instance = Dutpekmezi.Services.PoolService.ObjectPoolManager.SpawnObject(indicator, Vector2.zero);
+        var instance = ObjectPoolManager.SpawnObject(indicator, Vector2.zero);
         instance.Init(target, center);
 
         targetIndicators.Add(instance, target);
@@ -122,7 +116,7 @@ public class IndicatorManager : BaseSystem
 
         foreach (var indicator in indicatorsToDispose)
         {
-            Dutpekmezi.Services.PoolService.ObjectPoolManager.DeSpawn(indicator.gameObject);
+            ObjectPoolManager.DeSpawn(indicator.gameObject);
 
             targetIndicators.Remove(indicator);
         }
