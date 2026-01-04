@@ -233,7 +233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::dutpekmezi.StatStatue
   radius: 2
-  requiredTime: 5
+  requiredTime: 4
 --- !u!61 &1566676389213497775
 BoxCollider2D:
   m_ObjectHideFlags: 0

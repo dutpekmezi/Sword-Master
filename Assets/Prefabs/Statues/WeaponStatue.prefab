@@ -288,4 +288,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::dutpekmezi.WeaponStatue
   radius: 4
-  requiredTime: 5
+  requiredTime: 10
