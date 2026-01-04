@@ -34,7 +34,11 @@ namespace dutpekmezi
 
         private void Update()
         {
-            if (weapon == null) return;
+            if (weapon == null)
+            {
+                weaponImage.enabled = false;
+                return;
+            }
 
             UpdateAbilityCooldownSlider(weapon);
         }
@@ -78,7 +82,7 @@ namespace dutpekmezi
 
         private void UpdateSliders(WeaponBase currentWeapon)
         {
-            if (currentWeapon == null) return;
+            weaponImage.enabled = true;
 
             UpdateHealthSlider(currentWeapon);
             UpdateAbilityCooldownSlider(currentWeapon);
