@@ -16,28 +16,6 @@ namespace dutpekmezi
         private EnemySystem enemySystem;
         private CharacterSystem characterSystem;
         private WaveConfig waveConfig;
-
-        //------------------------------ENEMY GROUP----------------------------------------//
-        public int EnemiesPerGroup { get; private set; }
-        public float GroupSpawnRadius { get; private set; }
-        public float GroupSpawnDeflection { get; private set; }
-        public float EnemyGroupRadius { get; private set; }
-        public float EnemyGroupDeflection { get; private set; }
-
-        //------------------------------ENEMY WAVE----------------------------------------//
-        public int EnemiesPerWawe { get; private set; }
-        public float WaweSpawnRadius { get; private set; }
-        public float WaweSpawnDeflection { get; private set; }
-
-        //------------------------------STATUES----------------------------------------//
-        public int StatuesPerWave { get; private set; }
-        public float StatueSpawnRadius { get; private set; }
-        public float StatueSpawnDeflection { get; private set; }
-
-        //------------------------------GAME WAVE STAGE----------------------------------------//
-        public float PreChaosDuration { get; private set; }
-        public float PreChaosWaveSpawnRate { get; private set; }
-        public float PreChaosGroupSpawnRate { get; private set; }
         public float CurrentPreChaosTime => currentPreChaosTime;
 
         private WaveState currentWaveState = WaveState.PreChaos;
@@ -59,31 +37,13 @@ namespace dutpekmezi
             this.enemySystem = enemySystem;
             this.characterSystem = characterSystem;
 
-            EnemiesPerGroup = waveConfig.enemiesPerGroup;
-            GroupSpawnRadius = waveConfig.groupSpawnRadius;
-            GroupSpawnDeflection = waveConfig.groupSpawnDeflection;
-            EnemyGroupRadius = waveConfig.enemyGroupRadius;
-            EnemyGroupDeflection = waveConfig.enemyGroupDeflection;
-
-            EnemiesPerWawe = waveConfig.enemiesPerWave;
-            WaweSpawnRadius = waveConfig.waveSpawnRadius;
-            WaweSpawnDeflection = waveConfig.waveSpawnDeflection;
-
-            StatuesPerWave = waveConfig.statuesPerWave;
-            StatueSpawnRadius = waveConfig.statueSpawnRadius;
-            StatueSpawnDeflection = waveConfig.statueSpawnDeflection;
-
-            PreChaosDuration = waveConfig.preChaosDuration;
-            PreChaosGroupSpawnRate = waveConfig.preChaosGroupSpawnRate;
-            PreChaosWaveSpawnRate = waveConfig.preChaosWaveSpawnRate;
-
             OnInitialize();
         }
 
         protected override void OnInitialize()
         {
             currentWaveState = WaveState.PreChaos;
-            currentPreChaosTime = PreChaosDuration;
+            currentPreChaosTime = waveConfig.preChaosDuration;
             waveSpawnTimer = 0f;
             groupSpawnTimer = 0f;
         }
@@ -97,12 +57,12 @@ namespace dutpekmezi
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                GenerateEnemyWawe(EnemiesPerWawe);
+                GenerateEnemyWawe(waveConfig.enemiesPerWave);
             }
 
             if (Input.GetKeyDown(KeyCode.H))
             {
-                GenerateEnemyGroup(EnemiesPerGroup);
+                GenerateEnemyGroup(waveConfig.enemiesPerGroup);
             }
         }
 
@@ -114,23 +74,23 @@ namespace dutpekmezi
             waveSpawnTimer += dt;
             groupSpawnTimer += dt;
 
-            if (currentPreChaosTime >= PreChaosDuration)
+            if (currentPreChaosTime >= waveConfig.preChaosDuration)
             {
                 currentWaveState = WaveState.Chaos;
                 return;
             }
 
-            if (waveSpawnTimer >= PreChaosWaveSpawnRate && PreChaosWaveSpawnRate > 0)
+            if (waveSpawnTimer >= waveConfig.preChaosWaveSpawnRate && waveConfig.preChaosWaveSpawnRate > 0)
             {
                 GenerateStatStatues(waveConfig.statuesPerWave);
                 GenerateIndicatorsForStatStatues();
-                GenerateEnemyWawe(EnemiesPerWawe + characterSystem.GetCurrentCharacter().CurrentLevel - 1);
+                GenerateEnemyWawe(waveConfig.enemiesPerWave + characterSystem.GetCurrentCharacter().CurrentLevel - 1);
                 waveSpawnTimer = 0f;
             }
 
-            if (groupSpawnTimer >= PreChaosGroupSpawnRate && PreChaosGroupSpawnRate > 0)
+            if (groupSpawnTimer >= waveConfig.preChaosGroupSpawnRate && waveConfig.preChaosGroupSpawnRate > 0)
             {
-                GenerateEnemyGroup(EnemiesPerGroup);
+                GenerateEnemyGroup(waveConfig.enemiesPerGroup);
                 groupSpawnTimer = 0f;
             }
         }
@@ -139,7 +99,7 @@ namespace dutpekmezi
         {
             for (int i = 0; i < count; i++)
             {
-                var randomPos = GenerateRandomPos(WaweSpawnRadius, WaweSpawnDeflection, CharacterSystem.Instance.GetCurrentCharacter().transform.position);
+                var randomPos = GenerateRandomPos(waveConfig.waveSpawnRadius, waveConfig.waveSpawnDeflection, CharacterSystem.Instance.GetCurrentCharacter().transform.position);
 
                 enemySystem.CreateRandomEnemy(randomPos);
             }
@@ -152,14 +112,14 @@ namespace dutpekmezi
             for (int i = 0; i < totalEnemies; i++)
             {
                 var randomCenter = GenerateRandomPos(
-                    GroupSpawnRadius,
-                    GroupSpawnDeflection,
+                    waveConfig.groupSpawnRadius,
+                    waveConfig.groupSpawnDeflection,
                     (Vector2)characterSystem.GetCurrentCharacter().transform.position);
 
                 EnemyBase instance = enemySystem.CreateRandomEnemy(
                     GenerateRandomPos(
-                        EnemyGroupRadius,
-                        EnemyGroupDeflection,
+                        waveConfig.enemyGroupRadius,
+                        waveConfig.enemyGroupDeflection,
                         randomCenter));
 
                 createdEnemies.Add(instance);
@@ -186,7 +146,7 @@ namespace dutpekmezi
 
                 var statue = StatueManager.Instance.CreateStatStatue();
 
-                var randomPos = GenerateRandomPos(StatueSpawnRadius, StatueSpawnDeflection, characterSystem.GetCurrentCharacter().transform.position);
+                var randomPos = GenerateRandomPos(waveConfig.statueSpawnRadius, waveConfig.statueSpawnDeflection, characterSystem.GetCurrentCharacter().transform.position);
                 statue.transform.position = randomPos;
             }
         }
@@ -199,7 +159,7 @@ namespace dutpekmezi
 
                 var statue = StatueManager.Instance.CreateWeaponStatue();
 
-                var randomPos = GenerateRandomPos(StatueSpawnRadius, StatueSpawnDeflection, characterSystem.GetCurrentCharacter().transform.position);
+                var randomPos = GenerateRandomPos(waveConfig.statueSpawnRadius, waveConfig.statueSpawnDeflection, characterSystem.GetCurrentCharacter().transform.position);
                 statue.transform.position = randomPos;
             }
         }
