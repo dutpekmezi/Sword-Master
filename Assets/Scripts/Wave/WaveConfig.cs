@@ -30,6 +30,7 @@ namespace dutpekmezi
         public int statuesPerWave;
         public float statueSpawnRadius;
         public float statueSpawnDeflection;
+        public float statueMinimumDistance;
         public float maxStatue;
         public float maxStatStatue;
         public float maxWeaponStatue;
