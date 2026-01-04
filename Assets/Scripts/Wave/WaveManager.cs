@@ -24,6 +24,7 @@ namespace dutpekmezi
         private float groupSpawnTimer = 0f;
 
         public static WaveManager Instance { get; private set; }
+        public WaveConfig WaveConfig => waveConfig;
 
         public WaveManager(EnemySystem enemySystem,
             CharacterSystem characterSystem,

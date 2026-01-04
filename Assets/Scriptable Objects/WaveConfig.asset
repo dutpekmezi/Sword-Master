@@ -15,6 +15,7 @@ MonoBehaviour:
   preChaosDuration: 300
   preChaosWaveSpawnRate: 15
   preChaosGroupSpawnRate: 0
+  enemyStatScaleFactor: 0.01
   enemiesPerWave: 15
   waveSpawnRadius: 30
   waveSpawnDeflection: 10

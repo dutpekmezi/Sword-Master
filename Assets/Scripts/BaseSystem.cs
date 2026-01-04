@@ -6,7 +6,7 @@ public abstract class BaseSystem : IDisposable
 
     protected BaseSystem()
     {
-        OnInitialize();
+        //OnInitialize();
     }
 
     protected virtual void OnInitialize() { }
