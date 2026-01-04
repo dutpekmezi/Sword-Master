@@ -19,12 +19,20 @@ namespace dutpekmezi
         public float waveSpawnRadius;
         public float waveSpawnDeflection;
 
+        [Header("Chaos Enemy Wave Settings")]
+        public int chaosEnemiesPerWave;
+        public float chaosWaveSpawnRate;
+
         [Header("Enemy Group Wave Settings")]
         public int enemiesPerGroup;
         public float groupSpawnRadius;
         public float groupSpawnDeflection;
         public float enemyGroupRadius;
         public float enemyGroupDeflection;
+
+        [Header("Chaos Enemy Group Settings")]
+        public int chaosEnemiesPerGroup;
+        public float chaosGroupSpawnRate;
 
         [Header("Statue Settings")]
         public int statuesPerWave;
