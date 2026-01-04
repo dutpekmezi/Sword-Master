@@ -138,7 +138,8 @@ namespace dutpekmezi
         ExpToLevelUp,
         ExpOnDeath,
         Scale,
-        PushForce
+        PushForce,
+        Difficulty
     }
 
     public enum StatTarget

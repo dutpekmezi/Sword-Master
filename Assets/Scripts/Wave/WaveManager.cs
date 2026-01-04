@@ -82,22 +82,24 @@ namespace dutpekmezi
 
             if (currentTimer <= 0)
             {
-                currentWaveState = WaveState.Chaos;
-                GenerateWeaponStatues();
+                EnterChaosState();
                 return;
             }
 
-            if (waveSpawnTimer >= waveConfig.preChaosWaveSpawnRate && waveConfig.preChaosWaveSpawnRate > 0)
+            float adjustedWaveSpawnRate = GetAdjustedSpawnInterval(waveConfig.preChaosWaveSpawnRate);
+            if (waveSpawnTimer >= adjustedWaveSpawnRate && adjustedWaveSpawnRate > 0)
             {
                 GenerateStatStatues(waveConfig.statuesPerWave);
                 GenerateIndicatorsForStatStatues();
-                GenerateEnemyWawe(waveConfig.enemiesPerWave + characterSystem.GetCurrentCharacter().CurrentLevel - 1);
+                var enemyCount = waveConfig.enemiesPerWave + characterSystem.GetCurrentCharacter().CurrentLevel - 1;
+                GenerateEnemyWawe(GetAdjustedEnemyCount(enemyCount));
                 waveSpawnTimer = 0f;
             }
 
-            if (groupSpawnTimer >= waveConfig.preChaosGroupSpawnRate && waveConfig.preChaosGroupSpawnRate > 0)
+            float adjustedGroupSpawnRate = GetAdjustedSpawnInterval(waveConfig.preChaosGroupSpawnRate);
+            if (groupSpawnTimer >= adjustedGroupSpawnRate && adjustedGroupSpawnRate > 0)
             {
-                GenerateEnemyGroup(waveConfig.enemiesPerGroup);
+                GenerateEnemyGroup(GetAdjustedEnemyCount(waveConfig.enemiesPerGroup));
                 groupSpawnTimer = 0f;
             }
         }
@@ -109,6 +111,61 @@ namespace dutpekmezi
             currentTimer += dt;
             waveSpawnTimer += dt;
             groupSpawnTimer += dt;
+
+            float chaosWaveSpawnRate = GetAdjustedSpawnInterval(waveConfig.chaosWaveSpawnRate);
+            if (waveSpawnTimer >= chaosWaveSpawnRate && chaosWaveSpawnRate > 0)
+            {
+                GenerateEnemyWawe(GetAdjustedEnemyCount(waveConfig.chaosEnemiesPerWave));
+                waveSpawnTimer = 0f;
+            }
+
+            float chaosGroupSpawnRate = GetAdjustedSpawnInterval(waveConfig.chaosGroupSpawnRate);
+            if (groupSpawnTimer >= chaosGroupSpawnRate && chaosGroupSpawnRate > 0)
+            {
+                GenerateEnemyGroup(GetAdjustedEnemyCount(waveConfig.chaosEnemiesPerGroup));
+                groupSpawnTimer = 0f;
+            }
+        }
+
+        private void EnterChaosState()
+        {
+            currentWaveState = WaveState.Chaos;
+            currentTimer = 0f;
+            waveSpawnTimer = 0f;
+            groupSpawnTimer = 0f;
+            GenerateWeaponStatues();
+        }
+
+        private float GetAdjustedSpawnInterval(float baseInterval)
+        {
+            if (baseInterval <= 0)
+            {
+                return 0f;
+            }
+
+            return baseInterval / (1f + GetDifficulty());
+        }
+
+        private int GetAdjustedEnemyCount(int baseCount)
+        {
+            if (baseCount <= 0)
+            {
+                return 0;
+            }
+
+            float difficultyScale = 1f + GetDifficulty();
+            return Mathf.Max(1, Mathf.CeilToInt(baseCount * difficultyScale));
+        }
+
+        private float GetDifficulty()
+        {
+            var currentCharacter = characterSystem.GetCurrentCharacter();
+            if (currentCharacter == null)
+            {
+                return 0f;
+            }
+
+            return Mathf.Max(0f, currentCharacter.GetStatValue(StatType.Difficulty));
         }
 
         public void GenerateEnemyWawe(int count)
