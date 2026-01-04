@@ -12,7 +12,7 @@ namespace dutpekmezi
         {
             if (WaveManager.Instance == null) return;
 
-            float totalSeconds = WaveManager.Instance.CurrentPreChaosTime;
+            float totalSeconds = WaveManager.Instance.CurrentTimer;
 
             if (totalSeconds < 0) totalSeconds = 0;
 
@@ -22,6 +22,11 @@ namespace dutpekmezi
             string timeString = string.Format("{0:00}:{1:00}", minutes, seconds);
 
             timeText.text = timeString;
+
+            if (WaveManager.Instance.CurrentWaveState == WaveState.Chaos)
+            {
+                timeText.color = Color.red;
+            }
         }
     }
 }

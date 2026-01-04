@@ -16,15 +16,16 @@ namespace dutpekmezi
         private EnemySystem enemySystem;
         private CharacterSystem characterSystem;
         private WaveConfig waveConfig;
-        public float CurrentPreChaosTime => currentPreChaosTime;
+        public float CurrentTimer => currentTimer;
 
         private WaveState currentWaveState = WaveState.PreChaos;
-        private float currentPreChaosTime = 0f;
+        private float currentTimer = 0f;
         private float waveSpawnTimer = 0f;
         private float groupSpawnTimer = 0f;
 
         public static WaveManager Instance { get; private set; }
         public WaveConfig WaveConfig => waveConfig;
+        public WaveState CurrentWaveState => currentWaveState;
 
         public WaveManager(EnemySystem enemySystem,
             CharacterSystem characterSystem,
@@ -44,7 +45,7 @@ namespace dutpekmezi
         protected override void OnInitialize()
         {
             currentWaveState = WaveState.PreChaos;
-            currentPreChaosTime = waveConfig.preChaosDuration;
+            currentTimer = waveConfig.preChaosDuration;
             waveSpawnTimer = 0f;
             groupSpawnTimer = 0f;
         }
@@ -54,6 +55,10 @@ namespace dutpekmezi
             if (currentWaveState == WaveState.PreChaos)
             {
                 HandlePreChaosSpawning();
+            }
+            else if(currentWaveState == WaveState.Chaos)
+            {
+                HandleChaosSpawning();
             }
 
             if (Input.GetKeyDown(KeyCode.Space))
@@ -71,13 +76,14 @@ namespace dutpekmezi
         {
             float dt = LogicTimer.FixedDelta;
 
-            currentPreChaosTime -= dt;
+            currentTimer -= dt;
             waveSpawnTimer += dt;
             groupSpawnTimer += dt;
 
-            if (currentPreChaosTime >= waveConfig.preChaosDuration)
+            if (currentTimer <= 0)
             {
                 currentWaveState = WaveState.Chaos;
+                GenerateWeaponStatues();
                 return;
             }
 
@@ -94,6 +100,15 @@ namespace dutpekmezi
                 GenerateEnemyGroup(waveConfig.enemiesPerGroup);
                 groupSpawnTimer = 0f;
             }
+        }
+
+        private void HandleChaosSpawning()
+        {
+            float dt = LogicTimer.FixedDelta;
+
+            currentTimer += dt;
+            waveSpawnTimer += dt;
+            groupSpawnTimer += dt;
         }
 
         public void GenerateEnemyWawe(int count)
@@ -159,7 +174,7 @@ namespace dutpekmezi
             }
         }
 
-        public void GenerateWeaponStatues(int count)
+        public void GenerateWeaponStatues(int count = 1)
         {
             var characterPosition = (Vector2)characterSystem.GetCurrentCharacter().transform.position;
             List<Vector2> occupiedPositions = GetCurrentStatuePositions();
