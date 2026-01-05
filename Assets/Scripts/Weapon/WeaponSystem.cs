@@ -67,8 +67,7 @@ namespace dutpekmezi
 
             if (_currentWeapon != null)
             {
-                _currentWeapon.OnDispose();
-                ObjectPoolManager.DeSpawn(_currentWeapon.gameObject);
+                UnequipWeapon();
             }
 
             var instance = ObjectPoolManager.SpawnObject(weaponData.Prefab, _characterTransform);
@@ -80,6 +79,13 @@ namespace dutpekmezi
             SignalBus.Get<OnWeaponEquippedSignal>().Invoke(weaponData);
 
             return weaponData;
+        }
+
+        public void UnequipWeapon()
+        {
+            _currentWeapon.OnDispose();
+            ObjectPoolManager.DeSpawn(_currentWeapon.gameObject);
+            _currentWeapon = null;
         }
 
         public List<WeaponData> GetRandomWeaponsData(int amount = 1)

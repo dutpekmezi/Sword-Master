@@ -236,6 +236,13 @@ namespace dutpekmezi
             transform.localScale = baseScale * scaleValue;
         }
 
+        protected override void Die()
+        {
+            isDead = true;
+
+            WeaponSystem.Instance.UnequipWeapon();
+        }
+
         public void OnDispose()
         {
             SignalBus.Get<StatSystem.OnStatSelected>().Unsubscribe(ApplySelectedModifier);

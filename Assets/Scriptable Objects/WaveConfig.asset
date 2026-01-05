@@ -12,18 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a0ca8675fbc9a24faacb5471d716b7c, type: 3}
   m_Name: WaveConfig
   m_EditorClassIdentifier: Assembly-CSharp::dutpekmezi.WaveConfig
-  preChaosDuration: 20
+  preChaosDuration: 600
   preChaosWaveSpawnRate: 15
   preChaosGroupSpawnRate: 0
   enemyStatScaleFactor: 0.01
   enemiesPerWave: 15
   waveSpawnRadius: 30
   waveSpawnDeflection: 10
+  chaosEnemiesPerWave: 30
+  chaosWaveSpawnRate: 20
   enemiesPerGroup: 0
   groupSpawnRadius: 0
   groupSpawnDeflection: 0
   enemyGroupRadius: 0
   enemyGroupDeflection: 0
+  chaosEnemiesPerGroup: 0
+  chaosGroupSpawnRate: 0
   statuesPerWave: 2
   statueSpawnRadius: 10
   statueSpawnDeflection: 2
