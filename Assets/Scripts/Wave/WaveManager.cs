@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Utils.LogicTimer;
+using Utils.Signal;
 
 namespace dutpekmezi
 {
@@ -22,6 +23,7 @@ namespace dutpekmezi
         private float currentTimer = 0f;
         private float waveSpawnTimer = 0f;
         private float groupSpawnTimer = 0f;
+        private readonly List<StatModifier> waveModifiers = new List<StatModifier>();
 
         public static WaveManager Instance { get; private set; }
         public WaveConfig WaveConfig => waveConfig;
@@ -48,6 +50,9 @@ namespace dutpekmezi
             currentTimer = waveConfig.preChaosDuration;
             waveSpawnTimer = 0f;
             groupSpawnTimer = 0f;
+            waveModifiers.Clear();
+
+            SignalBus.Get<StatSystem.OnStatSelected>().Subscribe(ApplyWaveModifier);
         }
 
         public override void Tick()
@@ -159,13 +164,30 @@ namespace dutpekmezi
 
         private float GetDifficulty()
         {
-            var currentCharacter = characterSystem.GetCurrentCharacter();
-            if (currentCharacter == null)
+            float finalValue = GetBaseDifficulty();
+
+            waveModifiers.Sort((a, b) => a.Operation.CompareTo(b.Operation));
+
+            float percentSum = 0f;
+            for (int i = 0; i < waveModifiers.Count; i++)
             {
-                return 0f;
+                StatModifier modifier = waveModifiers[i];
+
+                if (modifier.Type != StatType.Difficulty) continue;
+
+                if (modifier.Operation == ModifierOperation.FlatAdd)
+                {
+                    finalValue += modifier.Value;
+                }
+                else if (modifier.Operation == ModifierOperation.PercentMultiply)
+                {
+                    percentSum += modifier.Value;
+                }
             }
 
-            return Mathf.Max(0f, currentCharacter.GetStatValue(StatType.Difficulty));
+            finalValue *= 1f + percentSum;
+
+            return Mathf.Max(0f, finalValue);
         }
 
         public void GenerateEnemyWawe(int count)
@@ -318,6 +340,32 @@ namespace dutpekmezi
             }
 
             return positions;
+        }
+
+        private float GetBaseDifficulty()
+        {
+            var currentCharacter = characterSystem.GetCurrentCharacter();
+
+            if (currentCharacter == null)
+            {
+                return 0f;
+            }
+
+            return Mathf.Max(0f, currentCharacter.GetStatValue(StatType.Difficulty));
+        }
+
+        private void ApplyWaveModifier(StatModifier modifier)
+        {
+            if (modifier == null) return;
+            if (modifier.Target != StatTarget.Wave) return;
+            if (modifier.Type != StatType.Difficulty) return;
+
+            waveModifiers.Add(modifier);
+        }
+
+        protected override void OnDispose()
+        {
+            SignalBus.Get<StatSystem.OnStatSelected>().Unsubscribe(ApplyWaveModifier);
         }
     }
 }

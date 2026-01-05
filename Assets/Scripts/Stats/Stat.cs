@@ -145,7 +145,8 @@ namespace dutpekmezi
     public enum StatTarget
     {
         Entity,
-        Weapon
+        Weapon,
+        Wave
     }
 
     [Serializable]
