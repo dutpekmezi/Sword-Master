@@ -125,4 +125,18 @@ MonoBehaviour:
     MinValue: 1
     MaxValue: 5
     Target: 1
+  - Type: 16
+    Color: {r: 0.5803922, g: 0.23921569, b: 1, a: 1}
+    Icon: {fileID: 0}
+    IsUpgradable: 1
+    DefaultOperation: 0
+    BaseFlatValuePerLevel: 0.1
+    BasePercentValuePerLevel: 0
+    BaseFlatValue: 0
+    FlatAddChance: 1
+    DirectValue: 0
+    ShouldClamp: 1
+    MinValue: 0
+    MaxValue: 10
+    Target: 2
   SelectableStatCount: 3
