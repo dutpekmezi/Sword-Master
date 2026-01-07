@@ -137,6 +137,6 @@ MonoBehaviour:
     DirectValue: 0
     ShouldClamp: 1
     MinValue: 0
-    MaxValue: 10
+    MaxValue: 3
     Target: 2
   SelectableStatCount: 3
