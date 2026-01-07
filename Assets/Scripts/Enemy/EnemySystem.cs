@@ -40,11 +40,9 @@ namespace dutpekmezi
 
         public EnemyBase CreateRandomEnemy(Vector2 pos)
         {
-            if (enemyDatas == null || enemyDatas.Enemies.Count == 0)
+            EnemyData data = GetRandomData(enemyDatas?.Enemies);
+            if (data == null)
                 return null;
-
-            int idx = Random.Range(0, enemyDatas.Enemies.Count);
-            EnemyData data = enemyDatas.Enemies[idx];
 
             EnemyBase enemy = (EnemyBase)ObjectPoolManager.SpawnObject(data.Prefab, pos);
 
@@ -58,11 +56,9 @@ namespace dutpekmezi
 
         public EnemyBase CreateRandomEnemy()
         {
-            if (enemyDatas == null || enemyDatas.Enemies.Count == 0)
+            EnemyData data = GetRandomData(enemyDatas?.Enemies);
+            if (data == null)
                 return null;
-
-            int idx = Random.Range(0, enemyDatas.Enemies.Count);
-            EnemyData data = enemyDatas.Enemies[idx];
 
             EnemyBase enemy = (EnemyBase)ObjectPoolManager.SpawnObject(data.Prefab, Vector2.zero);
 
@@ -76,12 +72,7 @@ namespace dutpekmezi
 
         public EnemyData GetRandomEnemyData()
         {
-            var randomIndex = Random.Range(0, enemyDatas.Enemies.Count);
-            var randomEnemy = enemyDatas.Enemies[randomIndex];
-
-            if (randomEnemy != null) return randomEnemy;
-
-            return null;
+            return GetRandomData(enemyDatas?.Enemies);
         }
 
         public override void Tick()
