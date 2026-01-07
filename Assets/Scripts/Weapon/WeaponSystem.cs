@@ -90,20 +90,7 @@ namespace dutpekmezi
 
         public List<WeaponData> GetRandomWeaponsData(int amount = 1)
         {
-            var clone = new List<WeaponData>(weaponDatas.weapons);
-
-            List<WeaponData> result = new List<WeaponData>();
-
-            for (int i = 0; i < amount; i++)
-            {
-                if (clone.Count == 0) break;
-
-                int idx = UnityEngine.Random.Range(0, clone.Count);
-                result.Add(clone[idx]);
-                clone.RemoveAt(idx);
-            }
-
-            return result;
+            return GetRandomDataList(weaponDatas?.weapons, amount);
         }
 
         protected override void OnDispose()
