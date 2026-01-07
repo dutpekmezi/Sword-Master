@@ -257,6 +257,12 @@ namespace dutpekmezi
                 OnTakeDamageHandler(this, enemy.GetStatValue(StatType.BodyDamage));
                 OnTrigger(enemy);
             }
+
+            var chest = col.gameObject.GetComponent<ChestBase>();
+            if (chest != null && !chest.IsOpened)
+            {
+                chest.OnTakeDamageHandler(chest, weaponData.AttackDamage);
+            }
         }
 
         public class OnStatsChange : Signal<WeaponBase> { }
