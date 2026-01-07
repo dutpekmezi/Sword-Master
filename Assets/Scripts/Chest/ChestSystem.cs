@@ -1,0 +1,70 @@
+using Dutpekmezi.Services.PoolService;
+using System.Collections.Generic;
+using UnityEngine;
+using Utils.Signal;
+
+namespace dutpekmezi
+{
+    public class ChestSystem : EntitySystem
+    {
+        private readonly ChestDatas chestDatas;
+
+        private readonly List<ChestBase> activeChests = new();
+
+        public static ChestSystem Instance { get; private set; }
+
+        public ChestSystem(ChestDatas chestDatas)
+        {
+            Instance = this;
+            this.chestDatas = chestDatas;
+            OnInitialize();
+        }
+
+        protected override void OnInitialize()
+        {
+        }
+
+        public override void Tick()
+        {
+        }
+
+        public ChestBase CreateRandomChest(Vector2 position)
+        {
+            var data = GetRandomData(chestDatas?.Chests);
+            return CreateChest(data, position);
+        }
+
+        public ChestBase CreateChest(ChestData data, Vector2 position)
+        {
+            if (data == null)
+                return null;
+
+            var instance = ObjectPoolManager.SpawnObject(data.Prefab, position);
+            instance.Initialize();
+
+            var chest = instance.GetComponent<ChestBase>();
+            RegisterChest(chest);
+
+            SignalBus.Get<OnChestSpawnedSignal>().Invoke(chest);
+
+            return chest;
+        }
+
+        private void RegisterChest(ChestBase chest)
+        {
+            if (chest == null)
+                return;
+
+            if (!activeChests.Contains(chest))
+                activeChests.Add(chest);
+        }
+
+        protected override void OnDispose()
+        {
+            activeChests.Clear();
+        }
+
+        public class OnChestSpawnedSignal : Signal<ChestBase> { }
+        public class OnChestOpenedSignal : Signal<ChestBase> { }
+    }
+}

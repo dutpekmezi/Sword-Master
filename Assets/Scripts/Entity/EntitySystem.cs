@@ -3,8 +3,12 @@ using UnityEngine;
 
 namespace dutpekmezi
 {
-    public class EntitySystem : BaseSystem
+    public abstract class EntitySystem : BaseSystem
     {
+        protected abstract override void OnInitialize();
+        protected abstract override void OnDispose();
+        public abstract override void Tick();
+
         protected TData GetRandomData<TData>(IList<TData> datas) where TData : class
         {
             if (datas == null || datas.Count == 0)
