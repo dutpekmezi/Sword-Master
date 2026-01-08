@@ -68,18 +68,27 @@ namespace dutpekmezi
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                GenerateEnemyWawe(waveConfig.enemiesPerWave);
+                if (waveConfig.enemyWaveConfig != null)
+                {
+                    GenerateEnemyWawe(waveConfig.enemyWaveConfig.enemiesPerWave);
+                }
             }
 
             if (Input.GetKeyDown(KeyCode.H))
             {
-                GenerateEnemyGroup(waveConfig.enemiesPerGroup);
+                if (waveConfig.enemyWaveConfig != null)
+                {
+                    GenerateEnemyGroup(waveConfig.enemyWaveConfig.enemiesPerGroup);
+                }
             }
         }
 
         private void HandlePreChaosSpawning()
         {
             float dt = LogicTimer.FixedDelta;
+            var enemyConfig = waveConfig.enemyWaveConfig;
+            var statueConfig = waveConfig.statueSpawnConfig;
+            var chestConfig = waveConfig.chestSpawnConfig;
 
             currentTimer -= dt;
             waveSpawnTimer += dt;
@@ -91,20 +100,35 @@ namespace dutpekmezi
                 return;
             }
 
-            float adjustedWaveSpawnRate = GetAdjustedSpawnInterval(waveConfig.preChaosWaveSpawnRate);
+            float adjustedWaveSpawnRate = GetAdjustedSpawnInterval(enemyConfig != null ? enemyConfig.preChaosWaveSpawnRate : 0f);
             if (waveSpawnTimer >= adjustedWaveSpawnRate && adjustedWaveSpawnRate > 0)
             {
-                GenerateStatStatues(waveConfig.statuesPerWave);
-                GenerateIndicatorsForStatStatues();
-                var enemyCount = waveConfig.enemiesPerWave + characterSystem.GetCurrentCharacter().CurrentLevel - 1;
-                GenerateEnemyWawe(GetAdjustedEnemyCount(enemyCount));
+                if (statueConfig != null)
+                {
+                    GenerateStatStatues(statueConfig.statuesPerWave);
+                    GenerateIndicatorsForStatStatues();
+                }
+
+                if (chestConfig != null)
+                {
+                    GenerateChests(chestConfig.chestsPerWave);
+                }
+
+                if (enemyConfig != null)
+                {
+                    var enemyCount = enemyConfig.enemiesPerWave + characterSystem.GetCurrentCharacter().CurrentLevel - 1;
+                    GenerateEnemyWawe(GetAdjustedEnemyCount(enemyCount));
+                }
                 waveSpawnTimer = 0f;
             }
 
-            float adjustedGroupSpawnRate = GetAdjustedSpawnInterval(waveConfig.preChaosGroupSpawnRate);
+            float adjustedGroupSpawnRate = GetAdjustedSpawnInterval(enemyConfig != null ? enemyConfig.preChaosGroupSpawnRate : 0f);
             if (groupSpawnTimer >= adjustedGroupSpawnRate && adjustedGroupSpawnRate > 0)
             {
-                GenerateEnemyGroup(GetAdjustedEnemyCount(waveConfig.enemiesPerGroup));
+                if (enemyConfig != null)
+                {
+                    GenerateEnemyGroup(GetAdjustedEnemyCount(enemyConfig.enemiesPerGroup));
+                }
                 groupSpawnTimer = 0f;
             }
         }
@@ -112,22 +136,29 @@ namespace dutpekmezi
         private void HandleChaosSpawning()
         {
             float dt = LogicTimer.FixedDelta;
+            var enemyConfig = waveConfig.enemyWaveConfig;
 
             currentTimer += dt;
             waveSpawnTimer += dt;
             groupSpawnTimer += dt;
 
-            float chaosWaveSpawnRate = GetAdjustedSpawnInterval(waveConfig.chaosWaveSpawnRate);
+            float chaosWaveSpawnRate = GetAdjustedSpawnInterval(enemyConfig != null ? enemyConfig.chaosWaveSpawnRate : 0f);
             if (waveSpawnTimer >= chaosWaveSpawnRate && chaosWaveSpawnRate > 0)
             {
-                GenerateEnemyWawe(GetAdjustedEnemyCount(waveConfig.chaosEnemiesPerWave));
+                if (enemyConfig != null)
+                {
+                    GenerateEnemyWawe(GetAdjustedEnemyCount(enemyConfig.chaosEnemiesPerWave));
+                }
                 waveSpawnTimer = 0f;
             }
 
-            float chaosGroupSpawnRate = GetAdjustedSpawnInterval(waveConfig.chaosGroupSpawnRate);
+            float chaosGroupSpawnRate = GetAdjustedSpawnInterval(enemyConfig != null ? enemyConfig.chaosGroupSpawnRate : 0f);
             if (groupSpawnTimer >= chaosGroupSpawnRate && chaosGroupSpawnRate > 0)
             {
-                GenerateEnemyGroup(GetAdjustedEnemyCount(waveConfig.chaosEnemiesPerGroup));
+                if (enemyConfig != null)
+                {
+                    GenerateEnemyGroup(GetAdjustedEnemyCount(enemyConfig.chaosEnemiesPerGroup));
+                }
                 groupSpawnTimer = 0f;
             }
         }
@@ -192,9 +223,15 @@ namespace dutpekmezi
 
         public void GenerateEnemyWawe(int count)
         {
+            var enemyConfig = waveConfig.enemyWaveConfig;
+            if (enemyConfig == null)
+            {
+                return;
+            }
+
             for (int i = 0; i < count; i++)
             {
-                var randomPos = GenerateRandomPos(waveConfig.waveSpawnRadius, waveConfig.waveSpawnDeflection, CharacterSystem.Instance.GetCurrentCharacter().transform.position);
+                var randomPos = GenerateRandomPos(enemyConfig.waveSpawnRadius, enemyConfig.waveSpawnDeflection, CharacterSystem.Instance.GetCurrentCharacter().transform.position);
 
                 enemySystem.CreateRandomEnemy(randomPos);
             }
@@ -202,19 +239,25 @@ namespace dutpekmezi
 
         public void GenerateEnemyGroup(int totalEnemies)
         {
+            var enemyConfig = waveConfig.enemyWaveConfig;
+            if (enemyConfig == null)
+            {
+                return;
+            }
+
             List<EnemyBase> createdEnemies = new List<EnemyBase>();
 
             for (int i = 0; i < totalEnemies; i++)
             {
                 var randomCenter = GenerateRandomPos(
-                    waveConfig.groupSpawnRadius,
-                    waveConfig.groupSpawnDeflection,
+                    enemyConfig.groupSpawnRadius,
+                    enemyConfig.groupSpawnDeflection,
                     (Vector2)characterSystem.GetCurrentCharacter().transform.position);
 
                 EnemyBase instance = enemySystem.CreateRandomEnemy(
                     GenerateRandomPos(
-                        waveConfig.enemyGroupRadius,
-                        waveConfig.enemyGroupDeflection,
+                        enemyConfig.enemyGroupRadius,
+                        enemyConfig.enemyGroupDeflection,
                         randomCenter));
 
                 createdEnemies.Add(instance);
@@ -235,14 +278,20 @@ namespace dutpekmezi
 
         public void GenerateStatStatues(int count)
         {
+            var statueConfig = waveConfig.statueSpawnConfig;
+            if (statueConfig == null)
+            {
+                return;
+            }
+
             var characterPosition = (Vector2)characterSystem.GetCurrentCharacter().transform.position;
             List<Vector2> occupiedPositions = GetCurrentStatuePositions();
 
             for (int i = 0; i < count; i++)
             {
-                if (StatueManager.Instance.ActiveStatStatues.Count >= waveConfig.maxStatStatue || StatueManager.Instance.ActiveStatues.Count >= waveConfig.maxStatue) return;
+                if (StatueManager.Instance.ActiveStatStatues.Count >= statueConfig.maxStatStatue || StatueManager.Instance.ActiveStatues.Count >= statueConfig.maxStatue) return;
 
-                if (!TryGetStatueSpawnPosition(characterPosition, occupiedPositions, out var spawnPosition))
+                if (!TryGetStatueSpawnPosition(characterPosition, occupiedPositions, statueConfig, out var spawnPosition))
                 {
                     continue;
                 }
@@ -255,14 +304,20 @@ namespace dutpekmezi
 
         public void GenerateWeaponStatues(int count = 1)
         {
+            var statueConfig = waveConfig.statueSpawnConfig;
+            if (statueConfig == null)
+            {
+                return;
+            }
+
             var characterPosition = (Vector2)characterSystem.GetCurrentCharacter().transform.position;
             List<Vector2> occupiedPositions = GetCurrentStatuePositions();
 
             for (int i = 0; i < count; i++)
             {
-                if (StatueManager.Instance.ActiveWeaponStatues.Count >= waveConfig.maxWeaponStatue || StatueManager.Instance.ActiveStatues.Count >= waveConfig.maxStatue) return;
+                if (StatueManager.Instance.ActiveWeaponStatues.Count >= statueConfig.maxWeaponStatue || StatueManager.Instance.ActiveStatues.Count >= statueConfig.maxStatue) return;
 
-                if (!TryGetStatueSpawnPosition(characterPosition, occupiedPositions, out var spawnPosition))
+                if (!TryGetStatueSpawnPosition(characterPosition, occupiedPositions, statueConfig, out var spawnPosition))
                 {
                     continue;
                 }
@@ -287,6 +342,31 @@ namespace dutpekmezi
             IndicatorManager.Instance.CreateTargetIndicators(targetlist, characterSystem.GetCurrentCharacter().transform);
         }
 
+        public void GenerateChests(int count)
+        {
+            var chestConfig = waveConfig.chestSpawnConfig;
+            if (chestConfig == null || ChestSystem.Instance == null)
+            {
+                return;
+            }
+
+            var characterPosition = (Vector2)characterSystem.GetCurrentCharacter().transform.position;
+            List<Vector2> occupiedPositions = GetCurrentChestPositions();
+
+            for (int i = 0; i < count; i++)
+            {
+                if (ChestSystem.Instance.ActiveChests.Count >= chestConfig.maxChest) return;
+
+                if (!TryGetChestSpawnPosition(characterPosition, occupiedPositions, chestConfig, out var spawnPosition))
+                {
+                    continue;
+                }
+
+                ChestSystem.Instance.CreateRandomChest(spawnPosition);
+                occupiedPositions.Add(spawnPosition);
+            }
+        }
+
         public Vector2 GenerateRandomPos(float radius, float deflection, Vector2 center)
         {
             float angle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
@@ -298,15 +378,15 @@ namespace dutpekmezi
             return new Vector2(x, y);
         }
 
-        private bool TryGetStatueSpawnPosition(Vector2 center, List<Vector2> occupiedPositions, out Vector2 spawnPosition)
+        private bool TryGetStatueSpawnPosition(Vector2 center, List<Vector2> occupiedPositions, StatueSpawnConfig statueConfig, out Vector2 spawnPosition)
         {
             const int maxAttempts = 20;
 
             for (int attempt = 0; attempt < maxAttempts; attempt++)
             {
-                var candidate = GenerateRandomPos(waveConfig.statueSpawnRadius, waveConfig.statueSpawnDeflection, center);
+                var candidate = GenerateRandomPos(statueConfig.statueSpawnRadius, statueConfig.statueSpawnDeflection, center);
 
-                if (IsPositionFarEnough(candidate, occupiedPositions))
+                if (IsPositionFarEnough(candidate, occupiedPositions, statueConfig.statueMinimumDistance))
                 {
                     spawnPosition = candidate;
                     return true;
@@ -317,17 +397,36 @@ namespace dutpekmezi
             return false;
         }
 
-        private bool IsPositionFarEnough(Vector2 candidate, List<Vector2> occupiedPositions)
+        private bool IsPositionFarEnough(Vector2 candidate, List<Vector2> occupiedPositions, float minimumDistance)
         {
             foreach (var position in occupiedPositions)
             {
-                if (Vector2.Distance(candidate, position) < waveConfig.statueMinimumDistance)
+                if (Vector2.Distance(candidate, position) < minimumDistance)
                 {
                     return false;
                 }
             }
 
             return true;
+        }
+
+        private bool TryGetChestSpawnPosition(Vector2 center, List<Vector2> occupiedPositions, ChestSpawnConfig chestConfig, out Vector2 spawnPosition)
+        {
+            const int maxAttempts = 20;
+
+            for (int attempt = 0; attempt < maxAttempts; attempt++)
+            {
+                var candidate = GenerateRandomPos(chestConfig.chestSpawnRadius, chestConfig.chestSpawnDeflection, center);
+
+                if (IsPositionFarEnough(candidate, occupiedPositions, chestConfig.chestMinimumDistance))
+                {
+                    spawnPosition = candidate;
+                    return true;
+                }
+            }
+
+            spawnPosition = Vector2.zero;
+            return false;
         }
 
         private List<Vector2> GetCurrentStatuePositions()
@@ -337,6 +436,23 @@ namespace dutpekmezi
             foreach (var statue in StatueManager.Instance.ActiveStatues)
             {
                 positions.Add(statue.transform.position);
+            }
+
+            return positions;
+        }
+
+        private List<Vector2> GetCurrentChestPositions()
+        {
+            List<Vector2> positions = new List<Vector2>();
+
+            if (ChestSystem.Instance == null)
+            {
+                return positions;
+            }
+
+            foreach (var chest in ChestSystem.Instance.ActiveChests)
+            {
+                positions.Add(chest.transform.position);
             }
 
             return positions;
