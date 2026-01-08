@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using Utils.Signal;
 
@@ -12,7 +13,17 @@ namespace dutpekmezi
         [SerializeField] private Collider2D chestCollider;
         [SerializeField] private Animator chestAnimator;
 
+        [Header("Damage Shake")]
+        [SerializeField] private bool enableHitShake = true;
+        [SerializeField] private float hitShakeDuration = 0.15f;
+        [SerializeField] private Vector3 hitShakeStrength = new Vector3(0.1f, 0.1f, 0f);
+        [SerializeField] private int hitShakeVibrato = 10;
+        [SerializeField] private float hitShakeRandomness = 90f;
+        [SerializeField] private bool hitShakeFadeOut = true;
+
         [SerializeField] private bool isOpened;
+
+        private Tween hitShakeTween;
 
         public bool IsOpened => isOpened;
 
@@ -39,6 +50,14 @@ namespace dutpekmezi
             base.SetHealth(amount);
         }
 
+        protected override void TakeDamage(float damageAmount)
+        {
+            if (isOpened) return;
+
+            PlayHitShake();
+            base.TakeDamage(damageAmount);
+        }
+
         protected override void Die()
         {
             if (isOpened) return;
@@ -58,6 +77,28 @@ namespace dutpekmezi
                 chestAnimator.SetTrigger("Open");
 
             SignalBus.Get<ChestSystem.OnChestOpenedSignal>().Invoke(this);
+        }
+
+        private void PlayHitShake()
+        {
+            if (!enableHitShake) return;
+
+            if (hitShakeTween != null && hitShakeTween.IsActive())
+            {
+                hitShakeTween.Kill();
+            }
+
+            Vector3 originalLocalPosition = transform.localPosition;
+            hitShakeTween = transform
+                .DOShakePosition(
+                    hitShakeDuration,
+                    hitShakeStrength,
+                    hitShakeVibrato,
+                    hitShakeRandomness,
+                    hitShakeFadeOut,
+                    true)
+                .OnKill(() => transform.localPosition = originalLocalPosition)
+                .OnComplete(() => transform.localPosition = originalLocalPosition);
         }
 
         public class OnTakeDamage : Signal<Entity, float> { }
