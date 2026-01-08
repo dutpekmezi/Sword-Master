@@ -81,10 +81,20 @@ namespace dutpekmezi
         public Dictionary<StatType, BaseStatConfig> ScaleStats(Dictionary<StatType, BaseStatConfig> targetStats, float scaleAmount)
         {
             var returnList = new Dictionary<StatType, BaseStatConfig>();
+            var enemyWaveConfig = WaveManager.Instance != null ? WaveManager.Instance.WaveConfig.enemyWaveConfig : null;
 
             foreach (var stat in targetStats)
             {
-                var modifier = new StatModifier(scaleAmount * WaveManager.Instance.WaveConfig.enemyStatScaleFactor, ModifierOperation.PercentMultiply, stat.Key);
+                if (enemyWaveConfig == null)
+                {
+                    if (stat.Value.IsUpgradable)
+                    {
+                        returnList.Add(stat.Key, stat.Value);
+                    }
+                    continue;
+                }
+
+                var modifier = new StatModifier(scaleAmount * enemyWaveConfig.enemyStatScaleFactor, ModifierOperation.PercentMultiply, stat.Key);
 
                 if (stat.Value.IsUpgradable)
                 {

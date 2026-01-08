@@ -10,6 +10,7 @@ namespace dutpekmezi
         private readonly ChestDatas chestDatas;
 
         private readonly List<ChestBase> activeChests = new();
+        public IReadOnlyList<ChestBase> ActiveChests => activeChests;
 
         public static ChestSystem Instance { get; private set; }
 

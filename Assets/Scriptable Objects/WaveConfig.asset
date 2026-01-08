@@ -13,25 +13,6 @@ MonoBehaviour:
   m_Name: WaveConfig
   m_EditorClassIdentifier: Assembly-CSharp::dutpekmezi.WaveConfig
   preChaosDuration: 600
-  preChaosWaveSpawnRate: 15
-  preChaosGroupSpawnRate: 0
-  enemyStatScaleFactor: 0.01
-  enemiesPerWave: 15
-  waveSpawnRadius: 30
-  waveSpawnDeflection: 10
-  chaosEnemiesPerWave: 30
-  chaosWaveSpawnRate: 20
-  enemiesPerGroup: 0
-  groupSpawnRadius: 0
-  groupSpawnDeflection: 0
-  enemyGroupRadius: 0
-  enemyGroupDeflection: 0
-  chaosEnemiesPerGroup: 0
-  chaosGroupSpawnRate: 0
-  statuesPerWave: 2
-  statueSpawnRadius: 10
-  statueSpawnDeflection: 2
-  statueMinimumDistance: 4
-  maxStatue: 10
-  maxStatStatue: 9
-  maxWeaponStatue: 1
+  enemyWaveConfig: {fileID: 11400000, guid: 54af7def1c86453fb0f672d68804542d, type: 2}
+  statueSpawnConfig: {fileID: 11400000, guid: 88fc891e5f244773944805dcce3cfa5c, type: 2}
+  chestSpawnConfig: {fileID: 11400000, guid: bb2fa5db09d44664b6bc3a8bd3163c88, type: 2}
