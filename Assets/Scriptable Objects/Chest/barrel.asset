@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e06e3474ad3497c8885d65361e800af, type: 3}
+  m_Name: barrel
+  m_EditorClassIdentifier: Assembly-CSharp::dutpekmezi.ChestData
+  Id: barrel
+  Name: Barrel
+  Description: Barrel
+  Sprite: {fileID: 21300000, guid: d3ea3e59de57b4973b90868b06ae16f8, type: 3}
+  BaseStatConfigs: []
+  Prefab: {fileID: 5491011023044452059, guid: 1a9154fdfe40e41479086c8bf0c9fc5a, type: 3}
