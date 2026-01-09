@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 876913fb496a0bb41bfe175cbc92b99f, type: 3}
   m_Name: IndicatorConfig
   m_EditorClassIdentifier: Assembly-CSharp::dutpekmezi.IndicatorConfig
-  targetIndicator: {fileID: 4043576475970028087, guid: 22340b0cdbcca4e4fbbff125785956ca, type: 3}
+  statueIndicator: {fileID: 4043576475970028087, guid: 2c45bea335394e0dba1e1cb3cf30144c, type: 3}
+  chestIndicator: {fileID: 4043576475970028087, guid: 3152dab74b4d449e8dafe075db9eb369, type: 3}
   targetIndicatorOffset: 4
