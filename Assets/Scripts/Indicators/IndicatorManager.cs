@@ -1,9 +1,7 @@
 using dutpekmezi;
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 using Utils.Signal;
-using System.Linq;
 using Dutpekmezi.Services.PoolService;
 
 public class IndicatorManager : BaseSystem
@@ -29,6 +27,8 @@ public class IndicatorManager : BaseSystem
     protected override void OnInitialize()
     {
         SignalBus.Get<StatueManager.OnStatueDispose>().Subscribe(OnTargetDestroyed);
+        SignalBus.Get<ChestSystem.OnChestSpawnedSignal>().Subscribe(OnChestSpawned);
+        SignalBus.Get<ChestSystem.OnChestOpenedSignal>().Subscribe(OnChestOpened);
     }
 
     public override void Tick()
@@ -44,23 +44,13 @@ public class IndicatorManager : BaseSystem
     protected override void OnDispose()
     {
         SignalBus.Get<StatueManager.OnStatueDispose>().Unsubscribe(OnTargetDestroyed);
+        SignalBus.Get<ChestSystem.OnChestSpawnedSignal>().Unsubscribe(OnChestSpawned);
+        SignalBus.Get<ChestSystem.OnChestOpenedSignal>().Unsubscribe(OnChestOpened);
     }
 
     public TargetIndicator CreateTargetIndicator(Transform target, Transform center)
     {
-        if (targetIndicators.ContainsValue(target))
-        {
-            return null;
-        }
-
-        var indicator = indicatorConfig.targetIndicator;
-
-        var instance = ObjectPoolManager.SpawnObject(indicator, Vector2.zero);
-        instance.Init(target, center);
-
-        targetIndicators.Add(instance, target);
-
-        return instance;
+        return CreateIndicator(indicatorConfig.statueIndicator, target, center);
     }
 
     public List<TargetIndicator> CreateTargetIndicators(List<Transform> targetList, List<Transform> centerList)
@@ -82,11 +72,16 @@ public class IndicatorManager : BaseSystem
 
     public List<TargetIndicator> CreateTargetIndicators(List<Transform> targetList, Transform center)
     {
+        return CreateTargetIndicators(targetList, center, indicatorConfig.statueIndicator);
+    }
+
+    public List<TargetIndicator> CreateTargetIndicators(List<Transform> targetList, Transform center, TargetIndicator indicatorPrefab)
+    {
         var createdIndicators = new List<TargetIndicator>();
 
         for (int i = 0; i < targetList.Count; i++)
         {
-            var instance = CreateTargetIndicator(targetList[i], center);
+            var instance = CreateIndicator(indicatorPrefab, targetList[i], center);
 
             if (instance != null)
             {
@@ -98,6 +93,57 @@ public class IndicatorManager : BaseSystem
     }
 
     private void OnTargetDestroyed(Transform destroyedTarget)
+    {
+        DisposeIndicatorsForTarget(destroyedTarget);
+    }
+
+    private void OnChestSpawned(ChestBase chest)
+    {
+        if (chest == null)
+        {
+            return;
+        }
+
+        var character = CharacterSystem.Instance?.GetCurrentCharacter();
+        if (character == null)
+        {
+            return;
+        }
+
+        CreateIndicator(indicatorConfig.chestIndicator, chest.transform, character.transform);
+    }
+
+    private void OnChestOpened(ChestBase chest)
+    {
+        if (chest == null)
+        {
+            return;
+        }
+
+        DisposeIndicatorsForTarget(chest.transform);
+    }
+
+    private TargetIndicator CreateIndicator(TargetIndicator indicatorPrefab, Transform target, Transform center)
+    {
+        if (indicatorPrefab == null || target == null || center == null)
+        {
+            return null;
+        }
+
+        if (targetIndicators.ContainsValue(target))
+        {
+            return null;
+        }
+
+        var instance = ObjectPoolManager.SpawnObject(indicatorPrefab, Vector2.zero);
+        instance.Init(target, center);
+
+        targetIndicators.Add(instance, target);
+
+        return instance;
+    }
+
+    private void DisposeIndicatorsForTarget(Transform destroyedTarget)
     {
         indicatorsToDispose = new List<TargetIndicator>();
 
