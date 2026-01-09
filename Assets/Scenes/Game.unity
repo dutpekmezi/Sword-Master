@@ -451,7 +451,7 @@ MonoBehaviour:
   characterDatas: {fileID: 11400000, guid: c52ddee16365a854f805a35a2dc46201, type: 2}
   enemyDatas: {fileID: 11400000, guid: 1847da9bbe11b1047b5481cc1bb0b4bc, type: 2}
   weaponDatas: {fileID: 11400000, guid: c8f66e4d63709db4d84a86ca5d125bbc, type: 2}
-  chestDatas: {fileID: 0}
+  chestDatas: {fileID: 11400000, guid: c5fba3ca3471f824b8920aacb5228823, type: 2}
   statConfigData: {fileID: 11400000, guid: 7e1fe012667125d4a99ef3f5618041d8, type: 2}
   waveConfig: {fileID: 11400000, guid: 1a747af9cf9dab64db7b1f72222da018, type: 2}
   indicatorConfig: {fileID: 11400000, guid: ba65af8c56cada64e9b73bc6857a44ed, type: 2}
