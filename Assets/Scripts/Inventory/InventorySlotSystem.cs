@@ -86,7 +86,7 @@ namespace dutpekmezi
             if (!destroyItem || item == null)
                 return true;
 
-            Destroy(item);
+            UnityEngine.Object.Destroy(item);
 
             return true;
         }

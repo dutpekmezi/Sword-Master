@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6552729430151737494}
   - component: {fileID: 5440992253748871142}
   - component: {fileID: -9203128986733195688}
+  - component: {fileID: 696188892532112395}
   m_Layer: 0
   m_Name: Barrel
   m_TagString: Untagged
@@ -100,6 +101,21 @@ MonoBehaviour:
   hitShakeRandomness: 90
   hitShakeFadeOut: 0
   isOpened: 0
+--- !u!114 &696188892532112395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4457458839410923105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fe84521910663b4fa7c06e68c943030, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::dutpekmezi.Inventory
+  initialSlotCount: 1
+  slots:
+  - item: {fileID: 4444575410579534422, guid: 6e107101a79408c46a7db79e46b79c6e, type: 3}
 --- !u!1 &5448566916214404203
 GameObject:
   m_ObjectHideFlags: 0
