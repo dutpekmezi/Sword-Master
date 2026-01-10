@@ -52,6 +52,7 @@ namespace dutpekmezi
             SignalBus.Get<StatSystem.OnStatSelected>().Subscribe(ApplySelectedModifier);
             SignalBus.Get<InputManager.OnAbilityButtonClick>().Subscribe(Ability);
             SignalBus.Get<OnlevelUp>().Subscribe(OnlevelUpHandler);
+            SignalBus.Get<OnEnemyKill>().Subscribe(OnEnemyKillHandler);
 
             SignalBus.Get<OnStatsChange>().Invoke(this);
         }
@@ -219,6 +220,11 @@ namespace dutpekmezi
             ApplyModifier(modifier);
         }
 
+        private void OnEnemyKillHandler(float amount)
+        {
+            GainExp(amount);
+        }
+
         public void SetRotate(bool canRotate)
         {
             this.canRotate = canRotate;
@@ -247,19 +253,24 @@ namespace dutpekmezi
         {
             SignalBus.Get<StatSystem.OnStatSelected>().Unsubscribe(ApplySelectedModifier);
             SignalBus.Get<InputManager.OnAbilityButtonClick>().Unsubscribe(Ability);
+            SignalBus.Get<OnlevelUp>().Unsubscribe(OnlevelUpHandler);
+            SignalBus.Get<OnEnemyKill>().Unsubscribe(OnEnemyKillHandler);
         }
 
         private void OnTriggerEnter2D(Collider2D col)
         {
-            var enemy = col.gameObject.GetComponent<EnemyBase>();
-            if (enemy != null)
+            if (!col.TryGetComponent(out Entity entity) || entity == this)
+                return;
+
+            OnTakeDamageHandler(this, entity.GetStatValue(StatType.BodyDamage));
+
+            if (entity is EnemyBase enemy)
             {
-                OnTakeDamageHandler(this, enemy.GetStatValue(StatType.BodyDamage));
                 OnTrigger(enemy);
+                return;
             }
 
-            var chest = col.gameObject.GetComponent<ChestBase>();
-            if (chest != null && !chest.IsOpened)
+            if (entity is ChestBase chest && !chest.IsOpened)
             {
                 chest.OnTakeDamageHandler(chest, weaponData.AttackDamage);
             }

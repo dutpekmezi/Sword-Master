@@ -23,6 +23,7 @@ namespace dutpekmezi
 
         protected override void OnInitialize()
         {
+            SignalBus.Get<OnChestOpenedSignal>().Subscribe(OnChestOpened);
         }
 
         public override void Tick()
@@ -62,7 +63,16 @@ namespace dutpekmezi
 
         protected override void OnDispose()
         {
+            SignalBus.Get<OnChestOpenedSignal>().Unsubscribe(OnChestOpened);
             activeChests.Clear();
+        }
+
+        private void OnChestOpened(ChestBase chest)
+        {
+            if (chest == null)
+                return;
+
+            activeChests.Remove(chest);
         }
 
         public class OnChestSpawnedSignal : Signal<ChestBase> { }
