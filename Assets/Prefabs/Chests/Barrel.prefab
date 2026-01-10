@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6552729430151737494}
   - component: {fileID: 5440992253748871142}
+  - component: {fileID: -9203128986733195688}
   m_Layer: 0
-  m_Name: Chest
+  m_Name: Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70,6 +71,35 @@ CapsuleCollider2D:
   m_Offset: {x: 0.005791545, y: 0.0019305944}
   m_Size: {x: 0.8204694, y: 1.0965269}
   m_Direction: 0
+--- !u!114 &-9203128986733195688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4457458839410923105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2fdc8c87dc9453ba61d409ac80ad132, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::dutpekmezi.ChestBase
+  entityData: {fileID: 0}
+  currentHealth: 0
+  currentLevel: 0
+  currentExp: 0
+  _runtimeStatsList: []
+  rb: {fileID: 0}
+  col: {fileID: 5440992253748871142}
+  chestData: {fileID: 11400000, guid: b361f63a9b457324b9935efcb8d1d2ef, type: 2}
+  chestCollider: {fileID: 5440992253748871142}
+  chestAnimator: {fileID: 0}
+  enableHitShake: 1
+  hitShakeDuration: 0.3
+  hitShakeStrength: {x: 0.2, y: 0.2, z: 0}
+  hitShakeVibrato: 20
+  hitShakeRandomness: 90
+  hitShakeFadeOut: 0
+  isOpened: 0
 --- !u!1 &5448566916214404203
 GameObject:
   m_ObjectHideFlags: 0
