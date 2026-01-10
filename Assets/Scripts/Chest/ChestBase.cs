@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Dutpekmezi.Services.PoolService;
 using UnityEngine;
 using Utils.Signal;
 
@@ -64,6 +65,7 @@ namespace dutpekmezi
 
             isDead = true;
             OpenChest();
+            ObjectPoolManager.DeSpawn(gameObject);
         }
 
         private void OpenChest()
