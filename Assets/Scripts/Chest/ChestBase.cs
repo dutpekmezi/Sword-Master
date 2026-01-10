@@ -65,7 +65,20 @@ namespace dutpekmezi
 
             isDead = true;
             OpenChest();
+            DropSlots();
             ObjectPoolManager.DeSpawn(gameObject);
+        }
+
+        private void DropSlots()
+        {
+            var inventory = GetComponent<Inventory>();
+            if (inventory == null)
+                return;
+
+            for (int i = 0; i < inventory.Slots.Count; i++)
+            {
+                inventory.DropSlot(i, transform.position, out _);
+            }
         }
 
         private void OpenChest()

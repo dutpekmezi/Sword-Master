@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Dutpekmezi.Services.PoolService;
 using UnityEngine;
 
 namespace dutpekmezi
@@ -62,6 +63,21 @@ namespace dutpekmezi
 
             removedItem = slots[slotIndex].Clear();
             return removedItem != null;
+        }
+
+        public bool DropSlot(int slotIndex, Vector3 dropPosition, out GameObject droppedItem)
+        {
+            droppedItem = null;
+
+            if (!IsValidSlot(slotIndex))
+                return false;
+
+            var itemPrefab = slots[slotIndex].Clear();
+            if (itemPrefab == null)
+                return false;
+
+            droppedItem = ObjectPoolManager.SpawnObject(itemPrefab, dropPosition);
+            return droppedItem != null;
         }
 
         private bool IsValidSlot(int slotIndex)
