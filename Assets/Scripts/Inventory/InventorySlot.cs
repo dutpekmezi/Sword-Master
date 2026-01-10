@@ -6,24 +6,24 @@ namespace dutpekmezi
     [Serializable]
     public class InventorySlot
     {
-        [SerializeReference] private object item;
+        [SerializeField] private GameObject item;
 
-        public object Item => item;
+        public GameObject Item => item;
         public bool HasItem => item != null;
 
         public InventorySlot() { }
 
-        public InventorySlot(object initialItem)
+        public InventorySlot(GameObject initialItem)
         {
             item = initialItem;
         }
 
-        public void SetItem(object newItem)
+        public void SetItem(GameObject newItem)
         {
             item = newItem;
         }
 
-        public object Clear()
+        public GameObject Clear()
         {
             var removed = item;
             item = null;

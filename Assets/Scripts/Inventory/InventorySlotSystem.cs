@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,11 +7,11 @@ namespace dutpekmezi
     {
         [SerializeField] private int initialSlotCount;
         [SerializeField] private List<InventorySlot> slots;
-        [SerializeReference] private object equippedItem;
+        [SerializeField] private GameObject equippedItem;
 
         public static InventorySlotSystem Instance { get; private set; }
         public IReadOnlyList<InventorySlot> Slots => slots;
-        public object EquippedItem => equippedItem;
+        public GameObject EquippedItem => equippedItem;
 
         public InventorySlotSystem(int initialSlotCount = 1, List<InventorySlot> initialSlots = null)
         {
@@ -38,14 +37,14 @@ namespace dutpekmezi
             }
         }
 
-        public int CreateSlot(object item = null)
+        public int CreateSlot(GameObject item = null)
         {
             var slot = new InventorySlot(item);
             slots.Add(slot);
             return slots.Count - 1;
         }
 
-        public bool SetSlotItem(int slotIndex, object item)
+        public bool SetSlotItem(int slotIndex, GameObject item)
         {
             if (!IsValidSlot(slotIndex))
                 return false;
@@ -54,7 +53,7 @@ namespace dutpekmezi
             return true;
         }
 
-        public bool TryGetSlotItem(int slotIndex, out object item)
+        public bool TryGetSlotItem(int slotIndex, out GameObject item)
         {
             item = null;
 
@@ -65,7 +64,7 @@ namespace dutpekmezi
             return true;
         }
 
-        public bool DropSlot(int slotIndex, out object droppedItem)
+        public bool DropSlot(int slotIndex, out GameObject droppedItem)
         {
             droppedItem = null;
 
@@ -87,14 +86,7 @@ namespace dutpekmezi
             if (!destroyItem || item == null)
                 return true;
 
-            if (item is UnityEngine.Object unityObject)
-            {
-                Destroy(unityObject);
-                return true;
-            }
-
-            if (item is IDisposable disposable)
-                disposable.Dispose();
+            Destroy(item);
 
             return true;
         }
