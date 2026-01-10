@@ -41,6 +41,10 @@ MonoBehaviour:
       Type: 14
       baseValue: 1
     IsUpgradable: 1
+  - BaseStat:
+      Type: 12
+      baseValue: 1
+    IsUpgradable: 1
   Prefab: {fileID: 116068156932863756, guid: 07c56970382472948b897c8640dfea06, type: 3}
   Icon: {fileID: 21300000, guid: 3b6dccb8638179045b8bcebfefcb7150, type: 3}
   OrbitRadius: 2

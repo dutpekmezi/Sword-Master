@@ -114,7 +114,7 @@ MonoBehaviour:
   - Type: 14
     Color: {r: 1, g: 0, b: 0.93260765, a: 1}
     Icon: {fileID: 21300000, guid: ca5cefce1252a4b9ebb06c6124328897, type: 3}
-    IsUpgradable: 1
+    IsUpgradable: 0
     DefaultOperation: 1
     BaseFlatValuePerLevel: 0.1
     BasePercentValuePerLevel: 0.01
