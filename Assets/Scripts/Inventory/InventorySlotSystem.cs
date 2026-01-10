@@ -4,16 +4,25 @@ using UnityEngine;
 
 namespace dutpekmezi
 {
-    public class InventorySlotSystem : MonoBehaviour
+    public class InventorySlotSystem : BaseSystem
     {
-        [SerializeField] private int initialSlotCount = 1;
-        [SerializeField] private List<InventorySlot> slots = new();
+        [SerializeField] private int initialSlotCount;
+        [SerializeField] private List<InventorySlot> slots;
         [SerializeReference] private object equippedItem;
 
+        public static InventorySlotSystem Instance { get; private set; }
         public IReadOnlyList<InventorySlot> Slots => slots;
         public object EquippedItem => equippedItem;
 
-        private void Awake()
+        public InventorySlotSystem(int initialSlotCount = 1, List<InventorySlot> initialSlots = null)
+        {
+            Instance = this;
+            this.initialSlotCount = Mathf.Max(0, initialSlotCount);
+            slots = initialSlots ?? new List<InventorySlot>();
+            OnInitialize();
+        }
+
+        protected override void OnInitialize()
         {
             EnsureSlotCount(initialSlotCount);
         }
