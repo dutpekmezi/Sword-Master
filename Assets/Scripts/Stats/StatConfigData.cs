@@ -10,10 +10,6 @@ namespace dutpekmezi
         public Color Color;
         public Sprite Icon;
 
-        [Header("Selection")]
-        public bool ShowInSelection;
-
-        [Header("Upgrade")]
         public bool IsUpgradable;
 
 
@@ -30,7 +26,6 @@ namespace dutpekmezi
         public float MinValue;
         public float MaxValue;
 
-        [Header("Application")]
         public StatTarget Target;
     }
 
@@ -43,15 +38,7 @@ namespace dutpekmezi
 
         private Dictionary<StatType, StatConfig> _configLookup;
 
-        private static readonly StatConfig DefaultConfig = new StatConfig
-        {
-            Type = 0,
-            Color = Color.white,
-            Icon = null,
-            ShowInSelection = false,
-            IsUpgradable = false,
-            Target = StatTarget.Entity
-        };
+        private static readonly StatConfig DefaultConfig = new StatConfig { Type = 0, Color = Color.white, Icon = null };
 
         public void InitializeLookup()
         {
@@ -83,18 +70,6 @@ namespace dutpekmezi
             }
 
             return DefaultConfig;
-        }
-
-        public List<StatType> GetSelectableStatTypes()
-        {
-            if (StatConfigs == null)
-            {
-                return new List<StatType>();
-            }
-
-            return StatConfigs
-                .FindAll(config => config.ShowInSelection)
-                .ConvertAll(config => config.Type);
         }
     }
 }

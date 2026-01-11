@@ -36,17 +36,21 @@ namespace dutpekmezi
 
             var character = CharacterSystem.Instance.GetCurrentCharacter();
 
-            var modifiers = StatSystem.Instance.CreateSelectionModifiers(
-                StatSystem.Instance.StatConfigData.SelectableStatCount,
-                character.CurrentLevel
-            );
+            List<StatType> availableStats = new List<StatType>(StatSystem.Instance.GetUpgradableStatTypes());
 
-            foreach (var randomModifier in modifiers)
+            for (int i = 0; i < StatSystem.Instance.StatConfigData.SelectableStatCount; i++)
             {
+                var randomIndex = Random.Range(0, availableStats.Count);
+
+                var randomStatType = availableStats[randomIndex];
+
+                var randomModifier = StatSystem.Instance.CreateRandomModifier(randomStatType, character.CurrentLevel);
+
                 var instance = Dutpekmezi.Services.PoolService.ObjectPoolManager.SpawnObject(statCardPrefab, parent);
                 instance.Init(randomModifier);
 
                 displayingStatCards.Add(instance);
+                availableStats.Remove(randomStatType);
             }
 
             GameInstaller.Instance.OnApplicationPause(true);
