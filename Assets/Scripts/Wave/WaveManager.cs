@@ -285,7 +285,7 @@ namespace dutpekmezi
             }
 
             var characterPosition = (Vector2)characterSystem.GetCurrentCharacter().transform.position;
-            List<Vector2> occupiedPositions = GetCurrentStatuePositions();
+            List<Vector2> occupiedPositions = GetCurrentOccupiedPositions();
 
             for (int i = 0; i < count; i++)
             {
@@ -311,7 +311,7 @@ namespace dutpekmezi
             }
 
             var characterPosition = (Vector2)characterSystem.GetCurrentCharacter().transform.position;
-            List<Vector2> occupiedPositions = GetCurrentStatuePositions();
+            List<Vector2> occupiedPositions = GetCurrentOccupiedPositions();
 
             for (int i = 0; i < count; i++)
             {
@@ -351,7 +351,7 @@ namespace dutpekmezi
             }
 
             var characterPosition = (Vector2)characterSystem.GetCurrentCharacter().transform.position;
-            List<Vector2> occupiedPositions = GetCurrentChestPositions();
+            List<Vector2> occupiedPositions = GetCurrentOccupiedPositions();
 
             for (int i = 0; i < count; i++)
             {
@@ -444,6 +444,23 @@ namespace dutpekmezi
         private List<Vector2> GetCurrentChestPositions()
         {
             List<Vector2> positions = new List<Vector2>();
+
+            if (ChestSystem.Instance == null)
+            {
+                return positions;
+            }
+
+            foreach (var chest in ChestSystem.Instance.ActiveChests)
+            {
+                positions.Add(chest.transform.position);
+            }
+
+            return positions;
+        }
+
+        private List<Vector2> GetCurrentOccupiedPositions()
+        {
+            List<Vector2> positions = GetCurrentStatuePositions();
 
             if (ChestSystem.Instance == null)
             {
