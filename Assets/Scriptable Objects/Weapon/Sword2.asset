@@ -43,7 +43,7 @@ MonoBehaviour:
     IsUpgradable: 1
   - BaseStat:
       Type: 12
-      baseValue: 1
+      baseValue: 20
     IsUpgradable: 1
   Prefab: {fileID: 664721132477608274, guid: a7b62e456ff077648a85bd250f7eb413, type: 3}
   Icon: {fileID: 21300000, guid: eef159f119fa9fe44a3070ca59e1ab23, type: 3}

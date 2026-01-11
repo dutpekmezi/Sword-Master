@@ -87,12 +87,6 @@ namespace dutpekmezi
         {
             isOpened = true;
 
-            if (chestCollider != null)
-                chestCollider.enabled = false;
-
-            if (chestAnimator != null)
-                chestAnimator.SetTrigger("Open");
-
             SignalBus.Get<ChestSystem.OnChestOpenedSignal>().Invoke(this);
         }
 
