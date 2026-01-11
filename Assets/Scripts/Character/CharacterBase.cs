@@ -207,8 +207,7 @@ namespace dutpekmezi
 
         private void Scalelevel()
         {
-            var modifierValue = StatSystem.Instance.GetDefaultModifierValue(StatType.ExpToLevelUp, currentLevel);
-            var modifier = StatSystem.Instance.CreateModifier(StatType.ExpToLevelUp, modifierValue);
+            var modifier = StatSystem.Instance.CreateModifier(StatType.ExpToLevelUp, 10);
 
             ApplyModifier(modifier);
         }

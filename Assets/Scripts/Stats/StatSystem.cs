@@ -78,11 +78,11 @@ namespace dutpekmezi
             return new StatModifier(value, operation, type, source, target);
         }
 
-        public StatModifier CreateModifier(StatType type, float value, object source = null)
+        public StatModifier CreateModifier(StatType type, float value, ModifierOperation operation = ModifierOperation.FlatAdd, object source = null)
         {
             StatConfig config = GetStatConfig(type);
 
-            return new StatModifier(value, config.DefaultOperation, type, source, config.Target);
+            return new StatModifier(value, operation, type, source);
         }
 
         public float GetDefaultModifierValue(StatType type, float scaleFactor = 1)

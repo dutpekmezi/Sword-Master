@@ -1,3 +1,4 @@
+using System.Net.NetworkInformation;
 using UnityEngine;
 using Utils.LogicTimer;
 using Utils.Signal;
@@ -43,7 +44,7 @@ namespace dutpekmezi
             base.Initialize();
 
             baseScale = transform.localScale; // stash prefab size once, pool might reuse
-            UpdateScaleFromStat();
+            UpdateScale();
 
             isAbilityReady = true;
             abilityCooldownTimer = 0f;
@@ -179,7 +180,7 @@ namespace dutpekmezi
 
             if (modifier.Type == StatType.Scale)
             {
-                UpdateScaleFromStat(); // keep size tied to stat bumps
+                UpdateScale(); // keep size tied to stat bumps
             }
 
             SignalBus.Get<OnStatsChange>().Invoke(this);
@@ -200,9 +201,17 @@ namespace dutpekmezi
         public override void Gainlevel(int amount = 1)
         {
             base.Gainlevel(amount);
+            Scalelevel();
 
             SignalBus.Get<OnStatsChange>().Invoke(this);
             SignalBus.Get<OnLevelUp>().Invoke(currentLevel);
+        }
+
+        private void Scalelevel()
+        {
+            var modifier = StatSystem.Instance.CreateModifier(StatType.ExpToLevelUp, 15);
+
+            ApplyModifier(modifier);
         }
 
         protected override void GainExp(float amount)
@@ -230,7 +239,7 @@ namespace dutpekmezi
             this.canRotate = canRotate;
         }
 
-        private void UpdateScaleFromStat()
+        private void UpdateScale()
         {
             float scaleValue = GetStatValue(StatType.Scale);
 

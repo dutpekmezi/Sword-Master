@@ -50,6 +50,7 @@ namespace dutpekmezi
             }
 
             currentHealth = (int)GetStatValue(StatType.MaxHealth);
+            currentLevel = 1;
         }
 
         public virtual void Tick()
