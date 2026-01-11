@@ -17,6 +17,7 @@ MonoBehaviour:
     Color: {r: 0.32941175, g: 1, b: 0.35859412, a: 1}
     Icon: {fileID: 21300000, guid: 0eabab3d6e1d1444c8210c04cbfa18dc, type: 3}
     IsUpgradable: 1
+    ShowInSelection: 1
     DefaultOperation: 1
     BaseFlatValuePerLevel: 0
     BasePercentValuePerLevel: 0.01
@@ -31,6 +32,7 @@ MonoBehaviour:
     Color: {r: 0.28490567, g: 1, b: 0.60816747, a: 1}
     Icon: {fileID: 21300000, guid: ca5cefce1252a4b9ebb06c6124328897, type: 3}
     IsUpgradable: 1
+    ShowInSelection: 1
     DefaultOperation: 0
     BaseFlatValuePerLevel: 0
     BasePercentValuePerLevel: 0.01
@@ -45,6 +47,7 @@ MonoBehaviour:
     Color: {r: 1, g: 0.7375452, b: 0.28490567, a: 1}
     Icon: {fileID: 21300000, guid: ca5cefce1252a4b9ebb06c6124328897, type: 3}
     IsUpgradable: 1
+    ShowInSelection: 1
     DefaultOperation: 1
     BaseFlatValuePerLevel: 0
     BasePercentValuePerLevel: 0.01
@@ -59,6 +62,7 @@ MonoBehaviour:
     Color: {r: 1, g: 0.9301727, b: 0, a: 1}
     Icon: {fileID: 21300000, guid: ca5cefce1252a4b9ebb06c6124328897, type: 3}
     IsUpgradable: 1
+    ShowInSelection: 1
     DefaultOperation: 1
     BaseFlatValuePerLevel: 0
     BasePercentValuePerLevel: 0.01
@@ -73,6 +77,7 @@ MonoBehaviour:
     Color: {r: 1, g: 0.30052865, b: 0, a: 1}
     Icon: {fileID: 21300000, guid: ca5cefce1252a4b9ebb06c6124328897, type: 3}
     IsUpgradable: 1
+    ShowInSelection: 1
     DefaultOperation: 1
     BaseFlatValuePerLevel: 0
     BasePercentValuePerLevel: 0.01
@@ -87,6 +92,7 @@ MonoBehaviour:
     Color: {r: 0, g: 0.5914922, b: 1, a: 1}
     Icon: {fileID: 21300000, guid: ca5cefce1252a4b9ebb06c6124328897, type: 3}
     IsUpgradable: 0
+    ShowInSelection: 0
     DefaultOperation: 0
     BaseFlatValuePerLevel: 1
     BasePercentValuePerLevel: 0
@@ -101,6 +107,7 @@ MonoBehaviour:
     Color: {r: 1, g: 1, b: 1, a: 1}
     Icon: {fileID: 21300000, guid: ca5cefce1252a4b9ebb06c6124328897, type: 3}
     IsUpgradable: 1
+    ShowInSelection: 1
     DefaultOperation: 1
     BaseFlatValuePerLevel: 0.1
     BasePercentValuePerLevel: 0.01
@@ -115,6 +122,7 @@ MonoBehaviour:
     Color: {r: 1, g: 0, b: 0.93260765, a: 1}
     Icon: {fileID: 21300000, guid: ca5cefce1252a4b9ebb06c6124328897, type: 3}
     IsUpgradable: 0
+    ShowInSelection: 0
     DefaultOperation: 1
     BaseFlatValuePerLevel: 0.1
     BasePercentValuePerLevel: 0.01
@@ -129,6 +137,7 @@ MonoBehaviour:
     Color: {r: 0.5803922, g: 0.23921569, b: 1, a: 1}
     Icon: {fileID: 0}
     IsUpgradable: 1
+    ShowInSelection: 1
     DefaultOperation: 0
     BaseFlatValuePerLevel: 0.1
     BasePercentValuePerLevel: 0
@@ -143,6 +152,7 @@ MonoBehaviour:
     Color: {r: 0.5803922, g: 0.23921569, b: 1, a: 1}
     Icon: {fileID: 0}
     IsUpgradable: 1
+    ShowInSelection: 1
     DefaultOperation: 0
     BaseFlatValuePerLevel: 0.1
     BasePercentValuePerLevel: 0
