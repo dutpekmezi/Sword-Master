@@ -106,17 +106,14 @@ namespace dutpekmezi
             return returnList;
         }
 
-        public List<StatType> GetUpgradableStatTypes()
+        public List<StatType> GetSelectableStatTypes()
         {
             if (_statConfigData == null)
             {
                 return new List<StatType>();
             }
 
-            return _statConfigData.StatConfigs
-                .Where(config => config.IsUpgradable)
-                .Select(config => config.Type)
-                .ToList();
+            return _statConfigData.GetSelectableStatTypes();
         }
 
         public StatTarget GetStatTargetByStatType(StatType type)
@@ -137,6 +134,30 @@ namespace dutpekmezi
         protected override void OnDispose()
         {
 
+        }
+
+        public List<StatModifier> CreateSelectionModifiers(int count, float scaleFactor = 1f, object source = null)
+        {
+            var availableStats = new List<StatType>(GetSelectableStatTypes());
+            var modifiers = new List<StatModifier>();
+
+            if (availableStats.Count == 0 || count <= 0)
+            {
+                return modifiers;
+            }
+
+            int selectionCount = Mathf.Min(count, availableStats.Count);
+
+            for (int i = 0; i < selectionCount; i++)
+            {
+                var randomIndex = Random.Range(0, availableStats.Count);
+                var randomStatType = availableStats[randomIndex];
+
+                modifiers.Add(CreateRandomModifier(randomStatType, scaleFactor, source));
+                availableStats.RemoveAt(randomIndex);
+            }
+
+            return modifiers;
         }
 
 
