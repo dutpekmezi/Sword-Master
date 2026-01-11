@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using Dutpekmezi.Services.PoolService;
 using UnityEngine;
+using Utils.Signal;
 
 namespace dutpekmezi
 {
@@ -14,6 +16,16 @@ namespace dutpekmezi
         private void Awake()
         {
             EnsureSlotCount(initialSlotCount);
+        }
+
+        private void OnEnable()
+        {
+            SignalBus.Get<OnInventoryRequestSignal>().Subscribe(HandleInventoryRequest);
+        }
+
+        private void OnDisable()
+        {
+            SignalBus.Get<OnInventoryRequestSignal>().Unsubscribe(HandleInventoryRequest);
         }
 
         public void EnsureSlotCount(int count)
@@ -84,5 +96,15 @@ namespace dutpekmezi
         {
             return slotIndex >= 0 && slotIndex < slots.Count;
         }
+
+        private void HandleInventoryRequest(GameObject owner, Action<Inventory> callback)
+        {
+            if (owner != gameObject)
+                return;
+
+            callback?.Invoke(this);
+        }
+
+        public class OnInventoryRequestSignal : Signal<GameObject, Action<Inventory>> { }
     }
 }

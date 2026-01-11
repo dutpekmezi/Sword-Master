@@ -71,7 +71,9 @@ namespace dutpekmezi
 
         private void DropSlots()
         {
-            var inventory = GetComponent<Inventory>();
+            Inventory inventory = null;
+            SignalBus.Get<Inventory.OnInventoryRequestSignal>()
+                .Invoke(gameObject, receivedInventory => inventory = receivedInventory);
             if (inventory == null)
                 return;
 
