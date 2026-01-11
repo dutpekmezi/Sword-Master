@@ -78,6 +78,34 @@ namespace dutpekmezi
             return new StatModifier(value, operation, type, source, target);
         }
 
+        public StatModifier CreateModifier(StatType type, float value, object source = null)
+        {
+            StatConfig config = GetStatConfig(type);
+
+            return new StatModifier(value, config.DefaultOperation, type, source, config.Target);
+        }
+
+        public float GetDefaultModifierValue(StatType type, float scaleFactor = 1)
+        {
+            StatConfig config = GetStatConfig(type);
+
+            if (config.DefaultOperation == ModifierOperation.FlatAdd)
+            {
+                return config.DirectValue > 0f
+                    ? config.DirectValue
+                    : config.BaseFlatValue + (config.BaseFlatValuePerLevel * scaleFactor);
+            }
+
+            float value = config.BasePercentValuePerLevel * scaleFactor;
+
+            if (type == StatType.CooldownReduction)
+            {
+                value += 0.02f;
+            }
+
+            return value;
+        }
+
         public Dictionary<StatType, BaseStatConfig> ScaleStats(Dictionary<StatType, BaseStatConfig> targetStats, float scaleAmount)
         {
             var returnList = new Dictionary<StatType, BaseStatConfig>();

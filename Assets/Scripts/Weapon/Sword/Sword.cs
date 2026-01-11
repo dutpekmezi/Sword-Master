@@ -27,7 +27,8 @@ namespace dutpekmezi
 
         protected override void OnlevelUpHandler(int level)
         {
-            var modifier = StatSystem.Instance.CreateRandomModifier(StatType.Scale, currentLevel);
+            var modifierValue = StatSystem.Instance.GetDefaultModifierValue(StatType.Scale, currentLevel);
+            var modifier = StatSystem.Instance.CreateModifier(StatType.Scale, modifierValue);
 
             ApplyModifier(modifier); // bump size a bit when this blade levels
         }
