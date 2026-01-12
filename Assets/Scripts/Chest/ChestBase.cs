@@ -20,7 +20,6 @@ namespace dutpekmezi
         [Header("Fractured Spawn")]
         [SerializeField] private float fracturedPieceForce = 3f;
         [SerializeField] private float fracturedPieceTorque = 10f;
-        [SerializeField] private float fracturedDespawnDelay = 2f;
 
         [Header("Damage Shake")]
         [SerializeField] private bool enableHitShake = true;
@@ -36,6 +35,8 @@ namespace dutpekmezi
         [SerializeField] private bool isOpened;
 
         private Tween hitShakeTween;
+
+        private GameObject fracturedChest;
 
         public bool IsOpened => isOpened;
 
@@ -77,7 +78,7 @@ namespace dutpekmezi
             isDead = true;
             OpenChest();
             DropSlots();
-            EnableSpriteRenderer();
+            EnableSpriteRenderer(false);
             SpawnFracturedChest();
             ScheduleChestDespawn();
         }
@@ -103,16 +104,11 @@ namespace dutpekmezi
             SignalBus.Get<ChestSystem.OnChestOpenedSignal>().Invoke(this);
         }
 
-        private void EnableSpriteRenderer()
+        private void EnableSpriteRenderer(bool value = true)
         {
-            if (chestSpriteRenderer == null)
-            {
-                chestSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
-            }
-
             if (chestSpriteRenderer != null)
             {
-                chestSpriteRenderer.enabled = true;
+                chestSpriteRenderer.enabled = value;
             }
         }
 
@@ -120,17 +116,21 @@ namespace dutpekmezi
         {
             if (chestCellFructuredPrefab == null) return;
 
-            var fracturedInstance = ObjectPoolManager.SpawnObject(chestCellFructuredPrefab, transform.position);
+            var fracturedInstance = ObjectPoolManager.SpawnObject(chestCellFructuredPrefab, this.transform.position);
+            fracturedInstance.transform.position = this.transform.position;
+
+            fracturedChest = fracturedInstance;
+
             if (fracturedInstance == null) return;
 
             ApplyFracturedForces(fracturedInstance);
-            ScheduleFracturedDespawn(fracturedInstance);
         }
 
         private void ScheduleChestDespawn()
         {
             if (chestDespawnDelay <= 0f)
             {
+                ObjectPoolManager.DeSpawn(fracturedChest);
                 ObjectPoolManager.DeSpawn(gameObject);
                 return;
             }
@@ -142,6 +142,7 @@ namespace dutpekmezi
         {
             yield return new WaitForSeconds(delay);
 
+            ObjectPoolManager.DeSpawn(fracturedChest);
             ObjectPoolManager.DeSpawn(gameObject);
         }
 
@@ -158,34 +159,6 @@ namespace dutpekmezi
                     var torque = Random.Range(-fracturedPieceTorque, fracturedPieceTorque);
                     body.AddTorque(torque, ForceMode2D.Impulse);
                 }
-            }
-        }
-
-        private void ScheduleFracturedDespawn(GameObject fracturedInstance)
-        {
-            if (fracturedDespawnDelay <= 0f)
-            {
-                ObjectPoolManager.DeSpawn(fracturedInstance);
-                return;
-            }
-
-            if (ObjectPoolManager.Instance != null)
-            {
-                ObjectPoolManager.Instance.StartCoroutine(DespawnFracturedAfterDelay(fracturedInstance, fracturedDespawnDelay));
-            }
-            else
-            {
-                ObjectPoolManager.DeSpawn(fracturedInstance);
-            }
-        }
-
-        private static IEnumerator DespawnFracturedAfterDelay(GameObject fracturedInstance, float delay)
-        {
-            yield return new WaitForSeconds(delay);
-
-            if (fracturedInstance != null)
-            {
-                ObjectPoolManager.DeSpawn(fracturedInstance);
             }
         }
 

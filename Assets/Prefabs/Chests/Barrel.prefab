@@ -96,15 +96,15 @@ MonoBehaviour:
   chestAnimator: {fileID: 0}
   chestCellFructuredPrefab: {fileID: 4457458839410923105, guid: 0d748d0ffe4932942848ec812a7abf51, type: 3}
   chestSpriteRenderer: {fileID: 7644853717786250294}
-  fracturedPieceForce: 3
+  fracturedPieceForce: 10
   fracturedPieceTorque: 10
-  fracturedDespawnDelay: 2
   enableHitShake: 1
   hitShakeDuration: 0.3
   hitShakeStrength: {x: 0.2, y: 0.2, z: 0}
   hitShakeVibrato: 20
   hitShakeRandomness: 90
   hitShakeFadeOut: 0
+  chestDespawnDelay: 4
   isOpened: 0
 --- !u!114 &696188892532112395
 MonoBehaviour:
