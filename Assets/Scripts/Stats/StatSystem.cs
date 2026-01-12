@@ -78,6 +78,20 @@ namespace dutpekmezi
             return new StatModifier(value, operation, type, source, target);
         }
 
+        public StatModifier CreateRandomCollectableModifier(float scaleFactor = 1, object source = null)
+        {
+            var collectableTypes = GetCollectableStatTypes();
+
+            if (collectableTypes.Count == 0)
+            {
+                collectableTypes = GetUpgradableStatTypes();
+            }
+
+            StatType randomType = GetRandomStatType(collectableTypes);
+
+            return CreateRandomModifier(randomType, scaleFactor, source);
+        }
+
         public StatModifier CreateModifier(StatType type, float value, ModifierOperation operation = ModifierOperation.FlatAdd, object source = null)
         {
             StatConfig config = GetStatConfig(type);
@@ -143,6 +157,19 @@ namespace dutpekmezi
 
             return _statConfigData.StatConfigs
                 .Where(config => config.IsUpgradable)
+                .Select(config => config.Type)
+                .ToList();
+        }
+
+        public List<StatType> GetCollectableStatTypes()
+        {
+            if (_statConfigData == null)
+            {
+                return new List<StatType>();
+            }
+
+            return _statConfigData.StatConfigs
+                .Where(config => config.IsCollectable)
                 .Select(config => config.Type)
                 .ToList();
         }
