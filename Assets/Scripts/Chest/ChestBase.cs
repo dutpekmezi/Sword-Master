@@ -30,6 +30,9 @@ namespace dutpekmezi
         [SerializeField] private float hitShakeRandomness = 90f;
         [SerializeField] private bool hitShakeFadeOut = true;
 
+        [Header("Despawn")]
+        [SerializeField] private float chestDespawnDelay = 0f;
+
         [SerializeField] private bool isOpened;
 
         private Tween hitShakeTween;
@@ -76,7 +79,7 @@ namespace dutpekmezi
             DropSlots();
             EnableSpriteRenderer();
             SpawnFracturedChest();
-            ObjectPoolManager.DeSpawn(gameObject);
+            ScheduleChestDespawn();
         }
 
         private void DropSlots()
@@ -122,6 +125,24 @@ namespace dutpekmezi
 
             ApplyFracturedForces(fracturedInstance);
             ScheduleFracturedDespawn(fracturedInstance);
+        }
+
+        private void ScheduleChestDespawn()
+        {
+            if (chestDespawnDelay <= 0f)
+            {
+                ObjectPoolManager.DeSpawn(gameObject);
+                return;
+            }
+
+            StartCoroutine(DespawnChestAfterDelay(chestDespawnDelay));
+        }
+
+        private IEnumerator DespawnChestAfterDelay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+
+            ObjectPoolManager.DeSpawn(gameObject);
         }
 
         private void ApplyFracturedForces(GameObject fracturedInstance)
