@@ -13,6 +13,7 @@ namespace dutpekmezi
         [Header("References")]
         [SerializeField] private Collider2D chestCollider;
         [SerializeField] private Animator chestAnimator;
+        [SerializeField] private GameObject chestCellFructuredPrefab;
 
         [Header("Damage Shake")]
         [SerializeField] private bool enableHitShake = true;
