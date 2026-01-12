@@ -11,6 +11,7 @@ namespace dutpekmezi
         public Sprite Icon;
 
         public bool IsUpgradable;
+        public bool IsCollectable;
 
 
         [Header("Modifier Defaults")]

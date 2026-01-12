@@ -4846,6 +4846,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1550147874521122807}
   - component: {fileID: 3253655559057181774}
+  - component: {fileID: 904812345678901234}
   m_Layer: 0
   m_Name: ExpDropObject
   m_TagString: Untagged
@@ -4927,3 +4928,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &904812345678901234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4444575410579534422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4daf6fe38374499d8464780d4ecd15c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 3253655559057181774}
+  collectStartDelay: 0.1
+  collectFlyDuration: 0.5
