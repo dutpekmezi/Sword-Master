@@ -1,5 +1,6 @@
 using DG.Tweening;
 using Dutpekmezi.Services.PoolService;
+using System.Collections;
 using UnityEngine;
 using Utils.Signal;
 
@@ -14,6 +15,12 @@ namespace dutpekmezi
         [SerializeField] private Collider2D chestCollider;
         [SerializeField] private Animator chestAnimator;
         [SerializeField] private GameObject chestCellFructuredPrefab;
+        [SerializeField] private SpriteRenderer chestSpriteRenderer;
+
+        [Header("Fractured Spawn")]
+        [SerializeField] private float fracturedPieceForce = 3f;
+        [SerializeField] private float fracturedPieceTorque = 10f;
+        [SerializeField] private float fracturedDespawnDelay = 2f;
 
         [Header("Damage Shake")]
         [SerializeField] private bool enableHitShake = true;
@@ -67,6 +74,8 @@ namespace dutpekmezi
             isDead = true;
             OpenChest();
             DropSlots();
+            EnableSpriteRenderer();
+            SpawnFracturedChest();
             ObjectPoolManager.DeSpawn(gameObject);
         }
 
@@ -89,6 +98,74 @@ namespace dutpekmezi
             isOpened = true;
 
             SignalBus.Get<ChestSystem.OnChestOpenedSignal>().Invoke(this);
+        }
+
+        private void EnableSpriteRenderer()
+        {
+            if (chestSpriteRenderer == null)
+            {
+                chestSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            }
+
+            if (chestSpriteRenderer != null)
+            {
+                chestSpriteRenderer.enabled = true;
+            }
+        }
+
+        private void SpawnFracturedChest()
+        {
+            if (chestCellFructuredPrefab == null) return;
+
+            var fracturedInstance = ObjectPoolManager.SpawnObject(chestCellFructuredPrefab, transform.position);
+            if (fracturedInstance == null) return;
+
+            ApplyFracturedForces(fracturedInstance);
+            ScheduleFracturedDespawn(fracturedInstance);
+        }
+
+        private void ApplyFracturedForces(GameObject fracturedInstance)
+        {
+            var rigidbodies = fracturedInstance.GetComponentsInChildren<Rigidbody2D>();
+            foreach (var body in rigidbodies)
+            {
+                var direction = Random.insideUnitCircle.normalized;
+                body.AddForce(direction * fracturedPieceForce, ForceMode2D.Impulse);
+
+                if (fracturedPieceTorque != 0f)
+                {
+                    var torque = Random.Range(-fracturedPieceTorque, fracturedPieceTorque);
+                    body.AddTorque(torque, ForceMode2D.Impulse);
+                }
+            }
+        }
+
+        private void ScheduleFracturedDespawn(GameObject fracturedInstance)
+        {
+            if (fracturedDespawnDelay <= 0f)
+            {
+                ObjectPoolManager.DeSpawn(fracturedInstance);
+                return;
+            }
+
+            if (ObjectPoolManager.Instance != null)
+            {
+                ObjectPoolManager.Instance.StartCoroutine(DespawnFracturedAfterDelay(fracturedInstance, fracturedDespawnDelay));
+            }
+            else
+            {
+                ObjectPoolManager.DeSpawn(fracturedInstance);
+            }
+        }
+
+        private static IEnumerator DespawnFracturedAfterDelay(GameObject fracturedInstance, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+
+            if (fracturedInstance != null)
+            {
+                ObjectPoolManager.DeSpawn(fracturedInstance);
+            }
         }
 
         private void PlayHitShake()
