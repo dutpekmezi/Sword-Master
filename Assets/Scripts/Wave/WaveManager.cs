@@ -362,7 +362,15 @@ namespace dutpekmezi
                     continue;
                 }
 
-                ChestSystem.Instance.CreateRandomChest(spawnPosition);
+                var chest = ChestSystem.Instance.CreateRandomChest(spawnPosition);
+                if (chest != null)
+                {
+                    var character = characterSystem.GetCurrentCharacter();
+                    if (character != null)
+                    {
+                        IndicatorManager.Instance?.CreateChestIndicator(chest, character.transform);
+                    }
+                }
                 occupiedPositions.Add(spawnPosition);
             }
         }
