@@ -112,6 +112,7 @@ namespace dutpekmezi
                 if (chestConfig != null)
                 {
                     GenerateChests(chestConfig.chestsPerWave);
+                    GenerateIndicatorsForChests();
                 }
 
                 if (enemyConfig != null)
@@ -362,17 +363,27 @@ namespace dutpekmezi
                     continue;
                 }
 
-                var chest = ChestSystem.Instance.CreateRandomChest(spawnPosition);
-                if (chest != null)
-                {
-                    var character = characterSystem.GetCurrentCharacter();
-                    if (character != null)
-                    {
-                        IndicatorManager.Instance?.CreateChestIndicator(chest, character.transform);
-                    }
-                }
+                ChestSystem.Instance.CreateRandomChest(spawnPosition);
                 occupiedPositions.Add(spawnPosition);
             }
+        }
+
+        public void GenerateIndicatorsForChests()
+        {
+            if (ChestSystem.Instance == null)
+            {
+                return;
+            }
+
+            var targetList = ChestSystem.Instance.GetChestsTransform();
+            var character = characterSystem.GetCurrentCharacter();
+
+            if (character == null)
+            {
+                return;
+            }
+
+            IndicatorManager.Instance.CreateTargetIndicators(targetList, character.transform, IndicatorManager.Instance.IndicatorConfig.chestIndicator);
         }
 
         public Vector2 GenerateRandomPos(float radius, float deflection, Vector2 center)

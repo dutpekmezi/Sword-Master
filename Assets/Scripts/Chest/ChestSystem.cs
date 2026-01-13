@@ -52,6 +52,18 @@ namespace dutpekmezi
             return chest;
         }
 
+        public List<Transform> GetChestsTransform()
+        {
+            var transformList = new List<Transform>();
+
+            foreach (var chest in activeChests)
+            {
+                transformList.Add(chest.transform);
+            }
+
+            return transformList;
+        }
+
         private void RegisterChest(ChestBase chest)
         {
             if (chest == null)
