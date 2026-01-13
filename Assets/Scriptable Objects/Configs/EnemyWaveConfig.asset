@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42f6508d0f004d37a852a63f20486a7d, type: 3}
   m_Name: EnemyWaveConfig
   m_EditorClassIdentifier: Assembly-CSharp::dutpekmezi.EnemyWaveConfig
-  preChaosWaveSpawnRate: 15
+  preChaosWaveSpawnRate: 5
   preChaosGroupSpawnRate: 0
   enemyStatScaleFactor: 0.01
-  enemiesPerWave: 15
+  enemiesPerWave: 1
   waveSpawnRadius: 30
   waveSpawnDeflection: 10
   chaosEnemiesPerWave: 30

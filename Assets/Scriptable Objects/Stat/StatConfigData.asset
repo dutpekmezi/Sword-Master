@@ -124,7 +124,7 @@ MonoBehaviour:
     IsUpgradable: 1
     IsCollectable: 1
     DefaultOperation: 0
-    BaseFlatValuePerLevel: 0.1
+    BaseFlatValuePerLevel: 0.01
     BasePercentValuePerLevel: 0
     BaseFlatValue: 0
     FlatAddChance: 1

@@ -143,7 +143,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::dutpekmezi.Inventory
   initialSlotCount: 1
   slots:
-  - item: {fileID: 4444575410579534422, guid: 6e107101a79408c46a7db79e46b79c6e, type: 3}
+  - item: {fileID: 4444575410579534422, guid: 55639163c807e9a42a1552c3e9dfa68c, type: 3}
 --- !u!1 &9133730199069225330
 GameObject:
   m_ObjectHideFlags: 0

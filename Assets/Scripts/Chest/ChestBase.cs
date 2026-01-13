@@ -77,7 +77,10 @@ namespace dutpekmezi
 
             isDead = true;
             OpenChest();
+
             SignalBus.Get<Entity.OnEntityDiedSignal>().Invoke(this, transform.position);
+            SignalBus.Get<OnChestOpened>().Invoke(this, transform);
+
             EnableSpriteRenderer(false);
             SpawnFracturedChest();
             ScheduleChestDespawn();
@@ -171,5 +174,6 @@ namespace dutpekmezi
         }
 
         public class OnTakeDamage : Signal<Entity, float> { }
+        public class OnChestOpened : Signal<Entity, Transform> { }
     }
 }
