@@ -2,11 +2,11 @@ using UnityEngine;
 
 namespace dutpekmezi
 {
-    public class ExpDropParticle : Collectable
+    public class RandomDropParticle : Collectable
     {
         [Header("Collect Settings")]
         [SerializeField] private float collectStartDelay = 0.1f;
-        [SerializeField] private float collectFlyDuration = 0.5f;
+        [SerializeField] private float collectFlySpeed = 3f;
 
         protected override void Init()
         {
@@ -17,7 +17,7 @@ namespace dutpekmezi
 
         public void Collect()
         {
-            Collect(collectStartDelay, collectFlyDuration);
+            Collect(collectStartDelay, collectFlySpeed);
         }
     }
 }
