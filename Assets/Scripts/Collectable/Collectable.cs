@@ -35,7 +35,7 @@ namespace dutpekmezi
             isInitialized = true;
         }
 
-        public void Collect(float startDelay, float flyDuration)
+        public void Collect(float startDelay, float flySpeed)
         {
             if (!isInitialized)
             {
@@ -47,10 +47,10 @@ namespace dutpekmezi
                 StopCoroutine(collectRoutine);
             }
 
-            collectRoutine = StartCoroutine(CollectRoutine(startDelay, flyDuration));
+            collectRoutine = StartCoroutine(CollectRoutine(startDelay, flySpeed));
         }
 
-        protected virtual IEnumerator CollectRoutine(float startDelay, float flyDuration)
+        protected virtual IEnumerator CollectRoutine(float startDelay, float flySpeed)
         {
             if (startDelay > 0f)
             {
@@ -64,23 +64,24 @@ namespace dutpekmezi
                 yield break;
             }
 
-            if (flyDuration <= 0f)
+            if (flySpeed <= 0f)
             {
                 transform.position = character.transform.position;
                 OnCollected();
                 yield break;
             }
 
-            float elapsed = 0f;
-            Vector3 startPosition = transform.position;
-
-            while (elapsed < flyDuration)
+            float threshold = 0.01f;
+            while (true)
             {
-                elapsed += Time.deltaTime;
-
                 Vector3 targetPosition = character.transform.position;
-                float t = Mathf.Clamp01(elapsed / flyDuration);
-                transform.position = Vector3.Lerp(startPosition, targetPosition, t);
+                float step = flySpeed * Time.deltaTime;
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
+
+                if ((transform.position - targetPosition).sqrMagnitude <= threshold * threshold)
+                {
+                    break;
+                }
 
                 yield return null;
             }
