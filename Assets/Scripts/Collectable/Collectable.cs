@@ -18,7 +18,12 @@ namespace dutpekmezi
         public StatModifier StatModifier => statModifier;
         public StatType StatType => statType;
 
-        public virtual void Init()
+        private void OnEnable()
+        {
+            Init();
+        }
+
+        protected virtual void Init()
         {
             var character = CharacterSystem.Instance?.GetCurrentCharacter();
             float scaleFactor = character != null ? character.CurrentLevel : 1f;
@@ -88,11 +93,6 @@ namespace dutpekmezi
         {
             if (spriteRenderer == null)
             {
-                spriteRenderer = GetComponent<SpriteRenderer>();
-            }
-
-            if (spriteRenderer == null)
-            {
                 return;
             }
 
@@ -107,10 +107,6 @@ namespace dutpekmezi
             if (ObjectPoolManager.Instance != null)
             {
                 ObjectPoolManager.DeSpawn(gameObject);
-            }
-            else
-            {
-                Destroy(gameObject);
             }
 
             collectRoutine = null;

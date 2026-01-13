@@ -77,6 +77,7 @@ namespace dutpekmezi
                 return false;
 
             droppedItem = ObjectPoolManager.SpawnObject(itemPrefab, itemPrefab.transform.position);
+
             return droppedItem != null;
         }
 

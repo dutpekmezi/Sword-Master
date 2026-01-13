@@ -4941,5 +4941,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 3253655559057181774}
-  collectStartDelay: 0.1
-  collectFlyDuration: 0.5
+  collectStartDelay: 1
+  collectFlyDuration: 1
