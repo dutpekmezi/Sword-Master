@@ -4848,7 +4848,7 @@ GameObject:
   - component: {fileID: 3253655559057181774}
   - component: {fileID: 904812345678901234}
   m_Layer: 0
-  m_Name: ExpDropObject
+  m_Name: DropParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4942,4 +4942,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 3253655559057181774}
   collectStartDelay: 1
-  collectFlySpeed: 1
+  collectFlySpeed: 5
