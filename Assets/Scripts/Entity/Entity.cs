@@ -2,6 +2,7 @@ using Dutpekmezi.Services.PoolService;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Utils.Signal;
 
 namespace dutpekmezi
 {
@@ -133,8 +134,12 @@ namespace dutpekmezi
 
         protected virtual void Die()
         {
+            if (isDead)
+                return;
+
             isDead = true;
 
+            SignalBus.Get<OnEntityDiedSignal>().Invoke(this, transform.position);
             ObjectPoolManager.DeSpawn(this.gameObject);
         }
 
@@ -153,5 +158,7 @@ namespace dutpekmezi
                 Gainlevel();
             }
         }
+
+        public class OnEntityDiedSignal : Signal<Entity, Vector3> { }
     }
 }

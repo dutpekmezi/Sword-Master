@@ -36,6 +36,7 @@ namespace dutpekmezi
         private ChestSystem _chestSystem;
         private StatSystem _statSystem;
         private AbilitySystem _abilitySystem;
+        private InventorySystem _inventorySystem;
         private WaveManager _waveManager;
         private UIManager _uiManager;
         private StatueManager _statueManager;
@@ -73,6 +74,7 @@ namespace dutpekmezi
             _weaponSystem = Bind(new WeaponSystem(weaponDatas));
             _chestSystem = Bind(new ChestSystem(chestDatas));
             _abilitySystem = Bind(new AbilitySystem(abilityDatas));
+            _inventorySystem = Bind(new InventorySystem());
             _uiManager = Bind(new UIManager(waveTimerUI));
             _statueManager = Bind(new StatueManager(statStatue, weaponStatue));
             _indicatorManager = Bind(new IndicatorManager(indicatorConfig));

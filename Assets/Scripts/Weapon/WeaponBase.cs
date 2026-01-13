@@ -255,6 +255,7 @@ namespace dutpekmezi
         {
             isDead = true;
 
+            SignalBus.Get<Entity.OnEntityDiedSignal>().Invoke(this, transform.position);
             WeaponSystem.Instance.UnequipWeapon();
         }
 

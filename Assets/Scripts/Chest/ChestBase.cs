@@ -77,24 +77,10 @@ namespace dutpekmezi
 
             isDead = true;
             OpenChest();
-            DropSlots();
+            SignalBus.Get<Entity.OnEntityDiedSignal>().Invoke(this, transform.position);
             EnableSpriteRenderer(false);
             SpawnFracturedChest();
             ScheduleChestDespawn();
-        }
-
-        private void DropSlots()
-        {
-            Inventory inventory = null;
-            SignalBus.Get<Inventory.OnInventoryRequestSignal>()
-                .Invoke(gameObject, receivedInventory => inventory = receivedInventory);
-            if (inventory == null)
-                return;
-
-            for (int i = 0; i < inventory.Slots.Count; i++)
-            {
-                inventory.DropSlot(i, transform.position, out _);
-            }
         }
 
         private void OpenChest()
