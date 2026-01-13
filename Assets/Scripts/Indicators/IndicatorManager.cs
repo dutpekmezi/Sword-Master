@@ -27,7 +27,7 @@ public class IndicatorManager : BaseSystem
     protected override void OnInitialize()
     {
         SignalBus.Get<StatueManager.OnStatueDispose>().Subscribe(OnTargetDestroyed);
-        SignalBus.Get<ChestSystem.OnChestOpenedSignal>().Subscribe(OnChestOpened);
+        SignalBus.Get<ChestSystem.OnChestDispose>().Subscribe(OnTargetDestroyed);
     }
 
     public override void Tick()
@@ -43,7 +43,7 @@ public class IndicatorManager : BaseSystem
     protected override void OnDispose()
     {
         SignalBus.Get<StatueManager.OnStatueDispose>().Unsubscribe(OnTargetDestroyed);
-        SignalBus.Get<ChestSystem.OnChestOpenedSignal>().Unsubscribe(OnChestOpened);
+        SignalBus.Get<ChestSystem.OnChestDispose>().Unsubscribe(OnTargetDestroyed);
     }
 
     public TargetIndicator CreateTargetIndicator(Transform target, Transform center)
@@ -90,29 +90,9 @@ public class IndicatorManager : BaseSystem
         return createdIndicators;
     }
 
-    public TargetIndicator CreateChestIndicator(ChestBase chest, Transform center)
-    {
-        if (chest == null)
-        {
-            return null;
-        }
-
-        return CreateIndicator(indicatorConfig.chestIndicator, chest.transform, center);
-    }
-
     private void OnTargetDestroyed(Transform destroyedTarget)
     {
         DisposeIndicatorsForTarget(destroyedTarget);
-    }
-
-    private void OnChestOpened(ChestBase chest)
-    {
-        if (chest == null)
-        {
-            return;
-        }
-
-        DisposeIndicatorsForTarget(chest.transform);
     }
 
     private TargetIndicator CreateIndicator(TargetIndicator indicatorPrefab, Transform target, Transform center)

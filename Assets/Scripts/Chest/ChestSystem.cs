@@ -85,9 +85,11 @@ namespace dutpekmezi
                 return;
 
             activeChests.Remove(chest);
+            SignalBus.Get<OnChestDispose>().Invoke(chest.transform);
         }
 
         public class OnChestSpawnedSignal : Signal<ChestBase> { }
         public class OnChestOpenedSignal : Signal<ChestBase> { }
+        public class OnChestDispose : Signal<Transform> { }
     }
 }

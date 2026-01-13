@@ -370,20 +370,9 @@ namespace dutpekmezi
 
         public void GenerateIndicatorsForChests()
         {
-            if (ChestSystem.Instance == null)
-            {
-                return;
-            }
-
             var targetList = ChestSystem.Instance.GetChestsTransform();
-            var character = characterSystem.GetCurrentCharacter();
 
-            if (character == null)
-            {
-                return;
-            }
-
-            IndicatorManager.Instance.CreateTargetIndicators(targetList, character.transform, IndicatorManager.Instance.IndicatorConfig.chestIndicator);
+            IndicatorManager.Instance.CreateTargetIndicators(targetList, characterSystem.GetCurrentCharacter().transform, IndicatorManager.Instance.IndicatorConfig.chestIndicator);
         }
 
         public Vector2 GenerateRandomPos(float radius, float deflection, Vector2 center)

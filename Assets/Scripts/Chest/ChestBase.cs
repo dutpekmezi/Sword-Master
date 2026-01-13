@@ -53,6 +53,8 @@ namespace dutpekmezi
 
             base.Initialize();
 
+            EnableBaseChest(true);
+
             SignalBus.Get<OnTakeDamage>().Subscribe(OnTakeDamageHandler);
         }
 
@@ -79,9 +81,8 @@ namespace dutpekmezi
             OpenChest();
 
             SignalBus.Get<Entity.OnEntityDiedSignal>().Invoke(this, transform.position);
-            SignalBus.Get<OnChestOpened>().Invoke(this, transform);
 
-            EnableSpriteRenderer(false);
+            EnableBaseChest(false);
             SpawnFracturedChest();
             ScheduleChestDespawn();
         }
@@ -93,11 +94,16 @@ namespace dutpekmezi
             SignalBus.Get<ChestSystem.OnChestOpenedSignal>().Invoke(this);
         }
 
-        private void EnableSpriteRenderer(bool value = true)
+        private void EnableBaseChest(bool value = true)
         {
             if (chestSpriteRenderer != null)
             {
                 chestSpriteRenderer.enabled = value;
+            }
+
+            if (col != null)
+            {
+                col.enabled = value;
             }
         }
 
@@ -120,7 +126,7 @@ namespace dutpekmezi
             if (chestDespawnDelay <= 0f)
             {
                 ObjectPoolManager.DeSpawn(fracturedChest);
-                ObjectPoolManager.DeSpawn(gameObject);
+                ObjectPoolManager.DeSpawn(this.gameObject);
                 return;
             }
 
@@ -132,7 +138,7 @@ namespace dutpekmezi
             yield return new WaitForSeconds(delay);
 
             ObjectPoolManager.DeSpawn(fracturedChest);
-            ObjectPoolManager.DeSpawn(gameObject);
+            ObjectPoolManager.DeSpawn(this.gameObject);
         }
 
         private void ApplyFracturedForces(GameObject fracturedInstance)
@@ -174,6 +180,5 @@ namespace dutpekmezi
         }
 
         public class OnTakeDamage : Signal<Entity, float> { }
-        public class OnChestOpened : Signal<Entity, Transform> { }
     }
 }
