@@ -28,11 +28,16 @@ namespace dutpekmezi
             var character = CharacterSystem.Instance?.GetCurrentCharacter();
             float scaleFactor = character != null ? character.CurrentLevel : 1f;
 
-            statModifier = StatSystem.Instance.CreateRandomCollectableModifier(scaleFactor, this);
+            statModifier = CreateCollectableModifier(scaleFactor);
             statType = statModifier != null ? statModifier.Type : default;
 
             ApplyColor();
             isInitialized = true;
+        }
+
+        protected virtual StatModifier CreateCollectableModifier(float scaleFactor)
+        {
+            return StatSystem.Instance.CreateRandomCollectableModifier(scaleFactor, this);
         }
 
         public void Collect(float startDelay, float flySpeed)
