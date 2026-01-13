@@ -78,6 +78,7 @@ namespace dutpekmezi
             if (isOpened) return;
 
             isDead = true;
+            StopHitShake();
             OpenChest();
 
             SignalBus.Get<Entity.OnEntityDiedSignal>().Invoke(this, transform.position);
@@ -101,7 +102,12 @@ namespace dutpekmezi
                 chestSpriteRenderer.enabled = value;
             }
 
-            if (col != null)
+            if (chestCollider != null)
+            {
+                chestCollider.enabled = value;
+            }
+
+            if (col != null && col != chestCollider)
             {
                 col.enabled = value;
             }
@@ -161,10 +167,7 @@ namespace dutpekmezi
         {
             if (!enableHitShake) return;
 
-            if (hitShakeTween != null && hitShakeTween.IsActive())
-            {
-                hitShakeTween.Kill();
-            }
+            StopHitShake();
 
             Vector3 originalLocalPosition = transform.localPosition;
             hitShakeTween = transform
@@ -177,6 +180,14 @@ namespace dutpekmezi
                     true)
                 .OnKill(() => transform.localPosition = originalLocalPosition)
                 .OnComplete(() => transform.localPosition = originalLocalPosition);
+        }
+
+        private void StopHitShake()
+        {
+            if (hitShakeTween != null && hitShakeTween.IsActive())
+            {
+                hitShakeTween.Kill();
+            }
         }
 
         public class OnTakeDamage : Signal<Entity, float> { }
