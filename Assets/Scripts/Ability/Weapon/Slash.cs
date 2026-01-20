@@ -9,7 +9,6 @@ namespace dutpekmezi
     public class Slash : AbilityBase
     {
         [Header("Ability Settings")]
-        [SerializeField] private float moveSpeed = 5f;
         [SerializeField] private SlashObj slash;
         [SerializeField] private float slashObjScaleX;
         [SerializeField] private float slashObjScaleY;

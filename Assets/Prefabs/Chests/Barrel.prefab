@@ -94,9 +94,9 @@ MonoBehaviour:
   chestData: {fileID: 11400000, guid: b361f63a9b457324b9935efcb8d1d2ef, type: 2}
   chestCollider: {fileID: 5440992253748871142}
   chestAnimator: {fileID: 0}
-  chestCellFructuredPrefab: {fileID: 4457458839410923105, guid: 0d748d0ffe4932942848ec812a7abf51, type: 3}
+  chestCellFructuredPrefab: {fileID: 7951222120657952084, guid: 0d748d0ffe4932942848ec812a7abf51, type: 3}
   chestSpriteRenderer: {fileID: 7644853717786250294}
-  fracturedPieceForce: 10
+  fracturedPieceForce: 3
   fracturedPieceTorque: 10
   enableHitShake: 1
   hitShakeDuration: 0.3

@@ -35,8 +35,8 @@ MonoBehaviour:
     IsCollectable: 1
     DefaultOperation: 0
     BaseFlatValuePerLevel: 0
-    BasePercentValuePerLevel: 0.01
-    BaseFlatValue: 0.01
+    BasePercentValuePerLevel: 0.02
+    BaseFlatValue: 0.02
     FlatAddChance: 0.3
     DirectValue: 0
     ShouldClamp: 0

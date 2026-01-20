@@ -16,4 +16,4 @@ MonoBehaviour:
   chestSpawnRadius: 10
   chestSpawnDeflection: 2
   chestMinimumDistance: 2
-  maxChest: 5
+  maxChest: 1

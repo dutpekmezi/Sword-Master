@@ -82,7 +82,6 @@ MonoBehaviour:
   _runtimeStatsList: []
   rb: {fileID: 3977034603468201143}
   col: {fileID: 1308309870873010189}
-  isLeader: 0
 --- !u!61 &1308309870873010189
 BoxCollider2D:
   m_ObjectHideFlags: 0

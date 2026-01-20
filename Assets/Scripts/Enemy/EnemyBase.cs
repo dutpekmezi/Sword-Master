@@ -7,8 +7,6 @@ namespace dutpekmezi
 {
     public class EnemyBase : Entity
     {
-        [SerializeField] private bool isLeader = false;
-
         public override void Initialize()
         {
             base.Initialize();

@@ -14,7 +14,7 @@ namespace dutpekmezi
         [Header("References")]
         [SerializeField] private Collider2D chestCollider;
         [SerializeField] private Animator chestAnimator;
-        [SerializeField] private GameObject chestCellFructuredPrefab;
+        [SerializeField] private FracturedChest chestCellFructuredPrefab;
         [SerializeField] private SpriteRenderer chestSpriteRenderer;
 
         [Header("Fractured Spawn")]
@@ -36,7 +36,7 @@ namespace dutpekmezi
 
         private Tween hitShakeTween;
 
-        private GameObject fracturedChest;
+        private FracturedChest fracturedChest;
 
         public bool IsOpened => isOpened;
 
@@ -118,20 +118,20 @@ namespace dutpekmezi
             if (chestCellFructuredPrefab == null) return;
 
             var fracturedInstance = ObjectPoolManager.SpawnObject(chestCellFructuredPrefab, this.transform.position);
-            fracturedInstance.transform.position = this.transform.position;
+            fracturedInstance.Init();
 
             fracturedChest = fracturedInstance;
 
             if (fracturedInstance == null) return;
 
-            ApplyFracturedForces(fracturedInstance);
+            ApplyFracturedForces(fracturedInstance.gameObject);
         }
 
         private void ScheduleChestDespawn()
         {
             if (chestDespawnDelay <= 0f)
             {
-                ObjectPoolManager.DeSpawn(fracturedChest);
+                ObjectPoolManager.DeSpawn(fracturedChest.gameObject);
                 ObjectPoolManager.DeSpawn(this.gameObject);
                 return;
             }
@@ -143,7 +143,7 @@ namespace dutpekmezi
         {
             yield return new WaitForSeconds(delay);
 
-            ObjectPoolManager.DeSpawn(fracturedChest);
+            ObjectPoolManager.DeSpawn(fracturedChest.gameObject);
             ObjectPoolManager.DeSpawn(this.gameObject);
         }
 

@@ -15,7 +15,7 @@ namespace dutpekmezi
             InstallBindings();
         }
 
-        private async void InstallBindings()
+        private void InstallBindings()
         {
             var sceneService = new SceneService(_sceneServiceSettings);
 
