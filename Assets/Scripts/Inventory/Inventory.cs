@@ -12,15 +12,19 @@ namespace dutpekmezi
         [SerializeField] private List<InventorySlot> slots = new List<InventorySlot>();
 
         public IReadOnlyList<InventorySlot> Slots => slots;
+        private readonly List<GameObject> initialItems = new List<GameObject>();
+        private int initialSlotsSnapshot;
 
         private void Awake()
         {
             EnsureSlotCount(initialSlotCount);
+            CacheInitialSlots();
         }
 
         private void OnEnable()
         {
             SignalBus.Get<OnInventoryRequestSignal>().Subscribe(HandleInventoryRequest);
+            ResetSlotsToInitialItems();
         }
 
         private void OnDisable()
@@ -103,6 +107,39 @@ namespace dutpekmezi
                 return;
 
             callback?.Invoke(this);
+        }
+
+        private void CacheInitialSlots()
+        {
+            initialItems.Clear();
+            initialSlotsSnapshot = slots.Count;
+
+            foreach (var slot in slots)
+            {
+                initialItems.Add(slot.Item);
+            }
+        }
+
+        private void ResetSlotsToInitialItems()
+        {
+            if (initialItems.Count == 0 && initialSlotsSnapshot == 0)
+                return;
+
+            if (slots.Count != initialItems.Count)
+            {
+                slots.Clear();
+                for (int i = 0; i < initialItems.Count; i++)
+                {
+                    slots.Add(new InventorySlot(initialItems[i]));
+                }
+
+                return;
+            }
+
+            for (int i = 0; i < slots.Count; i++)
+            {
+                slots[i].SetItem(initialItems[i]);
+            }
         }
 
         public class OnInventoryRequestSignal : Signal<GameObject, Action<Inventory>> { }
