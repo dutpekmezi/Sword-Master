@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cbd85be26854f51912e5a8ef9c9adbf, type: 3}
   m_Name: StatueSpawnConfig
   m_EditorClassIdentifier: Assembly-CSharp::dutpekmezi.StatueSpawnConfig
-  statuesPerWave: 2
+  statuesPerWave: 0
   statueSpawnRadius: 10
   statueSpawnDeflection: 2
   statueMinimumDistance: 4

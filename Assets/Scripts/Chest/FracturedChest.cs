@@ -60,7 +60,7 @@ public class FracturedChest : MonoBehaviour
 
             if (cellTransform.TryGetComponent<Rigidbody2D>(out var body))
             {
-                body.velocity = Vector2.zero;
+                body.linearVelocity = Vector2.zero;
                 body.angularVelocity = 0f;
                 body.Sleep();
             }

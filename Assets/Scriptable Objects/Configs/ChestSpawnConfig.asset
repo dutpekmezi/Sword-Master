@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: def3e04f497e440e916c9b604b7672bb, type: 3}
   m_Name: ChestSpawnConfig
   m_EditorClassIdentifier: Assembly-CSharp::dutpekmezi.ChestSpawnConfig
-  chestsPerWave: 1
+  chestsPerWave: 2
   chestSpawnRadius: 10
   chestSpawnDeflection: 2
   chestMinimumDistance: 2
-  maxChest: 1
+  maxChest: 10

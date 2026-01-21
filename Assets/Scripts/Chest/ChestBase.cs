@@ -81,7 +81,7 @@ namespace dutpekmezi
             StopHitShake();
             OpenChest();
 
-            SignalBus.Get<Entity.OnEntityDiedSignal>().Invoke(this, transform.position);
+            SignalBus.Get<OnEntityDiedSignal>().Invoke(this, transform.position);
 
             EnableBaseChest(false);
             SpawnFracturedChest();

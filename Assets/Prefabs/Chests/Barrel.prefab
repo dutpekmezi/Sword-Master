@@ -96,7 +96,7 @@ MonoBehaviour:
   chestAnimator: {fileID: 0}
   chestCellFructuredPrefab: {fileID: 7951222120657952084, guid: 0d748d0ffe4932942848ec812a7abf51, type: 3}
   chestSpriteRenderer: {fileID: 7644853717786250294}
-  fracturedPieceForce: 3
+  fracturedPieceForce: 10
   fracturedPieceTorque: 10
   enableHitShake: 1
   hitShakeDuration: 0.3
